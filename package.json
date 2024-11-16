@@ -1,0 +1,78 @@
+{
+  "name": "@thoughtbot/candywrappa",
+  "version": "0.0.1",
+  "description": "bare forms",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "lint": "run-p lint:eslint lint:types lint:prettier",
+    "lint:eslint": "eslint --max-warnings=0 --ext js,jsx,ts,tsx ./candywrappa",
+    "lint:prettier": "prettier --check '**/*' --ignore-unknown",
+    "lint:types": "tsc",
+    "fix:prettier": "prettier --write '**/*' --ignore-unknown",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:cov": "vitest --coverage",
+    "test:all": "npm lint && npm test:run",
+    "pub:beta": "npm build && npm publish --tag beta",
+    "pub:release": "npm build && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thoughtbot/form_props.git"
+  },
+  "author": "Johny Ho",
+  "main": "dist/cjs/form_props.cjs",
+  "module": "dist/form_props.mjs",
+  "types": "dist/form_props.d.mts",
+  "exports": {
+    "./package.json": "./package.json",
+    "./components": {
+      "types": "./dist/form_props.d.mts",
+      "import": "./dist/form_props.mjs",
+      "default": "./dist/cjs/form_props.cjs"
+    }
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thoughtbot/form_props/issues"
+  },
+  "homepage": "https://github.com/thoughtbot/form_props#readme",
+  "devDependencies": {
+    "@nextui-org/react": "^2.4.8",
+    "@react-aria/test-utils": "^1.0.0-alpha.2",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@typescript-eslint/parser": "^7.15.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/coverage-v8": "^2.0.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.3",
+    "eslint-plugin-vitest-globals": "^1.5.0",
+    "framer-motion": "^11.11.11",
+    "happy-dom": "^15.7.4",
+    "prettier": "^2.3.1",
+    "prettier-eslint": "^16.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.1.0",
+    "typedoc": "^0.26.5",
+    "typedoc-plugin-markdown": "^4.2.3",
+    "typedoc-plugin-missing-exports": "^3.0.0",
+    "typescript": "^5.5.3",
+    "vitest": "^2.0.2"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1"
+  },
+  "dependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "react-aria-components": "^1.4.1",
+    "react-stately": "^3.33.0",
+    "yarn": "^1.22.22"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "removeComments": true,
+    "moduleResolution": "Node",
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "jsx": "react",
+    "allowJs": false,
+    "target": "ES2021",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noEmit": true
+  },
+  "include": ["./candywrappa/**/*"]
+}
