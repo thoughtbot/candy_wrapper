@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { TextField, ValidationContext } from '.'
+import { TextArea } from '.'
+import { ValidationContext } from '../../../src'
 
 const buildPayload = () => {
   return {
@@ -12,18 +13,18 @@ const buildPayload = () => {
   }
 }
 
-describe('TextField', () => {
+describe('TextArea', () => {
   it('renders', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <TextField {...payload} label={'category'} errorKey={'category'} />
+      <TextArea {...payload} label={'category'} errorKey={'category'} />
     )
 
     const input = getByLabelText('category')
     expect(input.required).toBeFalsy()
     expect(input.value).toEqual('books')
-    expect(input.type).toEqual('text')
+    expect(input.type).toEqual('textarea')
   })
 
   it('renders with field errors', async () => {
@@ -35,7 +36,7 @@ describe('TextField', () => {
 
     const { getByText, getByLabelText } = render(
       <ValidationContext.Provider value={validationErrors}>
-        <TextField {...payload} label={'category'} errorKey={'category'} />
+        <TextArea {...payload} label={'category'} errorKey={'category'} />
       </ValidationContext.Provider>
     )
 

@@ -4,12 +4,12 @@
     "moduleResolution": "Node",
     "strict": true,
     "strictPropertyInitialization": false,
-    "jsx": "react",
+    "jsx": "preserve",
     "allowJs": false,
     "target": "ES2021",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "noEmit": true
+    "outDir": "./dist",
   },
-  "include": ["./candywrappa/**/*"]
+  "include": ["./src/**/*"]
 }

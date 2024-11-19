@@ -1,45 +1,46 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { PasswordField, ValidationContext } from '.'
+import { TelField } from '.'
+import { ValidationContext } from '../../../src'
 
 const buildPayload = () => {
   return {
-    type: 'password',
-    name: 'post[password]',
-    id: 'post_password',
+    type: 'tel',
+    name: 'post[phone]',
+    id: 'post_phone',
     required: false,
-    defaultValue: 'Password123',
+    defaultValue: 'john@smith.com',
   }
 }
 
-describe('PasswordField', () => {
+describe('TelField', () => {
   it('renders', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <PasswordField {...payload} label={'Password'} errorKey={'password'} />
+      <TelField {...payload} label={'phone'} errorKey={'phone_number'} />
     )
 
-    const input = getByLabelText('Password')
+    const input = getByLabelText('phone')
     expect(input.required).toBeFalsy()
-    expect(input.value).toEqual('Password123')
-    expect(input.type).toEqual('password')
+    expect(input.value).toEqual('john@smith.com')
+    expect(input.type).toEqual('tel')
   })
 
   it('renders with field errors', async () => {
     const payload = buildPayload()
 
     const validationErrors = {
-      password: 'Does not match',
+      phone_number: 'phone number invalid',
     }
 
     const { getByText } = render(
       <ValidationContext.Provider value={validationErrors}>
-        <PasswordField {...payload} label={'Password'} errorKey={'password'} />
+        <TelField {...payload} label={'phone'} errorKey={'phone_number'} />
       </ValidationContext.Provider>
     )
 
-    const errorField = getByText('Does not match')
+    const errorField = getByText('phone number invalid')
     expect(errorField).not.toBeNull()
   })
 })

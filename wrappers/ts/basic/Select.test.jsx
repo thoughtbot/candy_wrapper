@@ -21,6 +21,7 @@ describe('Select', () => {
     it('adds a hidden input on multiple selects if includeHidden is true', () => {
       const payload = buildPayload()
       payload.multiple = true
+      payload.defaultValue = [payload.defaultValue]
       payload.includeHidden = true
 
       const { container } = render(<Select {...payload} />)
@@ -58,21 +59,23 @@ describe('Select', () => {
         ],
       }
 
-      const { getAllByRole } = render(<Select {...payload} label={'category'} />)
+      const { getAllByRole } = render(
+        <Select {...payload} label={'category'} />
+      )
       let options = getAllByRole('option')
       expect(options[0].value).toEqual('')
       expect(options[0].getAttribute('label')).toEqual('Choose a category')
-      
+
       expect(options[1].value).toEqual('abe')
       expect(options[1].getAttribute('label')).toEqual('abe')
-      
+
       expect(options[2].value).toEqual('<mus>')
       expect(options[2].getAttribute('label')).toEqual('<mus>')
-      
+
       expect(options[3].value).toEqual('hest')
       expect(options[3].getAttribute('label')).toEqual('hest')
     })
-    
+
     it('renders with nested options', async () => {
       const payload = {
         type: 'select',
@@ -81,26 +84,29 @@ describe('Select', () => {
         includeHidden: true,
         options: [
           { value: 'abe', label: 'abe' },
-          { label: 'sports', options: [
-            {value: "soccer", label: "Soccer"},
-            {value: "baseball", label: "Baseball"},
-          ]},
+          {
+            label: 'sports',
+            options: [
+              { value: 'soccer', label: 'Soccer' },
+              { value: 'baseball', label: 'Baseball' },
+            ],
+          },
           { value: 'hest', label: 'hest' },
         ],
       }
 
       const { getByRole } = render(<Select {...payload} label={'category'} />)
       let select = getByRole('combobox')
-      
-      expect(select.id).toEqual("post_category")
-      expect(select.name).toEqual("post[category]")
+
+      expect(select.id).toEqual('post_category')
+      expect(select.name).toEqual('post[category]')
       const optGroup = within(select).getByRole('group')
       expect(optGroup.getAttribute('label')).toEqual('sports')
-      
+
       const options = within(optGroup).getAllByRole('option')
       expect(options[0].value).toEqual('soccer')
       expect(options[0].getAttribute('label')).toEqual('Soccer')
-      
+
       expect(options[1].value).toEqual('baseball')
       expect(options[1].getAttribute('label')).toEqual('Baseball')
     })

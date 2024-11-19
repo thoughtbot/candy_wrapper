@@ -1,30 +1,31 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { NumberField, ValidationContext } from '.'
+import { RangeField } from '.'
+import { ValidationContext } from '../../../src'
 
 const buildPayload = () => {
   return {
-    type: 'number',
+    type: 'range',
     defaultValue: '2',
-    name: 'post[favs]',
+    name: 'post[volume]',
     min: 1,
     max: 9,
-    id: 'post_favs',
-    step: 2
+    id: 'post_volume',
+    step: 2,
   }
 }
 
-describe('NumberField', () => {
+describe('RangeField', () => {
   it('renders', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <NumberField {...payload} label={'Favs'} errorKey={'favs'} />
+      <RangeField {...payload} label={'Volume'} errorKey={'volume'} />
     )
 
-    const input = getByLabelText('Favs')
+    const input = getByLabelText('Volume')
     expect(input.value).toEqual('2')
-    expect(input.type).toEqual('number')
+    expect(input.type).toEqual('range')
     expect(input.min).toEqual('1')
     expect(input.max).toEqual('9')
     expect(input.step).toEqual('2')
@@ -34,16 +35,16 @@ describe('NumberField', () => {
     const payload = buildPayload()
 
     const validationErrors = {
-      favs: 'favs invalid',
+      volume: 'volume invalid',
     }
 
     const { getByText } = render(
       <ValidationContext.Provider value={validationErrors}>
-        <NumberField {...payload} label={'Favs'} errorKey={'favs'} />
+        <RangeField {...payload} label={'Volume'} errorKey={'volume'} />
       </ValidationContext.Provider>
     )
 
-    const errorField = getByText('favs invalid')
+    const errorField = getByText('volume invalid')
     expect(errorField).not.toBeNull()
   })
 })

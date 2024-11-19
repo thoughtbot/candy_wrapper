@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react'
+import path from 'path'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -8,6 +9,11 @@ export default defineConfig({
     clearMocks: true,
     restoreMocks: true,
     globals: true,
-    setupFiles: ['./candywrappa/setup.js'],
+    setupFiles: ['./setup.js'],
+  },
+  resolve: {
+    alias: {
+      '@thoughtbot/candy_wrapper': path.resolve(__dirname, './src/index'),
+    },
   },
 })

@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { Checkbox, ValidationContext } from '.'
+import { Checkbox } from '.'
+import { ValidationContext } from '../../../src'
 
 const buildPayload = () => {
   return {
@@ -18,7 +19,7 @@ describe('Checkbox', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <Checkbox label="Is admin" {...payload}/>
+      <Checkbox label="Is admin" {...payload} />
     )
 
     const element = getByLabelText('Is admin')

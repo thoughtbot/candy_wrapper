@@ -1,45 +1,46 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { ColorField, ValidationContext } from './'
+import { EmailField } from '.'
+import { ValidationContext } from '../../../src'
 
 const buildPayload = () => {
   return {
-    type: 'color',
-    name: 'post[color]',
-    id: 'post_color',
+    type: 'email',
+    name: 'post[email]',
+    id: 'post_email',
     required: false,
-    defaultValue: '#000000',
+    defaultValue: 'john@smith.com',
   }
 }
 
-describe('ColorField', () => {
+describe('EmailField', () => {
   it('renders', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <ColorField {...payload} label={'color'} errorKey={'color'} />
+      <EmailField {...payload} label={'Email'} errorKey={'email'} />
     )
 
-    const input = getByLabelText('color')
+    const input = getByLabelText('Email')
     expect(input.required).toBeFalsy()
-    expect(input.value).toEqual('#000000')
-    expect(input.type).toEqual('color')
+    expect(input.value).toEqual('john@smith.com')
+    expect(input.type).toEqual('email')
   })
 
   it('renders with field errors', async () => {
     const payload = buildPayload()
 
     const validationErrors = {
-      color: 'color invalid',
+      email: 'email invalid',
     }
 
     const { getByText } = render(
       <ValidationContext.Provider value={validationErrors}>
-        <ColorField {...payload} label={'color'} errorKey={'color'} />
+        <EmailField {...payload} label={'Email'} errorKey={'email'} />
       </ValidationContext.Provider>
     )
 
-    const errorField = getByText('color invalid')
+    const errorField = getByText('email invalid')
     expect(errorField).not.toBeNull()
   })
 })

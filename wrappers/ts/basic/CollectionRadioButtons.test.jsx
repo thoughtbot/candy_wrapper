@@ -1,39 +1,40 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { CollectionCheckboxes, ValidationContext } from '.'
+import { CollectionRadioButtons } from '.'
+import { ValidationContext } from '../../../src'
 
-const buildCheckboxPayload = (value, label) => {
+const buildRadioButtonPayload = (value, label, rest) => {
   return {
-    type: 'checkbox',
+    type: 'radio',
     value,
-    defaultChecked: true,
     label,
-    name: 'post[author_ids][]',
-    id: `post_author_ids_${value}`,
+    name: 'post[subscribe]',
+    id: `post_subscribe_${value}`,
+    ...rest,
   }
 }
 
 const buildPayload = () => {
   return {
     collection: [
-      buildCheckboxPayload(1, 'one'),
-      buildCheckboxPayload(2, 'two'),
+      buildRadioButtonPayload(1, 'one', { defaultChecked: true }),
+      buildRadioButtonPayload(2, 'two'),
     ],
     includeHidden: true,
-    label: 'authors',
+    label: 'Subscribe',
     required: false,
   }
 }
 
-describe('CollectionCheckboxes', () => {
+describe('CollectionRadioButtons', () => {
   it('renders', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <CollectionCheckboxes
+      <CollectionRadioButtons
         {...payload}
-        label={'Authors'}
-        errorKey={'authors'}
+        label={'Subscribe'}
+        errorKey={'subscribe'}
       />
     )
 
@@ -41,24 +42,24 @@ describe('CollectionCheckboxes', () => {
 
     expect(input.required).toBeFalsy()
     expect(input.value).toEqual('1')
-    expect(input.type).toEqual('checkbox')
+    expect(input.type).toEqual('radio')
 
     input = getByLabelText('two')
 
     expect(input.required).toBeFalsy()
     expect(input.value).toEqual('2')
-    expect(input.type).toEqual('checkbox')
+    expect(input.type).toEqual('radio')
   })
-  
+
   it('renders nothing when the collection is blank', () => {
     const payload = buildPayload()
     payload.collection = []
 
     const { container } = render(
-      <CollectionCheckboxes
+      <CollectionRadioButtons
         {...payload}
-        label={'Authors'}
-        errorKey={'authors'}
+        label={'Subscribe'}
+        errorKey={'subscribe'}
       />
     )
 
@@ -70,15 +71,15 @@ describe('CollectionCheckboxes', () => {
     payload.includeHidden = true
 
     const { container } = render(
-      <CollectionCheckboxes
+      <CollectionRadioButtons
         {...payload}
-        label={'Authors'}
-        errorKey={'authors'}
+        label={'Subscribe'}
+        errorKey={'subscribe'}
       />
     )
 
     const hiddenInput = container.querySelector('input[type=hidden]')
-    expect(hiddenInput.name).toEqual('post[author_ids][]')
+    expect(hiddenInput.name).toEqual('post[subscribe]')
     expect(hiddenInput.value).toEqual('')
   })
 
@@ -86,15 +87,15 @@ describe('CollectionCheckboxes', () => {
     const payload = buildPayload()
 
     const validationErrors = {
-      author_ids: 'id invalid',
+      subscribe: 'id invalid',
     }
 
     const { getByText } = render(
       <ValidationContext.Provider value={validationErrors}>
-        <CollectionCheckboxes
+        <CollectionRadioButtons
           {...payload}
-          label={'Authors'}
-          errorKey={'author_ids'}
+          label={'Subscribe'}
+          errorKey={'subscribe'}
         />
       </ValidationContext.Provider>
     )

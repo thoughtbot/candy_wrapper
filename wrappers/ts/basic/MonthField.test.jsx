@@ -1,16 +1,17 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { MonthField, ValidationContext } from '.'
+import { MonthField } from '.'
+import { ValidationContext } from '../../../src'
 
 const buildPayload = () => {
   return {
-    type: "month",
-    defaultValue: "2004-06",
+    type: 'month',
+    defaultValue: '2004-06',
     step: 2,
-    max: "2010-12",
-    min: "2000-02",
-    name: "post[written_on]",
-    id: "post_written_on"
+    max: '2010-12',
+    min: '2000-02',
+    name: 'post[written_on]',
+    id: 'post_written_on',
   }
 }
 

@@ -64,3 +64,5 @@ package-lock.json
 
 coverage/
 todo.txt
+
+temp/

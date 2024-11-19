@@ -1,13 +1,14 @@
 {
-  "name": "@thoughtbot/candywrappa",
+  "name": "@thoughtbot/candy_wrapper",
   "version": "0.0.1",
-  "description": "bare forms",
+  "description": "Use rails forms with popular react UI libraries",
   "scripts": {
     "build": "tsup",
+    "build:wrappers": "tsc --project ./wrappers/tsconfig.json && rm -r wrappers/js/* && mv -v temp/wrappers/ts/* wrappers/js",
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
     "lint": "run-p lint:eslint lint:types lint:prettier",
-    "lint:eslint": "eslint --max-warnings=0 --ext js,jsx,ts,tsx ./candywrappa",
+    "lint:eslint": "eslint --max-warnings=0 --ext js,jsx,ts,tsx ./candy_wrapper",
     "lint:prettier": "prettier --check '**/*' --ignore-unknown",
     "lint:types": "tsc",
     "fix:prettier": "prettier --write '**/*' --ignore-unknown",
@@ -20,25 +21,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thoughtbot/form_props.git"
+    "url": "git+https://github.com/thoughtbot/candy_wrapper.git"
   },
   "author": "Johny Ho",
-  "main": "dist/cjs/form_props.cjs",
-  "module": "dist/form_props.mjs",
-  "types": "dist/form_props.d.mts",
+  "main": "dist/cjs/candy_wrapper.cjs",
+  "module": "dist/candy_wrapper.mjs",
+  "types": "dist/candy_wrapper.d.mts",
   "exports": {
-    "./package.json": "./package.json",
-    "./components": {
-      "types": "./dist/form_props.d.mts",
-      "import": "./dist/form_props.mjs",
-      "default": "./dist/cjs/form_props.cjs"
-    }
+    "./package.json": "./package.json"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thoughtbot/form_props/issues"
+    "url": "https://github.com/thoughtbot/candy_wrapper/issues"
   },
-  "homepage": "https://github.com/thoughtbot/form_props#readme",
+  "homepage": "https://github.com/thoughtbot/candy_wrapper#readme",
   "devDependencies": {
     "@nextui-org/react": "^2.4.8",
     "@react-aria/test-utils": "^1.0.0-alpha.2",
@@ -63,16 +59,10 @@
     "typedoc-plugin-markdown": "^4.2.3",
     "typedoc-plugin-missing-exports": "^3.0.0",
     "typescript": "^5.5.3",
-    "vitest": "^2.0.2"
+    "vitest": "^2.0.2",
+    "@types/react": "^18.3.12"
   },
   "peerDependencies": {
-    "react": "^18.3.1"
-  },
-  "dependencies": {
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "react-aria-components": "^1.4.1",
-    "react-stately": "^3.33.0",
-    "yarn": "^1.22.22"
+    "react": "^18 || ^19"
   }
 }

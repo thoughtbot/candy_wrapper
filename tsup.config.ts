@@ -4,8 +4,7 @@ import { defineConfig } from 'tsup'
 export default defineConfig((options) => {
   const commonOptions: Partial<Options> = {
     entry: {
-      superglue: 'lib/index.tsx',
-      action_creators: 'lib/action_creators/index.ts',
+      candy_wrapper: 'src/index.ts',
     },
     sourcemap: true,
     ...options,

@@ -1,14 +1,15 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { FieldError, ValidationContext } from './'
+import { FieldError } from './'
+import { ValidationContext } from '../../../src'
 
 describe('FieldError', () => {
   it('renders', () => {
-    const errors = {name: "Name is invalid"}
+    const errors = { name: 'Name is invalid' }
 
     const { getByText } = render(
       <ValidationContext.Provider value={errors}>
-        <FieldError errorKey="name"/>
+        <FieldError errorKey="name" />
       </ValidationContext.Provider>
     )
 
@@ -17,24 +18,24 @@ describe('FieldError', () => {
   })
 
   it('renders when there are mulitiple errors', () => {
-    const errors = {name: ["Name is invalid", "Name is too short"]}
+    const errors = { name: ['Name is invalid', 'Name is too short'] }
 
     const { getByText } = render(
       <ValidationContext.Provider value={errors}>
-        <FieldError errorKey="name"/>
+        <FieldError errorKey="name" />
       </ValidationContext.Provider>
     )
 
     const element = getByText('Name is invalid Name is too short')
     expect(element).not.toBe(null)
   })
-  
+
   it('does not render when there are no errors', () => {
     const errors = {}
 
     const { queryByText } = render(
       <ValidationContext.Provider value={errors}>
-        <FieldError errorKey="name"/>
+        <FieldError errorKey="name" />
       </ValidationContext.Provider>
     )
 
@@ -43,11 +44,11 @@ describe('FieldError', () => {
   })
 
   it('does not render when the errorKey does not match', () => {
-    const errors = {phone: "is absent"}
+    const errors = { phone: 'is absent' }
 
     const { queryByText } = render(
       <ValidationContext.Provider value={errors}>
-        <FieldError errorKey="name"/>
+        <FieldError errorKey="name" />
       </ValidationContext.Provider>
     )
 

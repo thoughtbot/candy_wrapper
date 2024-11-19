@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { DateField, ValidationContext } from '.'
+import { DateField } from '.'
+import { ValidationContext } from '../../../src'
 
 const buildPayload = () => {
   return {
@@ -22,7 +23,7 @@ describe('DateField', () => {
     )
 
     const input = getByLabelText('Birth Date')
-    
+
     expect(input.value).toEqual('2004-06-15')
     expect(input.max).toEqual('2010-08-15')
     expect(input.min).toEqual('2000-06-15')

@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { SearchField, ValidationContext } from '.'
+import { SearchField } from '.'
+import { ValidationContext } from '../../../src'
 
 const buildPayload = () => {
   return {
