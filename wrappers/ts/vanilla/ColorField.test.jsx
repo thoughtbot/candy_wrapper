@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { ColorField } from './'
-import { ValidationContext } from '../../../src'
+import { ColorField, ValidationContext } from './'
 
 const buildPayload = () => {
   return {

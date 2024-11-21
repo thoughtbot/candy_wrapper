@@ -6,9 +6,8 @@
  * these components to fit your design needs.
  */
 
-import React, { ReactNode, useContext } from 'react'
+import React, { ReactNode, useContext, createContext, useMemo } from 'react'
 import {
-  ValidationContext,
   CheckboxField as RailsCheckboxField,
   CollectionCheckboxesField as RailsCollectionCheckboxesField,
   HiddenField as RailsHiddenField,
@@ -29,6 +28,22 @@ import {
   TextArea as RailsTextArea,
   ValidationErrors,
 } from '@thoughtbot/candy_wrapper'
+
+
+export const ValidationContext = createContext<ValidationErrors>({})
+
+export const useErrorKeyValidation = ({
+  errorKey,
+}: {
+  errorKey: string
+  name: string
+}) => {
+  const errors = useContext(ValidationContext)
+
+  return useMemo(() => {
+    return errors[errorKey]
+  }, [errors, errorKey])
+}
 
 export type ExtrasProps = Record<string, RailsHiddenField>
 
@@ -85,15 +100,16 @@ export const FieldError = ({ errorKey }: { errorKey: string | undefined }) => {
   }
 
   const errors = useContext(ValidationContext)
-  const hasErrors = errorKey && errors[errorKey]
+  const validationError = errors[errorKey]
+  const hasErrors = errorKey && validationError
 
   if (!hasErrors) {
     return null
   }
 
-  const errorMessages = Array.isArray(errors[errorKey])
-    ? errors[errorKey]
-    : [errors[errorKey]]
+  const errorMessages = Array.isArray(validationError)
+    ? validationError
+    : [validationError]
 
   return <span>{errorMessages.join(' ')}</span>
 }

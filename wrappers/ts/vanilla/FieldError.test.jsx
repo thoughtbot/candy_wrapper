@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { FieldError } from './'
-import { ValidationContext } from '../../../src'
+import { FieldError, ValidationContext } from './'
 
 describe('FieldError', () => {
   it('renders', () => {

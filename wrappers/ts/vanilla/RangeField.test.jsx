@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { RangeField } from '.'
-import { ValidationContext } from '../../../src'
+import { RangeField, ValidationContext } from '.'
 
 const buildPayload = () => {
   return {

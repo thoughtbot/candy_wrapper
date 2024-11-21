@@ -34,11 +34,13 @@ CLI tools to help. just copy and paste from github.
 
 ## Installation
 
+There's nothing to install, but if you need types:
+
 ```
 npm install -D candy_wrapper
 ```
 
-Go to the wrapper directory in this repo and copy the wrappers for the UI library of your choice into your project.
+Then go to the wrapper directory in this repo and copy the wrappers for the UI library of your choice into your project.
 
 # Usage
 

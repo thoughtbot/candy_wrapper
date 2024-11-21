@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { TextArea } from '.'
-import { ValidationContext } from '../../../src'
+import { TextArea, ValidationContext } from '.'
 
 const buildPayload = () => {
   return {

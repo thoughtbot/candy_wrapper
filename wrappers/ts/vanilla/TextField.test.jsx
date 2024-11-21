@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { TextField } from '.'
-import { ValidationContext } from '../../../src'
+import { TextField, ValidationContext } from '.'
 
 const buildPayload = () => {
   return {

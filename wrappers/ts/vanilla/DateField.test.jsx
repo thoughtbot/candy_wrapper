@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { DateField } from '.'
-import { ValidationContext } from '../../../src'
+import { DateField, ValidationContext } from '.'
 
 const buildPayload = () => {
   return {

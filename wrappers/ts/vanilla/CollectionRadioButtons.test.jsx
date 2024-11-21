@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { CollectionRadioButtons } from '.'
-import { ValidationContext } from '../../../src'
+import { CollectionRadioButtons, ValidationContext } from '.'
 
 const buildRadioButtonPayload = (value, label, rest) => {
   return {

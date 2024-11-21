@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { Checkbox } from '.'
-import { ValidationContext } from '../../../src'
+import { Checkbox, ValidationContext } from '.'
 
 const buildPayload = () => {
   return {
