@@ -45,10 +45,10 @@ export const Form = ({ extras, validationErrors, children, ...props }) => {
  * Please modify this to your liking.
  */
 export const FieldError = ({ errorKey }) => {
-    if (!errorKey) {
+    const errors = useContext(ValidationContext);
+    if (!errorKey || !errors) {
         return null;
     }
-    const errors = useContext(ValidationContext);
     const validationError = errors[errorKey];
     const hasErrors = errorKey && validationError;
     if (!hasErrors) {
@@ -158,6 +158,15 @@ export const ColorField = ({ type: _type, ...rest }) => {
  */
 export const DateField = ({ type: _type, ...rest }) => {
     return <FieldBase {...rest} type="date"/>;
+};
+/**
+ * A date field component.
+ *
+ * Designed to work with a payload form_props's [date_field helper](https://github.com/thoughtbot/form_props?tab=readme-ov-file#date-helpers).
+ * Mimics the rails equivalent. Please modify to your liking.
+ */
+export const DateTimeLocalField = ({ type: _type, ...rest }) => {
+    return <FieldBase {...rest} type="datetime-local"/>;
 };
 /**
  * A search field component.

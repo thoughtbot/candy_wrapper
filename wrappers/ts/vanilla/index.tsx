@@ -14,6 +14,7 @@ import {
   CollectionRadioButtonsField as RailsCollectionRadioButtonsField,
   ColorField as RailsColorField,
   DateField as RailsDateField,
+  DateTimeLocalField as RailsDateTimeLocalField,
   EmailField as RailsEmailField,
   MonthField as RailsMonthField,
   NumberField as RailsNumberField,
@@ -309,6 +310,20 @@ export type DateFieldProps = React.InputHTMLAttributes<HTMLInputElement> &
  */
 export const DateField = ({ type: _type, ...rest }: DateFieldProps) => {
   return <FieldBase {...rest} type="date" />
+}
+
+export type DateTimeLocalFieldProps = React.InputHTMLAttributes<HTMLInputElement> &
+  RailsDateTimeLocalField &
+  InputProps
+
+/**
+ * A date field component.
+ *
+ * Designed to work with a payload form_props's [date_field helper](https://github.com/thoughtbot/form_props?tab=readme-ov-file#date-helpers).
+ * Mimics the rails equivalent. Please modify to your liking.
+ */
+export const DateTimeLocalField = ({ type: _type, ...rest }: DateTimeLocalFieldProps) => {
+  return <FieldBase {...rest} type="datetime-local" />
 }
 
 export type SearchFieldProps = React.InputHTMLAttributes<HTMLInputElement> &

@@ -15,6 +15,7 @@ CLI tools to help. just copy and paste from github.
 | `f.collection_radio_buttons`  | CollectionRadioButtons | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.color_field`               | ColorField             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.date_field`                | DateField              | :heavy_check_mark: | :white_large_square: | :white_large_square: |
+| `f.datetime_local_field`      | DateTimeLocalField     | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.email_field`               | EmailField             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 |                               | FieldError             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.month_field`               | MonthField             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
