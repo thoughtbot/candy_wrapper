@@ -95,11 +95,11 @@ export const Form = ({
  * Please modify this to your liking.
  */
 export const FieldError = ({ errorKey }: { errorKey: string | undefined }) => {
-  if (!errorKey) {
+  const errors = useContext(ValidationContext)
+  if (!errorKey || !errors) {
     return null
   }
 
-  const errors = useContext(ValidationContext)
   const validationError = errors[errorKey]
   const hasErrors = errorKey && validationError
 
