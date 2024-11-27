@@ -1,6 +1,8 @@
 /**
- * Vanilla is a minimum set of components wrapped around regular HTML tags.
- * It works with the output from [FormProps](https://github.com/thoughtbot/form_props).
+ * Vanilla is a minimum set of
+ * [candy_wrappers](https://github.com/thoughtbot/candy_wrapper) around react
+ * HTML tags.  It works with the output from
+ * [FormProps](https://github.com/thoughtbot/form_props).
  *
  * There is no style and structured with bare necessities. You should modify
  * these components to fit your design needs.
@@ -23,6 +25,7 @@ import {
   SearchField as RailsSearchField,
   Select as RailsSelect,
   TelField as RailsTelField,
+  FileField as RailsFileField,
   TextField as RailsTextField,
   TimeField as RailsTimeField,
   UrlField as RailsUrlField,
@@ -504,3 +507,18 @@ export const TextArea = ({ type: _type, errorKey, ...rest }: TextAreaProps) => {
       <textarea {...rest} />
     </FieldBase>
 }
+
+export type FileFieldProps = React.InputHTMLAttributes<HTMLInputElement> &
+  RailsFileField &
+  InputProps
+
+/**
+ * A file field component.
+ *
+ * Designed to work with a payload form_props's [file_field helper](https://github.com/thoughtbot/form_props?tab=readme-ov-file#text-helpers).
+ * Mimics the rails equivalent. Please modify to your liking.
+ */
+export const FileField = ({ type: _type, ...rest }: FileFieldProps) => {
+  return <FieldBase {...rest} type="file" />
+}
+

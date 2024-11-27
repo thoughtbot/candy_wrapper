@@ -25,6 +25,7 @@ CLI tools to help. just copy and paste from github.
 | `f.search_field`              | SearchField            | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.select`                    | Select                 | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.tel_field`                 | TelField               | :heavy_check_mark: | :white_large_square: | :white_large_square: |
+| `f.file_field`                | FileField              | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.text_field`                | TextField              | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.time_field`                | TimeField              | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.url_field`                 | UrlField               | :heavy_check_mark: | :white_large_square: | :white_large_square: |

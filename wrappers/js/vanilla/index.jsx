@@ -1,6 +1,8 @@
 /**
- * Vanilla is a minimum set of components wrapped around regular HTML tags.
- * It works with the output from [FormProps](https://github.com/thoughtbot/form_props).
+ * Vanilla is a minimum set of
+ * [candy_wrappers](https://github.com/thoughtbot/candy_wrapper) around react
+ * HTML tags.  It works with the output from
+ * [FormProps](https://github.com/thoughtbot/form_props).
  *
  * There is no style and structured with bare necessities. You should modify
  * these components to fit your design needs.
@@ -279,4 +281,13 @@ export const TextArea = ({ type: _type, errorKey, ...rest }) => {
     return <FieldBase label={label} errorKey={errorKey} id={rest.id}>
       <textarea {...rest}/>
     </FieldBase>;
+};
+/**
+ * A file field component.
+ *
+ * Designed to work with a payload form_props's [file_field helper](https://github.com/thoughtbot/form_props?tab=readme-ov-file#text-helpers).
+ * Mimics the rails equivalent. Please modify to your liking.
+ */
+export const FileField = ({ type: _type, ...rest }) => {
+    return <FieldBase {...rest} type="file"/>;
 };
