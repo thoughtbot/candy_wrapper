@@ -8,7 +8,7 @@ use the power of Rails forms with any supported React UI library.
 Each component are meant to be copied from this repo to your own project and customized to your liking. There are no
 CLI tools to help. just copy and paste from github.
 
-| `form_props` helper           | Component              | Vanilla React      | React Aria           | NextUI               |
+| `form_props` helper           | Component              | Vanilla React      | React Aria           | ?                    |
 | :---------------------------- | :--------------------- | :----------------- | :------------------- | :------------------- |
 | `f.text_field`                | Checkbox               | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.collection_check_boxes`    | CollectionCheckboxes   | :heavy_check_mark: | :white_large_square: | :white_large_square: |

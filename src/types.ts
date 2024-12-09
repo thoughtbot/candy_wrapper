@@ -1,4 +1,4 @@
-export interface BaseInputField {
+export type BaseInputField = {
   size?: number
   maxLength?: number
   value?: string
@@ -7,53 +7,53 @@ export interface BaseInputField {
   id?: string
 }
 
-export interface TextField extends BaseInputField {
+export type TextField = BaseInputField & {
   readonly type: 'text'
 }
 
-export interface EmailField extends BaseInputField {
+export type EmailField = BaseInputField & {
   readonly type: 'email'
 }
 
-export interface FileField extends Omit<BaseInputField, 'value'> {
+export type FileField = Omit<BaseInputField, 'value'> & {
   readonly type: 'file'
 }
 
-export interface DateField extends BaseInputField {
+export type DateField = BaseInputField & {
   readonly type: 'date'
   min?: string
   max?: string
 }
 
-export interface DateTimeLocalField extends BaseInputField {
+export type DateTimeLocalField = BaseInputField & {
   readonly type: 'datetime-local'
   min?: string
   max?: string
 }
 
-export interface ColorField extends BaseInputField {
+export type ColorField = BaseInputField & {
   readonly type: 'color'
 }
 
-export interface HiddenField extends BaseInputField {
+export type HiddenField = BaseInputField & {
   readonly type: 'hidden'
 }
 
-export interface MonthField extends BaseInputField {
+export type MonthField = BaseInputField & {
   readonly type: 'month'
 }
 
-export interface NumberField extends BaseInputField {
+export type NumberField = BaseInputField & {
   readonly type: 'number'
   max?: number
   min?: number
 }
 
-export interface PasswordField extends BaseInputField {
+export type PasswordField = BaseInputField & {
   readonly type: 'password'
 }
 
-export interface SearchField extends BaseInputField {
+export type SearchField = BaseInputField & {
   readonly type: 'search'
 
   // this no longer exist in the HTML standard
@@ -65,23 +65,23 @@ export interface SearchField extends BaseInputField {
   incremental?: boolean
 }
 
-export interface TelField extends BaseInputField {
+export type TelField = BaseInputField & {
   readonly type: 'tel'
 }
 
-export interface UrlField extends BaseInputField {
+export type UrlField = BaseInputField & {
   readonly type: 'url'
 }
 
-export interface RangeField extends BaseInputField {
+export type RangeField = BaseInputField & {
   readonly type: 'range'
 }
 
-export interface TimeField extends BaseInputField {
+export type TimeField = BaseInputField & {
   readonly type: 'time'
 }
 
-export interface CheckboxField {
+export type CheckboxField = {
   readonly type: 'checkbox'
   includeHidden: boolean
   name: string
@@ -95,16 +95,16 @@ export interface CheckboxField {
   defaultChecked?: boolean
 }
 
-export interface CheckboxFieldWithLabel extends CheckboxField {
+export type CheckboxFieldWithLabel = CheckboxField & {
   label: string
 }
 
-export interface CollectionCheckboxesField {
+export type CollectionCheckboxesField = {
   collection: CheckboxFieldWithLabel[]
   includeHidden: boolean
 }
 
-export interface RadioButtonField {
+export type RadioButtonField = {
   readonly type: 'radio'
   name: string
   id?: string
@@ -114,16 +114,16 @@ export interface RadioButtonField {
   defaultChecked?: boolean
 }
 
-export interface RadioButtonFieldWithLabel extends CheckboxField {
+export type RadioButtonFieldWithLabel = CheckboxField & {
   label: string
 }
 
-export interface CollectionRadioButtonsField {
+export type CollectionRadioButtonsField = {
   collection: RadioButtonFieldWithLabel[]
   includeHidden: boolean
 }
 
-export interface TextArea {
+export type TextArea = {
   cols?: number
   rows?: number
   readonly type: 'textarea'
@@ -133,24 +133,24 @@ export interface TextArea {
   id?: string
 }
 
-export interface SubmitButton {
+export type SubmitProps = {
   readonly type: 'submit'
   text: string
   name: string
 }
 
-export interface SelectOption {
+export type SelectOption = {
   value: string
   label: string
   disabled?: boolean
 }
 
-export interface SelectOptionGroup {
+export type SelectOptionGroup = {
   label: string
   options: SelectOption[]
 }
 
-export interface Select {
+export type Select = {
   readonly type: 'select'
   id?: string
   name: string
