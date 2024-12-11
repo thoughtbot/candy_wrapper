@@ -1,7 +1,12 @@
 # candy_wrapper
 
-'candy_wrapper's are lightweight wrapper components around popular UI libraries made to work with [form_props]. Easily
+`candy_wrapper`s are lightweight wrapper components around popular UI libraries made to work with [form_props]. Easily
 use the power of Rails forms with any supported React UI library.
+
+## Caution
+
+This project is in its early phases of development. Its interface, behavior,
+and name are likely to change drastically before a major version release.
 
 ## Component status
 
