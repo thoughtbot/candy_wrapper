@@ -33,6 +33,7 @@ CLI tools to help. just copy and paste from github.
 | `f.grouped_collection_select` | Select                 | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.weekday_select`            | Select                 | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 | `f.time_zone_select`          | Select                 | :heavy_check_mark: | :white_large_square: | :white_large_square: |
+| `f.submit`                    | SubmitButton           | :heavy_check_mark: | :white_large_square: | :white_large_square: |
 
 ## Installation
 
@@ -99,13 +100,13 @@ This would create a payload that looks something this:
 Take the payload and pass it to the wrapper:
 
 ```js
-import {Form, TextField} from './copied_components'
+import {Form, TextField, SubmitButton} from './copied_components'
 
 const {form, extras, inputs} = newPostForm
 
 <Form {...form} extras={extras}>
-  <TextField {...inputs.title} label="Post title">
-  <button {...inputs.submit}>
+  <TextField {...inputs.title} label="Post title" />
+  <SubmitButton {...inputs.submit} />
 </Form>
 ```
 
@@ -124,8 +125,8 @@ const validationErrors = {
 const {form, extras, inputs} = newPostForm
 
 <Form {...form} extras={extras}>
-  <TextField {...inputs.title} label="Post title" errorKey="full_title">
-  <button {...inputs.submit}>
+  <TextField {...inputs.title} label="Post title" errorKey="full_title" />
+  <SubmitButton {...inputs.submit} />
 </Form>
 ```
 
