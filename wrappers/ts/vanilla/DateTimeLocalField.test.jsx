@@ -18,7 +18,11 @@ describe('DateTimeLocalField', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <DateTimeLocalField {...payload} label={'Birth Date'} errorKey={'birth_date'} />
+      <DateTimeLocalField
+        {...payload}
+        label={'Birth Date'}
+        errorKey={'birth_date'}
+      />
     )
 
     const input = getByLabelText('Birth Date')
@@ -38,7 +42,11 @@ describe('DateTimeLocalField', () => {
 
     const { getByText } = render(
       <ValidationContext.Provider value={validationErrors}>
-        <DateTimeLocalField {...payload} label={'Birth Date'} errorKey={'birth_date'} />
+        <DateTimeLocalField
+          {...payload}
+          label={'Birth Date'}
+          errorKey={'birth_date'}
+        />
       </ValidationContext.Provider>
     )
 

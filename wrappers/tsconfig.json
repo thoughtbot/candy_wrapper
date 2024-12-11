@@ -4,7 +4,7 @@
     "removeComments": false,
     "outDir": "../temp",
     "paths": {
-      "@thoughtbot/candy_wrapper": ["../src/index"],
+      "@thoughtbot/candy_wrapper": ["../src/index"]
     }
   },
   "include": ["./ts/**/*"]
