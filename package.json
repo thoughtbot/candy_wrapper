@@ -28,7 +28,12 @@
   "module": "dist/candy_wrapper.mjs",
   "types": "dist/candy_wrapper.d.mts",
   "exports": {
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/candy_wrapper.d.mts",
+      "import": "./dist/candy_wrapper.mjs",
+      "default": "./dist/cjs/candy_wrapper.cjs"
+    }
   },
   "license": "MIT",
   "bugs": {
