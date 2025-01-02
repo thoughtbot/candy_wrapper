@@ -1,6 +1,6 @@
 {
   "name": "@thoughtbot/candy_wrapper",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Use rails forms with popular react UI libraries",
   "scripts": {
     "build": "tsup",
