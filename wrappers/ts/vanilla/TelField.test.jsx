@@ -11,7 +11,6 @@ const buildPayload = () => {
     defaultValue: 'john@smith.com',
   }
 }
-
 describe('TelField', () => {
   it('renders', () => {
     const payload = buildPayload()

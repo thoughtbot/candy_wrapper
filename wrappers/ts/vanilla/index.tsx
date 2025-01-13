@@ -36,16 +36,26 @@ import {
 
 export const ValidationContext = createContext<ValidationErrors>({})
 
-export const useErrorKeyValidation = ({
-  errorKey,
-}: {
-  errorKey: string
-  name: string
-}) => {
+export const useErrorMessage = (errorKey?: string) => {
   const errors = useContext(ValidationContext)
 
   return useMemo(() => {
-    return errors[errorKey]
+    if (!errorKey) {
+      return null
+    }
+
+    const validationError = errors[errorKey]
+    const hasErrors = errorKey && validationError
+
+    if (!hasErrors) {
+      return null
+    }
+
+    const errorMessages = Array.isArray(validationError)
+      ? validationError
+      : [validationError]
+
+    return errorMessages.join(' ')
   }, [errors, errorKey])
 }
 
@@ -66,7 +76,6 @@ export const Extras = (hiddenInputAttributes: ExtrasProps) => {
   return <>{hiddenInputs}</>
 }
 
-// TODO: Add this as a form props props??
 export interface FormProps<T = {}> {
   extras: ExtrasProps
   inputs: T
@@ -106,23 +115,9 @@ export const Form = ({
  * Please modify this to your liking.
  */
 export const FieldError = ({ errorKey }: { errorKey: string | undefined }) => {
-  const errors = useContext(ValidationContext)
-  if (!errorKey || !errors) {
-    return null
-  }
+  const errorMessage = useErrorMessage(errorKey)
 
-  const validationError = errors[errorKey]
-  const hasErrors = errorKey && validationError
-
-  if (!hasErrors) {
-    return null
-  }
-
-  const errorMessages = Array.isArray(validationError)
-    ? validationError
-    : [validationError]
-
-  return <span>{errorMessages.join(' ')}</span>
+  return <span>{errorMessage}</span>
 }
 
 export type FieldBaseProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -401,7 +396,7 @@ export type TimeFieldProps = React.InputHTMLAttributes<HTMLInputElement> &
   InputProps
 
 /**
- * A month field component.
+ * A time field component.
  *
  * Designed to work with a payload form_props's [month_field helper](https://github.com/thoughtbot/form_props?tab=readme-ov-file#date-helpers).
  * Mimics the rails equivalent. Please modify to your liking.
@@ -450,10 +445,8 @@ export const PasswordField = ({ type: _type, ...rest }: PasswordFieldProps) => {
 }
 
 export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> &
-  RailsSelect & {
-    label?: string
-    errorKey?: string
-  }
+  RailsSelect &
+  InputProps
 /**
  * A select component.
  *
@@ -468,6 +461,8 @@ export const Select = ({
   id,
   children,
   options,
+  label,
+  errorKey,
   multiple,
   type: _type,
   ...rest
@@ -493,10 +488,12 @@ export const Select = ({
       {addHidden && (
         <input type="hidden" name={name} value={''} autoComplete="off" />
       )}
-      <select name={name} id={id} multiple={multiple} {...rest}>
-        {children}
-        {optionElements}
-      </select>
+      <FieldBase label={label} errorKey={errorKey} id={id}>
+        <select name={name} id={id} multiple={multiple} {...rest}>
+          {children}
+          {optionElements}
+        </select>
+      </FieldBase>
     </>
   )
 }
@@ -536,6 +533,7 @@ export const FileField = ({ type: _type, ...rest }: FileFieldProps) => {
 
 export type SubmitButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   RailsSubmitButton
+
 /**
  * A SubmitButton component.
  *

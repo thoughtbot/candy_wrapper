@@ -9,10 +9,21 @@
  */
 import React, { useContext, createContext, useMemo } from 'react'
 export const ValidationContext = createContext({})
-export const useErrorKeyValidation = ({ errorKey }) => {
+export const useErrorMessage = (errorKey) => {
   const errors = useContext(ValidationContext)
   return useMemo(() => {
-    return errors[errorKey]
+    if (!errorKey) {
+      return null
+    }
+    const validationError = errors[errorKey]
+    const hasErrors = errorKey && validationError
+    if (!hasErrors) {
+      return null
+    }
+    const errorMessages = Array.isArray(validationError)
+      ? validationError
+      : [validationError]
+    return errorMessages.join(' ')
   }, [errors, errorKey])
 }
 /**
@@ -51,19 +62,8 @@ export const Form = ({ extras, validationErrors = {}, children, ...props }) => {
  * Please modify this to your liking.
  */
 export const FieldError = ({ errorKey }) => {
-  const errors = useContext(ValidationContext)
-  if (!errorKey || !errors) {
-    return null
-  }
-  const validationError = errors[errorKey]
-  const hasErrors = errorKey && validationError
-  if (!hasErrors) {
-    return null
-  }
-  const errorMessages = Array.isArray(validationError)
-    ? validationError
-    : [validationError]
-  return <span>{errorMessages.join(' ')}</span>
+  const errorMessage = useErrorMessage(errorKey)
+  return <span>{errorMessage}</span>
 }
 /**
  * A Field component.
@@ -248,7 +248,7 @@ export const MonthField = ({ type: _type, ...rest }) => {
   return <FieldBase {...rest} type="month" />
 }
 /**
- * A month field component.
+ * A time field component.
  *
  * Designed to work with a payload form_props's [month_field helper](https://github.com/thoughtbot/form_props?tab=readme-ov-file#date-helpers).
  * Mimics the rails equivalent. Please modify to your liking.
@@ -297,6 +297,8 @@ export const Select = ({
   id,
   children,
   options,
+  label,
+  errorKey,
   multiple,
   type: _type,
   ...rest
@@ -320,10 +322,12 @@ export const Select = ({
       {addHidden && (
         <input type="hidden" name={name} value={''} autoComplete="off" />
       )}
-      <select name={name} id={id} multiple={multiple} {...rest}>
-        {children}
-        {optionElements}
-      </select>
+      <FieldBase label={label} errorKey={errorKey} id={id}>
+        <select name={name} id={id} multiple={multiple} {...rest}>
+          {children}
+          {optionElements}
+        </select>
+      </FieldBase>
     </>
   )
 }
