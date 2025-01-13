@@ -15,7 +15,7 @@ export type EmailField = BaseInputField & {
   readonly type: 'email'
 }
 
-export type FileField = Omit<BaseInputField, 'value'> & {
+export type FileField = {
   readonly type: 'file'
 }
 
@@ -39,11 +39,13 @@ export type HiddenField = BaseInputField & {
   readonly type: 'hidden'
 }
 
-export type MonthField = BaseInputField & {
+export type MonthField = Omit<BaseInputField, 'size'> & {
   readonly type: 'month'
+  min?: string
+  max?: string
 }
 
-export type NumberField = BaseInputField & {
+export type NumberField = Omit<BaseInputField, 'size'> & {
   readonly type: 'number'
   max?: number
   min?: number
@@ -87,7 +89,6 @@ export type CheckboxField = {
   name: string
   id?: string
 
-  // todo: changed to be .to_s in
   uncheckedValue: string
 
   value: string
@@ -114,7 +115,7 @@ export type RadioButtonField = {
   defaultChecked?: boolean
 }
 
-export type RadioButtonFieldWithLabel = CheckboxField & {
+export type RadioButtonFieldWithLabel = RadioButtonField & {
   label: string
 }
 
@@ -150,16 +151,27 @@ export type SelectOptionGroup = {
   options: SelectOption[]
 }
 
-export type Select = {
+type BaseSelect = {
   readonly type: 'select'
   id?: string
   name: string
-  defaultValue?: string
-  value?: string
-  multiple?: boolean
   includeHidden: boolean
   options: (SelectOption | SelectOptionGroup)[]
 }
+
+export type SingleSelect = BaseSelect & {
+  multiple?: false
+  defaultvalue?: string
+  value?: string
+}
+
+export type MultiSelect = BaseSelect & {
+  multiple: true
+  defaultvalue?: string[]
+  value?: string[]
+}
+
+export type Select = SingleSelect | MultiSelect
 
 export type ValidationError = string | string[]
 export type ValidationErrors = Record<string, ValidationError>

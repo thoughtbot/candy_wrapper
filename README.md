@@ -13,32 +13,31 @@ and name are likely to change drastically before a major version release.
 Each component are meant to be copied from this repo to your own project and customized to your liking. There are no
 CLI tools to help. just copy and paste from github.
 
-| `form_props` helper           | Component              | Vanilla React      | React Aria           | ?                    |
-| :---------------------------- | :--------------------- | :----------------- | :------------------- | :------------------- |
-| `f.text_field`                | Checkbox               | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.collection_check_boxes`    | CollectionCheckboxes   | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.collection_radio_buttons`  | CollectionRadioButtons | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.color_field`               | ColorField             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.date_field`                | DateField              | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.datetime_local_field`      | DateTimeLocalField     | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.email_field`               | EmailField             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-|                               | FieldError             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.month_field`               | MonthField             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.number_field`              | NumberField            | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.password_field`            | PasswordField          | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.range_field`               | RangeField             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.search_field`              | SearchField            | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.select`                    | Select                 | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.tel_field`                 | TelField               | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.file_field`                | FileField              | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.text_field`                | TextField              | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.time_field`                | TimeField              | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.url_field`                 | UrlField               | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.text_area`                 | TextArea               | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.grouped_collection_select` | Select                 | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.weekday_select`            | Select                 | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.time_zone_select`          | Select                 | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.submit`                    | SubmitButton           | :heavy_check_mark: | :white_large_square: | :white_large_square: |
+| `form_props` helper                     | Component              | [Vanilla]          | [Mantine]            | ?                    |
+| :-------------------------------------- | :--------------------- | :----------------- | :------------------- | :------------------- |
+| `f.text_field`                          | Checkbox               | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.collection_check_boxes`              | CollectionCheckboxes   | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.collection_radio_buttons`            | CollectionRadioButtons | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.color_field`                         | ColorField             | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.date_field`                          | DateField              | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.datetime_local_field`                | DateTimeLocalField     | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.email_field`                         | EmailField             | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.month_field`                         | MonthField             | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.number_field`                        | NumberField            | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.password_field`                      | PasswordField          | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.range_field`                         | RangeField             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
+| `f.search_field`                        | SearchField            | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.select` (`multiple: true` supported) | Select                 | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.tel_field`                           | TelField               | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.file_field`                          | FileField              | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.text_field`                          | TextField              | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.time_field`                          | TimeField              | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.url_field`                           | UrlField               | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.text_area`                           | TextArea               | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.grouped_collection_select`           | Select                 | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.weekday_select`                      | Select                 | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.time_zone_select`                    | Select                 | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `f.submit`                              | SubmitButton           | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
 
 ## Installation
 
@@ -105,7 +104,7 @@ This would create a payload that looks something this:
 Take the payload and pass it to the wrapper:
 
 ```js
-import {Form, TextField, SubmitButton} from './copied_components'
+import {Form, TextField, SubmitButton} from './copied_components_for_mantine'
 
 const {form, extras, inputs} = newPostForm
 
@@ -117,8 +116,7 @@ const {form, extras, inputs} = newPostForm
 
 ## Server errors
 
-Each wrapper comes with inline support for server errors which renders a FieldError
-underneath the input.
+Each wrapper comes with inline support for server errors.
 
 ```js
 import {Form, TextField} from './copied_components'
@@ -129,10 +127,25 @@ const validationErrors = {
 
 const {form, extras, inputs} = newPostForm
 
-<Form {...form} extras={extras}>
+<Form {...form} extras={extras} validationErrors={validationErrors}>
   <TextField {...inputs.title} label="Post title" errorKey="full_title" />
   <SubmitButton {...inputs.submit} />
 </Form>
+```
+
+## Vanilla
+
+Vanilla wrappers wrap around basic React HTML tags. If you want to build
+wrappers of your own, you can start here and use other UI wrappers as reference.
+
+## Mantine
+
+To use the Mantine wrappers, add the following libraries to your libraries before copying
+
+```
+yarn add dayjs
+yarn add @mantine/core
+yarn add @mantine/dates
 ```
 
 ## Contributors

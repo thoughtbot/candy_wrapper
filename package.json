@@ -12,7 +12,7 @@
     "lint:prettier": "prettier --check '**/*' --ignore-unknown",
     "lint:types": "tsc",
     "fix:prettier": "prettier --write '**/*' --ignore-unknown",
-    "test": "vitest",
+    "test": "TZ=UTC vitest",
     "test:run": "vitest run",
     "test:cov": "vitest --coverage",
     "test:all": "npm lint && npm test:run",
@@ -41,15 +41,19 @@
   },
   "homepage": "https://github.com/thoughtbot/candy_wrapper#readme",
   "devDependencies": {
+    "@mantine/core": "^7.15.3",
+    "@mantine/dates": "^7.15.3",
     "@nextui-org/react": "^2.4.8",
     "@react-aria/test-utils": "^1.0.0-alpha.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.12",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^2.0.2",
+    "dayjs": "^1.11.13",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.3",
     "eslint-plugin-vitest-globals": "^1.5.0",
@@ -64,8 +68,7 @@
     "typedoc-plugin-markdown": "^4.2.3",
     "typedoc-plugin-missing-exports": "^3.0.0",
     "typescript": "^5.5.3",
-    "vitest": "^2.0.2",
-    "@types/react": "^18.3.12"
+    "vitest": "^2.0.2"
   },
   "peerDependencies": {
     "react": "^18 || ^19"

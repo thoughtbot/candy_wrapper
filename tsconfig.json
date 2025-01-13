@@ -9,7 +9,7 @@
     "target": "ES2021",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "outDir": "./dist",
+    "outDir": "./dist"
   },
   "include": ["./src/**/*"]
 }
