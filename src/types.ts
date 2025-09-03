@@ -175,3 +175,12 @@ export type Select = SingleSelect | MultiSelect
 
 export type ValidationError = string | string[]
 export type ValidationErrors = Record<string, ValidationError>
+
+export type HTMLFormProps = {
+  id?: string
+  className?: string
+  method: 'get' | 'post'
+  enctype?: 'multipart/form-data'
+  acceptCharset: 'UTF-8'
+  [key: string]: unknown
+}

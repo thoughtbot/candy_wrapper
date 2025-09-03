@@ -7,6 +7,7 @@
  * There is no style and structured with bare necessities. You should modify
  * these components to fit your design needs.
  */
+import React, { createContext, ReactNode, useContext, useMemo } from 'react'
 
 export type {
   CheckboxField as RailsCheckboxFieldProps,
@@ -30,6 +31,7 @@ export type {
   TextField as RailsTextFieldProps,
   TimeField as RailsTimeFieldProps,
   UrlField as RailsUrlFieldProps,
+  HTMLFormProps as RailsHTMLFormProps,
   ValidationErrors,
 } from '@thoughtbot/candy_wrapper'
 
@@ -55,10 +57,9 @@ import {
   TextField as RailsTextField,
   TimeField as RailsTimeField,
   UrlField as RailsUrlField,
+  HTMLFormProps as RailsHTMLFormProps,
   ValidationErrors,
 } from '@thoughtbot/candy_wrapper'
-
-import React, { createContext, ReactNode, useContext, useMemo } from 'react'
 
 export const ValidationContext = createContext<ValidationErrors>({})
 
@@ -84,14 +85,7 @@ export const useErrorMessage = (errorKey?: string) => {
     return errorMessages.join(' ')
   }, [errors, errorKey])
 }
-export type RailsHTMLFormProps = {
-  id?: string
-  className?: string
-  method: 'get' | 'post'
-  enctype?: 'multipart/form-data'
-  acceptCharset: 'UTF-8'
-  [key: string]: unknown
-}
+
 export type ExtrasProps = Record<string, RailsHiddenField>
 
 /**
