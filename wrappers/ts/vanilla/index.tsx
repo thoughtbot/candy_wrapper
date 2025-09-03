@@ -8,31 +8,57 @@
  * these components to fit your design needs.
  */
 
-import React, { ReactNode, useContext, createContext, useMemo } from 'react'
+export type {
+  CheckboxField as RailsCheckboxFieldProps,
+  CollectionCheckboxesField as RailsCollectionCheckboxesFieldProps,
+  CollectionRadioButtonsField as RailsCollectionRadioButtonsFieldProps,
+  ColorField as RailsColorFieldProps,
+  DateField as RailsDateFieldProps,
+  DateTimeLocalField as RailsDateTimeLocalFieldProps,
+  EmailField as RailsEmailFieldProps,
+  FileField as RailsFileFieldProps,
+  HiddenField as RailsHiddenFieldProps,
+  MonthField as RailsMonthFieldProps,
+  NumberField as RailsNumberFieldProps,
+  PasswordField as RailsPasswordFieldProps,
+  RangeField as RailsRangeFieldProps,
+  SearchField as RailsSearchFieldProps,
+  Select as RailsSelectProps,
+  SubmitProps as RailsSubmitButtonProps,
+  TelField as RailsTelFieldProps,
+  TextArea as RailsTextAreaProps,
+  TextField as RailsTextFieldProps,
+  TimeField as RailsTimeFieldProps,
+  UrlField as RailsUrlFieldProps,
+  ValidationErrors,
+} from '@thoughtbot/candy_wrapper'
+
 import {
   CheckboxField as RailsCheckboxField,
   CollectionCheckboxesField as RailsCollectionCheckboxesField,
-  HiddenField as RailsHiddenField,
   CollectionRadioButtonsField as RailsCollectionRadioButtonsField,
   ColorField as RailsColorField,
   DateField as RailsDateField,
   DateTimeLocalField as RailsDateTimeLocalField,
   EmailField as RailsEmailField,
+  FileField as RailsFileField,
+  HiddenField as RailsHiddenField,
   MonthField as RailsMonthField,
   NumberField as RailsNumberField,
   PasswordField as RailsPasswordField,
   RangeField as RailsRangeField,
   SearchField as RailsSearchField,
   Select as RailsSelect,
+  SubmitProps as RailsSubmitButton,
   TelField as RailsTelField,
-  FileField as RailsFileField,
+  TextArea as RailsTextArea,
   TextField as RailsTextField,
   TimeField as RailsTimeField,
   UrlField as RailsUrlField,
-  TextArea as RailsTextArea,
   ValidationErrors,
-  SubmitProps as RailsSubmitButton,
 } from '@thoughtbot/candy_wrapper'
+
+import React, { createContext, ReactNode, useContext, useMemo } from 'react'
 
 export const ValidationContext = createContext<ValidationErrors>({})
 
@@ -58,7 +84,14 @@ export const useErrorMessage = (errorKey?: string) => {
     return errorMessages.join(' ')
   }, [errors, errorKey])
 }
-
+export type RailsHTMLFormProps = {
+  id?: string
+  className?: string
+  method: 'get' | 'post'
+  enctype?: 'multipart/form-data'
+  acceptCharset: 'UTF-8'
+  [key: string]: unknown
+}
 export type ExtrasProps = Record<string, RailsHiddenField>
 
 /**
@@ -76,10 +109,10 @@ export const Extras = (hiddenInputAttributes: ExtrasProps) => {
   return <>{hiddenInputs}</>
 }
 
-export interface FormProps<T = {}> {
+export interface FormProps<T = object> {
   extras: ExtrasProps
   inputs: T
-  form: React.FormHTMLAttributes<HTMLFormElement>
+  form: RailsHTMLFormProps
 }
 
 type FormElementProps = React.FormHTMLAttributes<HTMLFormElement> & {
