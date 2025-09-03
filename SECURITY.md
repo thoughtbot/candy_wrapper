@@ -1,5 +1,4 @@
 <!-- START /templates/security.md -->
-
 # Security Policy
 
 ## Supported Versions
