@@ -13,31 +13,31 @@ and name are likely to change drastically before a major version release.
 Each component are meant to be copied from this repo to your own project and customized to your liking. There are no
 CLI tools to help. just copy and paste from github.
 
-| `form_props` helper                     | Component              | [Vanilla]          | [Mantine]            | ?                    |
-| :-------------------------------------- | :--------------------- | :----------------- | :------------------- | :------------------- |
-| `f.text_field`                          | Checkbox               | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.collection_check_boxes`              | CollectionCheckboxes   | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.collection_radio_buttons`            | CollectionRadioButtons | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.color_field`                         | ColorField             | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.date_field`                          | DateField              | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.datetime_local_field`                | DateTimeLocalField     | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.email_field`                         | EmailField             | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.month_field`                         | MonthField             | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.number_field`                        | NumberField            | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.password_field`                      | PasswordField          | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.range_field`                         | RangeField             | :heavy_check_mark: | :white_large_square: | :white_large_square: |
-| `f.search_field`                        | SearchField            | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.select` (`multiple: true` supported) | Select                 | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.tel_field`                           | TelField               | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.file_field`                          | FileField              | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.text_field`                          | TextField              | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.time_field`                          | TimeField              | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.url_field`                           | UrlField               | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.text_area`                           | TextArea               | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.grouped_collection_select`           | Select                 | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.weekday_select`                      | Select                 | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.time_zone_select`                    | Select                 | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
-| `f.submit`                              | SubmitButton           | :heavy_check_mark: | :heavy_check_mark:   | :white_large_square: |
+| `form_props` helper                     | Component              | [Vanilla]          | [Mantine]          | [shadcn/ui]        | [React Aria]       | [React Spectrum]   | [PrimeReact]       | [MUI]              | [Chakra UI]        |
+| :-------------------------------------- | :--------------------- | :----------------- | :----------------- | :----------------- | :----------------- | :----------------- | :----------------- | :----------------- | :----------------- |
+| `f.check_box`                           | Checkbox               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.collection_check_boxes`              | CollectionCheckboxes   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.collection_radio_buttons`            | CollectionRadioButtons | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.color_field`                         | ColorField             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.date_field`                          | DateField              | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.datetime_local_field`                | DateTimeLocalField     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.email_field`                         | EmailField             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.month_field`                         | MonthField             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.number_field`                        | NumberField            | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.password_field`                      | PasswordField          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.range_field`                         | RangeField             | :heavy_check_mark: | :white_large_square: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.search_field`                        | SearchField            | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.select` (`multiple: true` supported) | Select                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.tel_field`                           | TelField               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.file_field`                          | FileField              | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.text_field`                          | TextField              | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.time_field`                          | TimeField              | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.url_field`                           | UrlField               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.text_area`                           | TextArea               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.grouped_collection_select`           | Select                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.weekday_select`                      | Select                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.time_zone_select`                    | Select                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `f.submit`                              | SubmitButton           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 ## Installation
 
@@ -140,12 +140,57 @@ wrappers of your own, you can start here and use other UI wrappers as reference.
 
 ## Mantine
 
-To use the Mantine wrappers, add the following libraries to your libraries before copying
+To use the Mantine wrappers, add the following libraries before copying:
 
 ```
-yarn add dayjs
 yarn add @mantine/core
 yarn add @mantine/dates
+```
+
+## shadcn/ui
+
+Copy the shadcn wrapper and the shadcn components it depends on (Input, Select, Checkbox, RadioGroup, Textarea, Slider, Button, Label) into your project.
+
+## React Aria
+
+To use the React Aria wrappers, add the following libraries before copying:
+
+```
+yarn add react-aria-components
+yarn add @internationalized/date
+```
+
+## React Spectrum
+
+To use the React Spectrum wrappers, add the following libraries before copying:
+
+```
+yarn add @adobe/react-spectrum
+yarn add @internationalized/date
+```
+
+## PrimeReact
+
+To use the PrimeReact wrappers, add the following library before copying:
+
+```
+yarn add primereact
+```
+
+## MUI
+
+To use the MUI wrappers, add the following library before copying:
+
+```
+yarn add @mui/material @emotion/react @emotion/styled
+```
+
+## Chakra UI
+
+To use the Chakra UI wrappers, add the following library before copying:
+
+```
+yarn add @chakra-ui/react
 ```
 
 ## Contributors
@@ -154,3 +199,11 @@ Thank you, [contributors]!
 
 [contributors]: https://github.com/thoughtbot/candy_wrapper/graphs/contributors
 [form_props]: https://github.com/thoughtbot/form_props
+[Vanilla]: wrappers/ts/vanilla
+[Mantine]: wrappers/ts/mantine/v9
+[shadcn/ui]: wrappers/ts/shadcn/v4
+[React Aria]: wrappers/ts/react-aria/v1
+[React Spectrum]: wrappers/ts/react-spectrum/v3
+[PrimeReact]: wrappers/ts/primereact/v10
+[MUI]: wrappers/ts/mui/v9
+[Chakra UI]: wrappers/ts/chakra/v3

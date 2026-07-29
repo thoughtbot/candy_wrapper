@@ -28,7 +28,7 @@ describe('MonthField', () => {
     )
 
     const input = document.querySelector('[name="post[written_on]"]')
-    expect(input.value).toEqual('2004-06-01T00:00:00.000Z')
+    expect(input.value).toEqual('2004-06-01')
 
     const button = document.querySelector('button')
     await userEvent.click(button)

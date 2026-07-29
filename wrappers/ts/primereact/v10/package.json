@@ -1,0 +1,11 @@
+{
+  "name": "@candy_wrapper/primereact-v10",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json"
+  },
+  "devDependencies": {
+    "primereact": "^10.0.0"
+  }
+}

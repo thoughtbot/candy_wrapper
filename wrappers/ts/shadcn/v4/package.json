@@ -1,0 +1,12 @@
+{
+  "name": "@candy_wrapper/shadcn-v4",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json"
+  },
+  "devDependencies": {
+    "radix-ui": "^1.0.0",
+    "class-variance-authority": "^0.7.0"
+  }
+}

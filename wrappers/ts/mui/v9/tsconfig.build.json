@@ -1,0 +1,13 @@
+{
+  "extends": "../../../../tsconfig",
+  "compilerOptions": {
+    "removeComments": false,
+    "rootDir": ".",
+    "declaration": false,
+    "outDir": "../../../js/mui/v9",
+    "paths": {
+      "@thoughtbot/candy_wrapper": ["../../../../src/index"]
+    }
+  },
+  "include": ["./index.tsx"]
+}

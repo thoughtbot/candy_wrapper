@@ -1,0 +1,13 @@
+{
+  "extends": "../../../../tsconfig",
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "@thoughtbot/candy_wrapper": ["../../../../src/index"],
+      "@/components/ui/*": ["./components/ui/*"],
+      "@/registry/bases/radix/lib/*": ["./registry/bases/radix/lib/*"],
+      "@/app/(create)/components/*": ["./app/(create)/components/*"]
+    }
+  },
+  "include": ["./**/*.ts", "./**/*.tsx"]
+}

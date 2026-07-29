@@ -74,23 +74,27 @@ import {
   ColorInput as MantineColorInput,
   NumberInput as MantineNumberInput,
   PasswordInput as MantinePasswordInput,
-  Slider as MantineSlider,
   Select as MantineSelect,
   MultiSelect as MantineMultiSelect,
   Textarea as MantineTextArea,
   FileInput as MantineFileInput,
   Button as MantineButton,
 } from '@mantine/core'
+import type {
+  MultiSelectProps as MantineMultiSelectProps,
+  SelectProps as MantineSelectProps,
+} from '@mantine/core'
 
 import {
-  DateValue as MantineDateValue,
   DateInput as MantineDateInput,
   DateTimePicker as MantineDateTimePicker,
   MonthPickerInput as MantineMonthPickerInput,
   TimeInput as MantineTimeInput,
 } from '@mantine/dates'
-
-import dayjs from 'dayjs'
+import type {
+  DateTimePickerProps as MantineDateTimePickerProps,
+  DateValue as MantineDateValue,
+} from '@mantine/dates'
 
 export const ValidationContext = createContext<ValidationErrors>({})
 
@@ -408,9 +412,9 @@ export const DateField = ({
 
   const valueProps: TransformedValues<MantineDateValue> = {}
   if (value) {
-    valueProps.value = dayjs(value).toDate()
+    valueProps.value = value
   } else if (defaultValue) {
-    valueProps.defaultValue = dayjs(defaultValue).toDate()
+    valueProps.defaultValue = defaultValue
   }
   return (
     <MantineDateInput
@@ -423,9 +427,7 @@ export const DateField = ({
   )
 }
 
-export type DateTimeLocalFieldProps = ComponentProps<
-  typeof MantineDateTimePicker
-> &
+export type DateTimeLocalFieldProps = Omit<MantineDateTimePickerProps, 'type'> &
   RailsDateTimeLocalField &
   InputProps
 
@@ -449,24 +451,24 @@ export const DateTimeLocalField = ({
 
   const valueProps: TransformedValues<MantineDateValue> = {}
   if (value) {
-    valueProps.value = dayjs(value).toDate()
+    valueProps.value = value
   } else if (defaultValue) {
-    valueProps.defaultValue = dayjs(defaultValue).toDate()
+    valueProps.defaultValue = defaultValue
   }
 
-  const minMaxProps: { minDate?: Date; maxDate?: Date } = {}
+  const minMaxProps: { minDate?: string; maxDate?: string } = {}
 
   if (min) {
-    minMaxProps.minDate = dayjs(min).toDate()
+    minMaxProps.minDate = min
   }
   if (max) {
-    minMaxProps.maxDate = dayjs(max).toDate()
+    minMaxProps.maxDate = max
   }
 
   return (
     <MantineDateTimePicker
       label={label}
-      valueFormat="YYYY-MM-DD hh:mm:ss"
+      valueFormat="YYYY-MM-DD HH:mm:ss"
       withSeconds
       error={errorMessage}
       {...minMaxProps}
@@ -602,18 +604,18 @@ export const MonthField = ({
   const errorMessage = useErrorMessage(errorKey)
   const valueProps: TransformedValues<MantineDateValue> = {}
   if (value) {
-    valueProps.value = dayjs(value).toDate()
+    valueProps.value = value
   } else if (defaultValue) {
-    valueProps.defaultValue = dayjs(defaultValue).toDate()
+    valueProps.defaultValue = defaultValue
   }
 
-  const minMaxProps: { minDate?: Date; maxDate?: Date } = {}
+  const minMaxProps: { minDate?: string; maxDate?: string } = {}
 
   if (min) {
-    minMaxProps.minDate = dayjs(min).toDate()
+    minMaxProps.minDate = min
   }
   if (max) {
-    minMaxProps.maxDate = dayjs(max).toDate()
+    minMaxProps.maxDate = max
   }
 
   return (
@@ -651,7 +653,10 @@ export const NumberField = ({
   return <MantineNumberInput {...rest} label={label} error={errorMessage} />
 }
 
-export type PasswordFieldProps = typeof MantinePasswordInput &
+export type PasswordFieldProps = Omit<
+  ComponentProps<typeof MantinePasswordInput>,
+  'type'
+> &
   RailsPasswordField &
   InputProps
 export const PasswordField = ({
@@ -685,7 +690,7 @@ export const PasswordField = ({
  * Mimics the rails equivalent. Please modify to your liking.
  */
 export const MultiSelect = (
-  props: ComponentProps<typeof MantineMultiSelect>
+  props: MantineMultiSelectProps<string>
 ) => {
   const [values, setValues] = useState<string[]>(
     props.value || props.defaultValue || []
@@ -705,9 +710,9 @@ export const MultiSelect = (
       {values.map((val) => (
         <input
           type="hidden"
-          key={val}
+          key={String(val)}
           name={name}
-          value={val}
+          value={String(val)}
           autoComplete="off"
         />
       ))}
@@ -715,8 +720,8 @@ export const MultiSelect = (
   )
 }
 
-type SingleProps = ComponentProps<typeof MantineSelect>
-type MultiProps = ComponentProps<typeof MantineMultiSelect>
+type SingleProps = MantineSelectProps<string>
+type MultiProps = MantineMultiSelectProps<string>
 type SelectProps = (
   | (SingleProps & RailsSingleSelect)
   | (MultiProps & RailsMultiSelect)

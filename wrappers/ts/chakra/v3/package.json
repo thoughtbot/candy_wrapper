@@ -1,0 +1,11 @@
+{
+  "name": "@candy_wrapper/chakra-v3",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json"
+  },
+  "devDependencies": {
+    "@chakra-ui/react": "^3.0.0"
+  }
+}

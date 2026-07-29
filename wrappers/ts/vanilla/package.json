@@ -1,0 +1,8 @@
+{
+  "name": "@candy_wrapper/vanilla",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json"
+  }
+}

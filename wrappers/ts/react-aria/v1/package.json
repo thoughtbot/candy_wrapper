@@ -1,0 +1,12 @@
+{
+  "name": "@candy_wrapper/react-aria-v1",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json"
+  },
+  "devDependencies": {
+    "react-aria-components": "^1.0.0",
+    "@internationalized/date": "^3.0.0"
+  }
+}

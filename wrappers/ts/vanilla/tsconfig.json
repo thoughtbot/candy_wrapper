@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig",
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "@thoughtbot/candy_wrapper": ["../../../src/index"]
+    }
+  },
+  "include": ["./**/*.ts", "./**/*.tsx"]
+}

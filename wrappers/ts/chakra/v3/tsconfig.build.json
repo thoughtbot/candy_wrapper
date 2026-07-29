@@ -1,0 +1,15 @@
+{
+  "extends": "../../../../tsconfig",
+  "compilerOptions": {
+    "removeComments": false,
+    "rootDir": ".",
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "outDir": "../../../js/chakra/v3",
+    "paths": {
+      "@thoughtbot/candy_wrapper": ["../../../../src/index"]
+    }
+  },
+  "include": ["./index.tsx"]
+}

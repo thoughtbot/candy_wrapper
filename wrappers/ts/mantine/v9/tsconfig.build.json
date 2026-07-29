@@ -1,0 +1,14 @@
+{
+  "extends": "../../../../tsconfig",
+  "compilerOptions": {
+    "removeComments": false,
+    "rootDir": ".",
+    "declaration": false,
+    "skipLibCheck": true,
+    "outDir": "../../../js/mantine/v9",
+    "paths": {
+      "@thoughtbot/candy_wrapper": ["../../../../src/index"]
+    }
+  },
+  "include": ["./index.tsx"]
+}
