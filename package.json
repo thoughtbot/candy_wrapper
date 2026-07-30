@@ -52,7 +52,7 @@
   },
   "homepage": "https://github.com/thoughtbot/candy_wrapper#readme",
   "devDependencies": {
-    "@react-aria/test-utils": "^1.0.0-alpha.2",
+    "@react-aria/test-utils": "^1.0.0-alpha.7",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.1.0",
@@ -72,9 +72,9 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tsup": "^8.1.0",
-    "typedoc": "^0.26.5",
-    "typedoc-plugin-markdown": "^4.2.3",
-    "typedoc-plugin-missing-exports": "^3.0.0",
+    "typedoc": "^0.28.0",
+    "typedoc-plugin-markdown": "^4.12.0",
+    "typedoc-plugin-missing-exports": "^4.0.0",
     "typescript": "^5.5.3",
     "vitest": "^2.0.2"
   },
