@@ -119,9 +119,7 @@ describe('Select', () => {
     it('renders the trigger', () => {
       const payload = buildPayload()
 
-      const { getByRole } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { getByRole } = render(<Select {...payload} label={'category'} />)
 
       const trigger = getByRole('combobox')
       expect(trigger).not.toBe(null)
@@ -130,9 +128,7 @@ describe('Select', () => {
     it('renders the label', () => {
       const payload = buildPayload()
 
-      const { getByText } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { getByText } = render(<Select {...payload} label={'category'} />)
 
       expect(getByText('category')).not.toBeNull()
     })

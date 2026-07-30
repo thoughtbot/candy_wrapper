@@ -653,7 +653,11 @@ export const NumberField = ({
   const errorMessage = useErrorMessage(errorKey)
 
   const numericValue =
-    value !== undefined ? Number(value) : defaultValue !== undefined ? Number(defaultValue) : undefined
+    value !== undefined
+      ? Number(value)
+      : defaultValue !== undefined
+      ? Number(defaultValue)
+      : undefined
 
   return (
     <FieldWrapper label={label} id={rest.id} errorKey={errorKey}>
@@ -683,8 +687,14 @@ export const RangeField = ({
   ...rest
 }: RangeFieldProps) => {
   const initialValue =
-    value !== undefined ? Number(value) : defaultValue !== undefined ? Number(defaultValue) : undefined
-  const [sliderValue, setSliderValue] = useState<number | undefined>(initialValue)
+    value !== undefined
+      ? Number(value)
+      : defaultValue !== undefined
+      ? Number(defaultValue)
+      : undefined
+  const [sliderValue, setSliderValue] = useState<number | undefined>(
+    initialValue
+  )
 
   return (
     <FieldWrapper label={label} id={rest.id} errorKey={errorKey}>
@@ -732,7 +742,12 @@ export const Select = ({
   })
 
   if (rest.multiple) {
-    const { multiple: _multiple, value, defaultvalue, ...multiRest } = rest as MultiSelectProps
+    const {
+      multiple: _multiple,
+      value,
+      defaultvalue,
+      ...multiRest
+    } = rest as MultiSelectProps
     const selectedValues = value || defaultvalue || []
     const [values, setValues] = useState<string[]>(selectedValues)
 
@@ -762,7 +777,12 @@ export const Select = ({
     )
   }
 
-  const { multiple: _multiple, value, defaultvalue, ...singleRest } = rest as SingleSelectProps
+  const {
+    multiple: _multiple,
+    value,
+    defaultvalue,
+    ...singleRest
+  } = rest as SingleSelectProps
   const selectedValue = value || defaultvalue
 
   return (
@@ -818,14 +838,13 @@ export const FileField = ({
   )
 }
 
-type SubmitButtonProps = Omit<ComponentProps<typeof Button>, 'type' | 'text'> & RailsSubmitButton
+type SubmitButtonProps = Omit<ComponentProps<typeof Button>, 'type' | 'text'> &
+  RailsSubmitButton
 
 export const SubmitButton = ({
   type: _type,
   text,
   ...rest
 }: SubmitButtonProps) => {
-  return (
-    <Button {...rest} type="submit" label={text} />
-  )
+  return <Button {...rest} type="submit" label={text} />
 }

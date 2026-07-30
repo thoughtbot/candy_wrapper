@@ -1,4 +1,10 @@
-import React, { createContext, ReactNode, useContext, useMemo, ComponentProps } from 'react'
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  ComponentProps,
+} from 'react'
 
 export type {
   CheckboxField as RailsCheckboxFieldProps,
@@ -429,12 +435,12 @@ export const RangeField = ({
   return (
     <FormControl error={!!errorMessage} fullWidth>
       <FormLabel>{label}</FormLabel>
-      <Slider
-        value={sliderValue}
-        defaultValue={sliderDefaultValue}
-        {...rest}
+      <Slider value={sliderValue} defaultValue={sliderDefaultValue} {...rest} />
+      <input
+        type="hidden"
+        name={rest.name}
+        value={sliderValue ?? sliderDefaultValue ?? ''}
       />
-      <input type="hidden" name={rest.name} value={sliderValue ?? sliderDefaultValue ?? ''} />
       {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
     </FormControl>
   )
@@ -464,10 +470,7 @@ export const Checkbox = ({
           autoComplete="off"
         />
       )}
-      <FormControlLabel
-        label={label}
-        control={<MuiCheckbox {...rest} />}
-      />
+      <FormControlLabel label={label} control={<MuiCheckbox {...rest} />} />
       {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
     </FormControl>
   )
@@ -599,7 +602,11 @@ export const Select = ({
   const menuItems = options.flatMap((item) => {
     if ('options' in item) {
       return item.options.map((opt) => (
-        <MenuItem key={`${item.label}-${opt.value}`} value={opt.value} disabled={opt.disabled}>
+        <MenuItem
+          key={`${item.label}-${opt.value}`}
+          value={opt.value}
+          disabled={opt.disabled}
+        >
           {opt.label}
         </MenuItem>
       ))
@@ -659,8 +666,7 @@ export const TextArea = ({
   )
 }
 
-type FileFieldProps = React.InputHTMLAttributes<HTMLInputElement> &
-  InputProps
+type FileFieldProps = React.InputHTMLAttributes<HTMLInputElement> & InputProps
 export const FileField = ({
   type: _type,
   color: _color,
@@ -683,8 +689,7 @@ export const FileField = ({
   )
 }
 
-type SubmitButtonProps = ComponentProps<typeof Button> &
-  RailsSubmitButton
+type SubmitButtonProps = ComponentProps<typeof Button> & RailsSubmitButton
 export const SubmitButton = ({
   type: _type,
   text,

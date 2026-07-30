@@ -39,7 +39,11 @@ describe('PasswordField', () => {
     const { getByText } = render(
       <ChakraProvider value={defaultSystem}>
         <ValidationContext.Provider value={validationErrors}>
-          <PasswordField {...payload} label={'Password'} errorKey={'password'} />
+          <PasswordField
+            {...payload}
+            label={'Password'}
+            errorKey={'password'}
+          />
         </ValidationContext.Provider>
       </ChakraProvider>
     )

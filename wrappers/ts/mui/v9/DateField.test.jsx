@@ -17,7 +17,11 @@ describe('DateField', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <DateField {...payload} label={'Published on'} errorKey={'published_on'} />
+      <DateField
+        {...payload}
+        label={'Published on'}
+        errorKey={'published_on'}
+      />
     )
 
     const input = getByLabelText('Published on')
@@ -35,7 +39,11 @@ describe('DateField', () => {
 
     const { getByText } = render(
       <ValidationContext.Provider value={validationErrors}>
-        <DateField {...payload} label={'Published on'} errorKey={'published_on'} />
+        <DateField
+          {...payload}
+          label={'Published on'}
+          errorKey={'published_on'}
+        />
       </ValidationContext.Provider>
     )
 

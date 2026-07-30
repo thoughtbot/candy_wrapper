@@ -17,7 +17,11 @@ describe('DateTimeLocalField', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <DateTimeLocalField {...payload} label={'Published at'} errorKey={'published_at'} />
+      <DateTimeLocalField
+        {...payload}
+        label={'Published at'}
+        errorKey={'published_at'}
+      />
     )
 
     const input = getByLabelText('Published at')
@@ -35,7 +39,11 @@ describe('DateTimeLocalField', () => {
 
     const { getByText } = render(
       <ValidationContext.Provider value={validationErrors}>
-        <DateTimeLocalField {...payload} label={'Published at'} errorKey={'published_at'} />
+        <DateTimeLocalField
+          {...payload}
+          label={'Published at'}
+          errorKey={'published_at'}
+        />
       </ValidationContext.Provider>
     )
 

@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { RadioGroup as RadioGroupPrimitive } from "radix-ui"
+import * as React from 'react'
+import { RadioGroup as RadioGroupPrimitive } from 'radix-ui'
 
-import { cn } from "@/registry/bases/radix/lib/utils"
+import { cn } from '@/registry/bases/radix/lib/utils'
 
 function RadioGroup({
   className,
@@ -12,7 +12,7 @@ function RadioGroup({
   return (
     <RadioGroupPrimitive.Root
       data-slot="radio-group"
-      className={cn("cn-radio-group w-full", className)}
+      className={cn('cn-radio-group w-full', className)}
       {...props}
     />
   )
@@ -26,7 +26,7 @@ function RadioGroupItem({
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(
-        "cn-radio-group-item group/radio-group-item peer relative aspect-square shrink-0 border outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50",
+        'cn-radio-group-item group/radio-group-item peer relative aspect-square shrink-0 border outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50',
         className
       )}
       {...props}

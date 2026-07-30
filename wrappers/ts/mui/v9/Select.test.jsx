@@ -24,9 +24,7 @@ describe('Select', () => {
       payload.defaultValue = [payload.defaultValue]
       payload.includeHidden = true
 
-      const { container } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { container } = render(<Select {...payload} label={'category'} />)
 
       const hiddenInput = container.querySelector('input[type=hidden]')
       expect(hiddenInput).not.toBe(null)
@@ -38,9 +36,7 @@ describe('Select', () => {
       payload.multiple = false
       payload.includeHidden = false
 
-      const { container } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { container } = render(<Select {...payload} label={'category'} />)
 
       const hiddenInput = container.querySelector('input[type=hidden]')
       expect(hiddenInput).toBe(null)
@@ -62,9 +58,7 @@ describe('Select', () => {
         ],
       }
 
-      const { getByRole } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { getByRole } = render(<Select {...payload} label={'category'} />)
 
       const combobox = getByRole('combobox')
       expect(combobox).not.toBeNull()
@@ -90,9 +84,7 @@ describe('Select', () => {
         ],
       }
 
-      const { getByRole } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { getByRole } = render(<Select {...payload} label={'category'} />)
 
       const combobox = getByRole('combobox')
       expect(combobox).not.toBeNull()

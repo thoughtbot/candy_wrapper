@@ -309,7 +309,13 @@ export const CollectionRadioButtons = ({
 
 export type TextFieldProps = RailsTextField & InputProps
 
-export const TextField = ({ type: _type, label, errorKey, size: _size, ...rest }: TextFieldProps) => {
+export const TextField = ({
+  type: _type,
+  label,
+  errorKey,
+  size: _size,
+  ...rest
+}: TextFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="text" {...rest} />
@@ -319,7 +325,13 @@ export const TextField = ({ type: _type, label, errorKey, size: _size, ...rest }
 
 export type EmailFieldProps = RailsEmailField & InputProps
 
-export const EmailField = ({ type: _type, label, errorKey, size: _size, ...rest }: EmailFieldProps) => {
+export const EmailField = ({
+  type: _type,
+  label,
+  errorKey,
+  size: _size,
+  ...rest
+}: EmailFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="email" {...rest} />
@@ -329,7 +341,13 @@ export const EmailField = ({ type: _type, label, errorKey, size: _size, ...rest 
 
 export type ColorFieldProps = RailsColorField & InputProps
 
-export const ColorField = ({ type: _type, label, errorKey, size: _size, ...rest }: ColorFieldProps) => {
+export const ColorField = ({
+  type: _type,
+  label,
+  errorKey,
+  size: _size,
+  ...rest
+}: ColorFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="color" {...rest} />
@@ -339,7 +357,13 @@ export const ColorField = ({ type: _type, label, errorKey, size: _size, ...rest 
 
 export type DateFieldProps = RailsDateField & InputProps
 
-export const DateField = ({ type: _type, label, errorKey, size: _size, ...rest }: DateFieldProps) => {
+export const DateField = ({
+  type: _type,
+  label,
+  errorKey,
+  size: _size,
+  ...rest
+}: DateFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="date" {...rest} />
@@ -365,7 +389,13 @@ export const DateTimeLocalField = ({
 
 export type SearchFieldProps = RailsSearchField & InputProps
 
-export const SearchField = ({ type: _type, label, errorKey, size: _size, ...rest }: SearchFieldProps) => {
+export const SearchField = ({
+  type: _type,
+  label,
+  errorKey,
+  size: _size,
+  ...rest
+}: SearchFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="search" {...rest} />
@@ -375,7 +405,13 @@ export const SearchField = ({ type: _type, label, errorKey, size: _size, ...rest
 
 export type TelFieldProps = RailsTelField & InputProps
 
-export const TelField = ({ type: _type, label, errorKey, size: _size, ...rest }: TelFieldProps) => {
+export const TelField = ({
+  type: _type,
+  label,
+  errorKey,
+  size: _size,
+  ...rest
+}: TelFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="tel" {...rest} />
@@ -385,7 +421,13 @@ export const TelField = ({ type: _type, label, errorKey, size: _size, ...rest }:
 
 export type UrlFieldProps = RailsUrlField & InputProps
 
-export const UrlField = ({ type: _type, label, errorKey, size: _size, ...rest }: UrlFieldProps) => {
+export const UrlField = ({
+  type: _type,
+  label,
+  errorKey,
+  size: _size,
+  ...rest
+}: UrlFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="url" {...rest} />
@@ -395,7 +437,12 @@ export const UrlField = ({ type: _type, label, errorKey, size: _size, ...rest }:
 
 export type MonthFieldProps = RailsMonthField & InputProps
 
-export const MonthField = ({ type: _type, label, errorKey, ...rest }: MonthFieldProps) => {
+export const MonthField = ({
+  type: _type,
+  label,
+  errorKey,
+  ...rest
+}: MonthFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="month" {...rest} />
@@ -405,7 +452,13 @@ export const MonthField = ({ type: _type, label, errorKey, ...rest }: MonthField
 
 export type TimeFieldProps = RailsTimeField & InputProps
 
-export const TimeField = ({ type: _type, label, errorKey, size: _size, ...rest }: TimeFieldProps) => {
+export const TimeField = ({
+  type: _type,
+  label,
+  errorKey,
+  size: _size,
+  ...rest
+}: TimeFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="time" {...rest} />
@@ -423,7 +476,13 @@ export const NumberField = ({
 }: NumberFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
-      <ChakraNumberInput.Root name={rest.name} min={rest.min} max={rest.max} defaultValue={rest.defaultValue} value={rest.value}>
+      <ChakraNumberInput.Root
+        name={rest.name}
+        min={rest.min}
+        max={rest.max}
+        defaultValue={rest.defaultValue}
+        value={rest.value}
+      >
         <ChakraNumberInput.Input />
         <ChakraNumberInput.Control>
           <ChakraNumberInput.IncrementTrigger />
@@ -442,12 +501,18 @@ export const RangeField = ({
   errorKey,
   ...rest
 }: RangeFieldProps) => {
-  const defaultValue = rest.defaultValue ? [Number(rest.defaultValue)] : undefined
+  const defaultValue = rest.defaultValue
+    ? [Number(rest.defaultValue)]
+    : undefined
   const value = rest.value ? [Number(rest.value)] : undefined
 
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
-      <ChakraSlider.Root name={rest.name} defaultValue={defaultValue} value={value}>
+      <ChakraSlider.Root
+        name={rest.name}
+        defaultValue={defaultValue}
+        value={value}
+      >
         <ChakraSlider.Control>
           <ChakraSlider.Track>
             <ChakraSlider.Range />
@@ -465,7 +530,13 @@ export const RangeField = ({
 
 export type PasswordFieldProps = RailsPasswordField & InputProps
 
-export const PasswordField = ({ type: _type, label, errorKey, size: _size, ...rest }: PasswordFieldProps) => {
+export const PasswordField = ({
+  type: _type,
+  label,
+  errorKey,
+  size: _size,
+  ...rest
+}: PasswordFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="password" {...rest} />
@@ -510,7 +581,12 @@ export const Select = ({
       )}
       <ChakraField.Label>{label}</ChakraField.Label>
       <ChakraNativeSelect.Root>
-        <ChakraNativeSelect.Field name={name} id={id} multiple={multiple} {...rest}>
+        <ChakraNativeSelect.Field
+          name={name}
+          id={id}
+          multiple={multiple}
+          {...rest}
+        >
           {optionElements}
         </ChakraNativeSelect.Field>
         <ChakraNativeSelect.Indicator />
@@ -524,7 +600,12 @@ export const Select = ({
 
 export type TextAreaProps = RailsTextArea & InputProps
 
-export const TextArea = ({ type: _type, label, errorKey, ...rest }: TextAreaProps) => {
+export const TextArea = ({
+  type: _type,
+  label,
+  errorKey,
+  ...rest
+}: TextAreaProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraTextarea {...rest} />
@@ -532,11 +613,19 @@ export const TextArea = ({ type: _type, label, errorKey, ...rest }: TextAreaProp
   )
 }
 
-export type FileFieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> &
+export type FileFieldProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size'
+> &
   RailsFileField &
   InputProps
 
-export const FileField = ({ type: _type, label, errorKey, ...rest }: FileFieldProps) => {
+export const FileField = ({
+  type: _type,
+  label,
+  errorKey,
+  ...rest
+}: FileFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
       <ChakraInput type="file" {...rest} />

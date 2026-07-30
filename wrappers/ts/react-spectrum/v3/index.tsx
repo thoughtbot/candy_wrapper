@@ -230,11 +230,7 @@ export const CollectionCheckboxes = ({
         errorMessage={errorMessage}
       >
         {collection.map((option) => (
-          <SpectrumCheckbox
-            key={option.id}
-            name={name}
-            value={option.value}
-          >
+          <SpectrumCheckbox key={option.id} name={name} value={option.value}>
             {option.label}
           </SpectrumCheckbox>
         ))}
@@ -634,7 +630,11 @@ export const RangeField = ({
         defaultValue={numericDefault}
         value={numericValue}
       />
-      <input type="hidden" name={rest.name} value={numericValue ?? numericDefault ?? ''} />
+      <input
+        type="hidden"
+        name={rest.name}
+        value={numericValue ?? numericDefault ?? ''}
+      />
       {errorMessage && <span>{errorMessage}</span>}
     </>
   )
@@ -686,10 +686,14 @@ export const Select = ({
   const hasGroups = options.some((item) => 'options' in item)
 
   const selectedKey = selectedValue
-    ? (Array.isArray(selectedValue) ? selectedValue[0] : selectedValue)
+    ? Array.isArray(selectedValue)
+      ? selectedValue[0]
+      : selectedValue
     : undefined
   const defaultKey = selectedDefault
-    ? (Array.isArray(selectedDefault) ? selectedDefault[0] : selectedDefault)
+    ? Array.isArray(selectedDefault)
+      ? selectedDefault[0]
+      : selectedDefault
     : undefined
 
   return (
@@ -764,11 +768,7 @@ export const TextArea = ({
 
 export type FileFieldProps = RailsFileField & InputProps
 
-export const FileField = ({
-  type: _type,
-  label,
-  errorKey,
-}: FileFieldProps) => {
+export const FileField = ({ type: _type, label, errorKey }: FileFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
   return (

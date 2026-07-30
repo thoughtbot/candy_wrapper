@@ -233,10 +233,7 @@ export const CollectionCheckboxes = ({
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
-      <AriaCheckboxGroup
-        {...valueProps}
-        isInvalid={!!errorMessage}
-      >
+      <AriaCheckboxGroup {...valueProps} isInvalid={!!errorMessage}>
         <AriaLabel>{label}</AriaLabel>
         {collection.map((option) => (
           <AriaCheckbox
@@ -285,11 +282,7 @@ export const CollectionRadioButtons = ({
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
-      <AriaRadioGroup
-        name={name}
-        {...valueProps}
-        isInvalid={!!errorMessage}
-      >
+      <AriaRadioGroup name={name} {...valueProps} isInvalid={!!errorMessage}>
         <AriaLabel>{label}</AriaLabel>
         {collection.map((option) => (
           <AriaRadio key={option.value} value={option.value} id={option.id}>
@@ -415,7 +408,9 @@ export const DateField = ({
       isInvalid={!!errorMessage}
     >
       <AriaLabel>{label}</AriaLabel>
-      <AriaDateInput>{(segment) => <AriaDateSegment segment={segment} />}</AriaDateInput>
+      <AriaDateInput>
+        {(segment) => <AriaDateSegment segment={segment} />}
+      </AriaDateInput>
       {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
     </AriaDateField>
   )
@@ -464,7 +459,9 @@ export const DateTimeLocalField = ({
       isInvalid={!!errorMessage}
     >
       <AriaLabel>{label}</AriaLabel>
-      <AriaDateInput>{(segment) => <AriaDateSegment segment={segment} />}</AriaDateInput>
+      <AriaDateInput>
+        {(segment) => <AriaDateSegment segment={segment} />}
+      </AriaDateInput>
       {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
     </AriaDateField>
   )
@@ -490,13 +487,11 @@ export const TimeField = ({
   }
 
   return (
-    <AriaTimeField
-      name={rest.name}
-      {...valueProps}
-      isInvalid={!!errorMessage}
-    >
+    <AriaTimeField name={rest.name} {...valueProps} isInvalid={!!errorMessage}>
       <AriaLabel>{label}</AriaLabel>
-      <AriaDateInput>{(segment) => <AriaDateSegment segment={segment} />}</AriaDateInput>
+      <AriaDateInput>
+        {(segment) => <AriaDateSegment segment={segment} />}
+      </AriaDateInput>
       {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
     </AriaTimeField>
   )
@@ -657,17 +652,18 @@ export const RangeField = ({
 
   return (
     <>
-      <AriaSlider
-        defaultValue={numericDefault}
-        value={numericValue}
-      >
+      <AriaSlider defaultValue={numericDefault} value={numericValue}>
         <AriaLabel>{label}</AriaLabel>
         <AriaSliderOutput />
         <AriaSliderTrack>
           <AriaSliderThumb />
         </AriaSliderTrack>
       </AriaSlider>
-      <input type="hidden" name={rest.name} value={numericValue ?? numericDefault ?? ''} />
+      <input
+        type="hidden"
+        name={rest.name}
+        value={numericValue ?? numericDefault ?? ''}
+      />
       {errorMessage && <span>{errorMessage}</span>}
     </>
   )
@@ -725,10 +721,14 @@ export const Select = ({
 
   if (multiple) {
     const selectedKeys = selectedValue
-      ? (Array.isArray(selectedValue) ? selectedValue : [selectedValue])
+      ? Array.isArray(selectedValue)
+        ? selectedValue
+        : [selectedValue]
       : undefined
     const defaultKeys = selectedDefault
-      ? (Array.isArray(selectedDefault) ? selectedDefault : [selectedDefault])
+      ? Array.isArray(selectedDefault)
+        ? selectedDefault
+        : [selectedDefault]
       : undefined
 
     return (
@@ -768,10 +768,14 @@ export const Select = ({
   }
 
   const selectedKey = selectedValue
-    ? (Array.isArray(selectedValue) ? selectedValue[0] : selectedValue)
+    ? Array.isArray(selectedValue)
+      ? selectedValue[0]
+      : selectedValue
     : undefined
   const defaultKey = selectedDefault
-    ? (Array.isArray(selectedDefault) ? selectedDefault[0] : selectedDefault)
+    ? Array.isArray(selectedDefault)
+      ? selectedDefault[0]
+      : selectedDefault
     : undefined
 
   return (
@@ -830,11 +834,7 @@ export const TextArea = ({
 
 export type FileFieldProps = RailsFileField & InputProps
 
-export const FileField = ({
-  type: _type,
-  label,
-  errorKey,
-}: FileFieldProps) => {
+export const FileField = ({ type: _type, label, errorKey }: FileFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
   return (

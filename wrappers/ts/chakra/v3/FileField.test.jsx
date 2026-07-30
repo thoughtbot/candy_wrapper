@@ -37,7 +37,11 @@ describe('FileField', () => {
     const { getByText } = render(
       <ChakraProvider value={defaultSystem}>
         <ValidationContext.Provider value={validationErrors}>
-          <FileField {...payload} label={'attachment'} errorKey={'attachment'} />
+          <FileField
+            {...payload}
+            label={'attachment'}
+            errorKey={'attachment'}
+          />
         </ValidationContext.Provider>
       </ChakraProvider>
     )

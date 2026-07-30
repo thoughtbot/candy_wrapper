@@ -19,7 +19,11 @@ describe('DateField', () => {
 
     const { getByLabelText } = render(
       <ChakraProvider value={defaultSystem}>
-        <DateField {...payload} label={'Publish date'} errorKey={'publish_date'} />
+        <DateField
+          {...payload}
+          label={'Publish date'}
+          errorKey={'publish_date'}
+        />
       </ChakraProvider>
     )
 
@@ -39,7 +43,11 @@ describe('DateField', () => {
     const { getByText } = render(
       <ChakraProvider value={defaultSystem}>
         <ValidationContext.Provider value={validationErrors}>
-          <DateField {...payload} label={'Publish date'} errorKey={'publish_date'} />
+          <DateField
+            {...payload}
+            label={'Publish date'}
+            errorKey={'publish_date'}
+          />
         </ValidationContext.Provider>
       </ChakraProvider>
     )

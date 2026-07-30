@@ -39,7 +39,11 @@ describe('TimeField', () => {
     const { getByText } = render(
       <ChakraProvider value={defaultSystem}>
         <ValidationContext.Provider value={validationErrors}>
-          <TimeField {...payload} label={'Start time'} errorKey={'start_time'} />
+          <TimeField
+            {...payload}
+            label={'Start time'}
+            errorKey={'start_time'}
+          />
         </ValidationContext.Provider>
       </ChakraProvider>
     )

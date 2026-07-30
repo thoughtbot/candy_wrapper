@@ -37,9 +37,7 @@ describe('Select', () => {
       payload.multiple = false
       payload.includeHidden = false
 
-      const { container } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { container } = render(<Select {...payload} label={'category'} />)
 
       const hiddenInput = container.querySelector('input[type=hidden]')
       expect(hiddenInput).toBe(null)
@@ -53,9 +51,7 @@ describe('Select', () => {
       payload.defaultvalue = ['<mus>']
       payload.includeHidden = true
 
-      const { container } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { container } = render(<Select {...payload} label={'category'} />)
 
       const hiddenInputs = container.querySelectorAll('input[type=hidden]')
       expect(hiddenInputs.length).toBeGreaterThanOrEqual(1)
@@ -87,9 +83,7 @@ describe('Select', () => {
       payload.defaultvalue = ['abe', 'hest']
       payload.includeHidden = true
 
-      const { container } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { container } = render(<Select {...payload} label={'category'} />)
 
       const hiddenInputs = container.querySelectorAll('input[type=hidden]')
       const valueInputs = Array.from(hiddenInputs).filter(
@@ -121,9 +115,7 @@ describe('Select', () => {
         ],
       }
 
-      const { getByText } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { getByText } = render(<Select {...payload} label={'category'} />)
 
       const label = getByText('category')
       expect(label).not.toBeNull()

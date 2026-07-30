@@ -28,7 +28,9 @@ describe('NumberField', () => {
     const input = getByRole('textbox', { name: 'Favs' })
     expect(input).not.toBeNull()
 
-    const hiddenInput = container.querySelector('input[type=hidden][name="post[favs]"]')
+    const hiddenInput = container.querySelector(
+      'input[type=hidden][name="post[favs]"]'
+    )
     expect(hiddenInput).not.toBeNull()
     expect(hiddenInput.value).toEqual('2')
   })

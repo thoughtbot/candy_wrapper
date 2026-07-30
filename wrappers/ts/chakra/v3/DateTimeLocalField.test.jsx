@@ -19,7 +19,11 @@ describe('DateTimeLocalField', () => {
 
     const { getByLabelText } = render(
       <ChakraProvider value={defaultSystem}>
-        <DateTimeLocalField {...payload} label={'Published at'} errorKey={'published_at'} />
+        <DateTimeLocalField
+          {...payload}
+          label={'Published at'}
+          errorKey={'published_at'}
+        />
       </ChakraProvider>
     )
 
@@ -39,7 +43,11 @@ describe('DateTimeLocalField', () => {
     const { getByText } = render(
       <ChakraProvider value={defaultSystem}>
         <ValidationContext.Provider value={validationErrors}>
-          <DateTimeLocalField {...payload} label={'Published at'} errorKey={'published_at'} />
+          <DateTimeLocalField
+            {...payload}
+            label={'Published at'}
+            errorKey={'published_at'}
+          />
         </ValidationContext.Provider>
       </ChakraProvider>
     )

@@ -17,9 +17,7 @@ describe('Checkbox', () => {
   it('renders', () => {
     const payload = buildPayload()
 
-    const { getByRole } = render(
-      <Checkbox label="Is admin" {...payload} />
-    )
+    const { getByRole } = render(<Checkbox label="Is admin" {...payload} />)
 
     const checkbox = getByRole('checkbox', { name: 'Is admin' })
     expect(checkbox).not.toBeNull()

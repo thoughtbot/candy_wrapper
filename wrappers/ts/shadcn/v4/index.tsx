@@ -204,7 +204,12 @@ export const Checkbox = ({
             autoComplete="off"
           />
         )}
-        <ShadcnCheckbox id={checkboxRest.id} name={name} value={value} {...checkboxRest} />
+        <ShadcnCheckbox
+          id={checkboxRest.id}
+          name={name}
+          value={value}
+          {...checkboxRest}
+        />
         <Label htmlFor={checkboxRest.id}>{label}</Label>
       </div>
       <FieldError errorKey={errorKey} />
@@ -360,11 +365,7 @@ export type TelFieldProps = ComponentProps<typeof Input> &
   RailsTelField &
   InputProps
 
-export const TelField = ({
-  type: _type,
-  errorKey,
-  ...rest
-}: TelFieldProps) => {
+export const TelField = ({ type: _type, errorKey, ...rest }: TelFieldProps) => {
   return <FieldBase {...rest} type="tel" errorKey={errorKey} />
 }
 
@@ -372,11 +373,7 @@ export type UrlFieldProps = ComponentProps<typeof Input> &
   RailsUrlField &
   InputProps
 
-export const UrlField = ({
-  type: _type,
-  errorKey,
-  ...rest
-}: UrlFieldProps) => {
+export const UrlField = ({ type: _type, errorKey, ...rest }: UrlFieldProps) => {
   return <FieldBase {...rest} type="url" errorKey={errorKey} />
 }
 
@@ -482,19 +479,21 @@ export const Select = ({
     const { multiple, label, id, defaultvalue, value, ...nativeRest } = rest
     const addHidden = includeHidden && multiple
 
-    const optionElements = options.map((item: SelectOption | SelectOptionGroup) => {
-      if ('options' in item) {
-        return (
-          <optgroup label={item.label} key={item.label}>
-            {item.options.map((opt: SelectOption) => (
-              <option key={opt.label} {...opt} />
-            ))}
-          </optgroup>
-        )
-      } else {
-        return <option key={item.label} {...item} />
+    const optionElements = options.map(
+      (item: SelectOption | SelectOptionGroup) => {
+        if ('options' in item) {
+          return (
+            <optgroup label={item.label} key={item.label}>
+              {item.options.map((opt: SelectOption) => (
+                <option key={opt.label} {...opt} />
+              ))}
+            </optgroup>
+          )
+        } else {
+          return <option key={item.label} {...item} />
+        }
       }
-    })
+    )
 
     return (
       <div className="grid gap-2">
@@ -522,7 +521,9 @@ export const Select = ({
     'type' | 'includeHidden' | 'name' | 'options' | 'errorKey'
   >
 
-  const hasGroups = options.some((item: SelectOption | SelectOptionGroup) => 'options' in item)
+  const hasGroups = options.some(
+    (item: SelectOption | SelectOptionGroup) => 'options' in item
+  )
 
   return (
     <div className="grid gap-2">
@@ -615,7 +616,8 @@ export const FileField = ({
   return <FieldBase {...rest} type="file" errorKey={errorKey} />
 }
 
-export type SubmitButtonProps = ComponentProps<typeof Button> & RailsSubmitButton
+export type SubmitButtonProps = ComponentProps<typeof Button> &
+  RailsSubmitButton
 
 export const SubmitButton = ({
   type: _type,

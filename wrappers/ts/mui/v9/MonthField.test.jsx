@@ -35,7 +35,11 @@ describe('MonthField', () => {
 
     const { getByText } = render(
       <ValidationContext.Provider value={validationErrors}>
-        <MonthField {...payload} label={'Birth month'} errorKey={'birth_month'} />
+        <MonthField
+          {...payload}
+          label={'Birth month'}
+          errorKey={'birth_month'}
+        />
       </ValidationContext.Provider>
     )
 

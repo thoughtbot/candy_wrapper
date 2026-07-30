@@ -29,7 +29,12 @@ describe('Checkbox', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <Checkbox {...payload} label={'Is admin'} errorKey={'is_admin'} checked={true} />
+      <Checkbox
+        {...payload}
+        label={'Is admin'}
+        errorKey={'is_admin'}
+        checked={true}
+      />
     )
 
     const input = getByLabelText('Is admin')
@@ -40,7 +45,12 @@ describe('Checkbox', () => {
     const payload = buildPayload()
 
     const { getByLabelText } = render(
-      <Checkbox {...payload} label={'Is admin'} errorKey={'is_admin'} checked={false} />
+      <Checkbox
+        {...payload}
+        label={'Is admin'}
+        errorKey={'is_admin'}
+        checked={false}
+      />
     )
 
     const input = getByLabelText('Is admin')
@@ -53,7 +63,12 @@ describe('Checkbox', () => {
     payload.uncheckedValue = '10'
 
     const { container } = render(
-      <Checkbox {...payload} label={'Is admin'} errorKey={'is_admin'} checked={false} />
+      <Checkbox
+        {...payload}
+        label={'Is admin'}
+        errorKey={'is_admin'}
+        checked={false}
+      />
     )
 
     const hiddenInput = container.querySelector('input[type=hidden]')
@@ -71,7 +86,12 @@ describe('Checkbox', () => {
 
     const { getByText } = render(
       <ValidationContext.Provider value={validationErrors}>
-        <Checkbox {...payload} label={'Is admin'} errorKey={'is_admin'} checked={false} />
+        <Checkbox
+          {...payload}
+          label={'Is admin'}
+          errorKey={'is_admin'}
+          checked={false}
+        />
       </ValidationContext.Provider>
     )
 

@@ -21,9 +21,7 @@ describe('Select', () => {
     it('renders the component with a trigger button', () => {
       const payload = buildPayload()
 
-      const { getByRole } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { getByRole } = render(<Select {...payload} label={'category'} />)
 
       const button = getByRole('button')
       expect(button).not.toBeNull()
@@ -32,9 +30,7 @@ describe('Select', () => {
     it('renders with a label', () => {
       const payload = buildPayload()
 
-      const { getByText } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { getByText } = render(<Select {...payload} label={'category'} />)
 
       const label = getByText('category')
       expect(label).not.toBeNull()
@@ -82,9 +78,7 @@ describe('Select', () => {
         ],
       }
 
-      const { getByRole } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { getByRole } = render(<Select {...payload} label={'category'} />)
 
       const button = getByRole('button')
       expect(button).not.toBeNull()

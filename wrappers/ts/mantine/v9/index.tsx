@@ -689,9 +689,7 @@ export const PasswordField = ({
  * Designed to work with a payload form_props's [month_field helper](https://github.com/thoughtbot/form_props?tab=readme-ov-file#number-helpers).
  * Mimics the rails equivalent. Please modify to your liking.
  */
-export const MultiSelect = (
-  props: MantineMultiSelectProps<string>
-) => {
+export const MultiSelect = (props: MantineMultiSelectProps<string>) => {
   const [values, setValues] = useState<string[]>(
     props.value || props.defaultValue || []
   )
