@@ -174,8 +174,12 @@ export const Checkbox = ({
 }: CheckboxProps) => {
   const { name } = rest
   const errorMessage = useErrorMessage(errorKey)
-  const isSelected = checked ?? undefined
-  const defaultSelected = defaultChecked ?? undefined
+  const valueProps: { isSelected?: boolean; defaultSelected?: boolean } = {}
+  if (checked !== undefined) {
+    valueProps.isSelected = checked
+  } else if (defaultChecked !== undefined) {
+    valueProps.defaultSelected = defaultChecked
+  }
 
   return (
     <>
@@ -191,8 +195,7 @@ export const Checkbox = ({
         name={name}
         value={rest.value}
         id={rest.id}
-        isSelected={isSelected}
-        defaultSelected={defaultSelected}
+        {...valueProps}
         isInvalid={!!errorMessage}
       >
         {label}

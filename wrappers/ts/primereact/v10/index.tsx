@@ -200,10 +200,12 @@ export const Checkbox = ({
   uncheckedValue,
   errorKey,
   label,
-  checked = false,
+  checked,
+  defaultChecked,
   ...rest
 }: CheckboxProps) => {
   const { name, id } = rest
+  const [isChecked, setIsChecked] = useState(checked ?? defaultChecked ?? false)
 
   return (
     <FieldWrapper label={label} id={id} errorKey={errorKey}>
@@ -215,7 +217,12 @@ export const Checkbox = ({
           autoComplete="off"
         />
       )}
-      <PrimeCheckbox inputId={id} {...rest} checked={checked} />
+      <PrimeCheckbox
+        inputId={id}
+        {...rest}
+        checked={isChecked}
+        onChange={(e) => setIsChecked(e.checked ?? false)}
+      />
     </FieldWrapper>
   )
 }
