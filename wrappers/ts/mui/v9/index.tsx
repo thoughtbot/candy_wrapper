@@ -204,6 +204,11 @@ export const ColorField = ({
       type="color"
       error={!!errorMessage}
       helperText={errorMessage}
+      fullWidth
+      slotProps={{
+        inputLabel: { shrink: true },
+        htmlInput: { sx: { height: 56, padding: '8px', cursor: 'pointer', boxSizing: 'border-box' } },
+      }}
       {...rest}
     />
   )
