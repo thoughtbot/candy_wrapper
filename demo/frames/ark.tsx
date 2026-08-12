@@ -1,4 +1,3 @@
-import './shadcn.css'
 import {
   TextField,
   EmailField,
@@ -20,7 +19,7 @@ import {
   TextArea,
   FileField,
   SubmitButton,
-} from '../../wrappers/ts/shadcn/v4/index'
+} from '../../wrappers/ts/ark/v5/index'
 import { renderFrame } from './renderFrame'
 
 renderFrame({

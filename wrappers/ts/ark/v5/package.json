@@ -1,0 +1,11 @@
+{
+  "name": "@candy_wrapper/ark-v5",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json"
+  },
+  "devDependencies": {
+    "@ark-ui/react": "^5.38.1"
+  }
+}

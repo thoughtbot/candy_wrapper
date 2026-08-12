@@ -18,7 +18,7 @@ export default defineConfig({
       input: {
         main: path.resolve(__dirname, 'index.html'),
         vanilla: path.resolve(__dirname, 'frames/vanilla.html'),
-        shadcn: path.resolve(__dirname, 'frames/shadcn.html'),
+        ark: path.resolve(__dirname, 'frames/ark.html'),
         chakra: path.resolve(__dirname, 'frames/chakra.html'),
         mantine: path.resolve(__dirname, 'frames/mantine.html'),
         heroui: path.resolve(__dirname, 'frames/heroui.html'),

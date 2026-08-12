@@ -9,6 +9,7 @@
     "wrappers/ts/react-aria/v1",
     "wrappers/ts/react-spectrum/v3",
     "wrappers/ts/react-spectrum/s2",
+    "wrappers/ts/ark/v5",
     "wrappers/ts/heroui/v3",
     "wrappers/ts/mui/v9",
     "wrappers/ts/chakra/v3"
