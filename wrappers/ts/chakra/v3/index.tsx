@@ -505,32 +505,38 @@ export const RangeField = ({
   type: _type,
   label,
   errorKey,
+  min,
+  max,
   ...rest
 }: RangeFieldProps) => {
+  const errorMessage = useErrorMessage(errorKey)
   const defaultValue = rest.defaultValue
     ? [Number(rest.defaultValue)]
     : undefined
   const value = rest.value ? [Number(rest.value)] : undefined
 
   return (
-    <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
+    <ChakraField.Root invalid={!!errorMessage}>
       <ChakraSlider.Root
+        width="200px"
         name={rest.name}
         defaultValue={defaultValue}
         value={value}
+        min={min}
+        max={max}
       >
+        <ChakraSlider.Label>{label}</ChakraSlider.Label>
         <ChakraSlider.Control>
           <ChakraSlider.Track>
             <ChakraSlider.Range />
           </ChakraSlider.Track>
-          <ChakraSlider.Thumbs>
-            <ChakraSlider.Thumb index={0}>
-              <ChakraSlider.HiddenInput />
-            </ChakraSlider.Thumb>
-          </ChakraSlider.Thumbs>
+          <ChakraSlider.Thumbs />
         </ChakraSlider.Control>
       </ChakraSlider.Root>
-    </ChakraFieldWrapper>
+      {errorMessage && (
+        <ChakraField.ErrorText>{errorMessage}</ChakraField.ErrorText>
+      )}
+    </ChakraField.Root>
   )
 }
 
