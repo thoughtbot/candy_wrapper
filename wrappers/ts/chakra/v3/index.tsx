@@ -499,31 +499,30 @@ export const NumberField = ({
   )
 }
 
-export type RangeFieldProps = RailsRangeField & InputProps
+export type RangeFieldProps = Omit<
+  RailsRangeField & InputProps,
+  'maxLength' | 'size'
+>
 
 export const RangeField = ({
   type: _type,
   label,
   errorKey,
-  min,
-  max,
+  defaultValue,
+  value,
   ...rest
 }: RangeFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
-  const defaultValue = rest.defaultValue
-    ? [Number(rest.defaultValue)]
-    : undefined
-  const value = rest.value ? [Number(rest.value)] : undefined
+  const nextDefaultValue = defaultValue ? [Number(defaultValue)] : undefined
+  const nextValue = value ? [Number(value)] : undefined
 
   return (
     <ChakraField.Root invalid={!!errorMessage}>
       <ChakraSlider.Root
         width="200px"
-        name={rest.name}
-        defaultValue={defaultValue}
-        value={value}
-        min={min}
-        max={max}
+        defaultValue={nextDefaultValue}
+        value={nextValue}
+        {...rest}
       >
         <ChakraSlider.Label>{label}</ChakraSlider.Label>
         <ChakraSlider.Control>

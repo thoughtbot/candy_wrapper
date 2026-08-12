@@ -161,13 +161,13 @@ type BaseSelect = {
 
 export type SingleSelect = BaseSelect & {
   multiple?: false
-  defaultvalue?: string
+  defaultValue?: string
   value?: string
 }
 
 export type MultiSelect = BaseSelect & {
   multiple: true
-  defaultvalue?: string[]
+  defaultValue?: string[]
   value?: string[]
 }
 
