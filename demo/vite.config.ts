@@ -17,7 +17,6 @@ export default defineConfig({
         chakra: path.resolve(__dirname, 'frames/chakra.html'),
         mantine: path.resolve(__dirname, 'frames/mantine.html'),
         mui: path.resolve(__dirname, 'frames/mui.html'),
-        primereact: path.resolve(__dirname, 'frames/primereact.html'),
         'react-aria': path.resolve(__dirname, 'frames/react-aria.html'),
         'react-spectrum': path.resolve(__dirname, 'frames/react-spectrum.html'),
       },
