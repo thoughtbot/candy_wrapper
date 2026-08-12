@@ -68,6 +68,7 @@ import {
   DateField as SpectrumDateField,
   TimeField as SpectrumTimeField,
   DatePicker as SpectrumDatePicker,
+  ColorField as SpectrumColorField,
   SearchField as SpectrumSearchField,
   Checkbox as SpectrumCheckbox,
   CheckboxGroup as SpectrumCheckboxGroup,
@@ -345,7 +346,7 @@ export const ColorField = ({
   const errorMessage = useErrorMessage(errorKey)
 
   return (
-    <SpectrumTextField
+    <SpectrumColorField
       label={label}
       name={rest.name}
       defaultValue={rest.defaultValue}
@@ -495,9 +496,7 @@ export const SearchField = ({
   return (
     <SpectrumSearchField
       label={label}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
+      {...rest}
       validationState={errorMessage ? 'invalid' : undefined}
       errorMessage={errorMessage}
     />
