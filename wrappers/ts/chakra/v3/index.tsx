@@ -57,8 +57,10 @@ import {
   Input as ChakraInput,
   Textarea as ChakraTextarea,
   Checkbox as ChakraCheckbox,
+  CheckboxGroup as ChakraCheckboxGroup,
   RadioGroup as ChakraRadioGroup,
   Select as ChakraSelect,
+  Fieldset as ChakraFieldset,
   NumberInput as ChakraNumberInput,
   Slider as ChakraSlider,
   Field as ChakraField,
@@ -213,40 +215,42 @@ export const CollectionCheckboxes = ({
     return null
   }
 
-  const checkboxes = collection.map((options) => {
-    const {
-      label: itemLabel,
-      checked: _checked,
-      defaultChecked: _defaultChecked,
-      type: _type,
-      includeHidden: _includeHidden,
-      uncheckedValue: _uncheckedValue,
-      ...rest
-    } = options
-    return (
-      <ChakraCheckbox.Root key={rest.id} {...rest}>
-        <ChakraCheckbox.HiddenInput />
-        <ChakraCheckbox.Control>
-          <ChakraCheckbox.Indicator />
-        </ChakraCheckbox.Control>
-        <ChakraCheckbox.Label>{itemLabel}</ChakraCheckbox.Label>
-      </ChakraCheckbox.Root>
-    )
-  })
-
   const { name } = collection[0]
 
+  const defaultItems = collection.filter((option) => !!option.defaultChecked)
+  const checkedItems = collection.filter((option) => !!option.checked)
+  const valueProps: { defaultValue?: string[]; value?: string[] } = {}
+  if (defaultItems.length > 0) {
+    valueProps.defaultValue = defaultItems.map((option) => option.value)
+  } else if (checkedItems.length > 0) {
+    valueProps.value = checkedItems.map((option) => option.value)
+  }
+
   return (
-    <ChakraField.Root invalid={!!errorMessage}>
+    <ChakraFieldset.Root invalid={!!errorMessage}>
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
-      <ChakraField.Label>{label}</ChakraField.Label>
-      {checkboxes}
+      <ChakraCheckboxGroup name={name} {...valueProps}>
+        <ChakraFieldset.Legend fontSize="sm" mb="2">
+          {label}
+        </ChakraFieldset.Legend>
+        <ChakraFieldset.Content>
+          {collection.map((option) => (
+            <ChakraCheckbox.Root key={option.id} value={option.value}>
+              <ChakraCheckbox.HiddenInput />
+              <ChakraCheckbox.Control>
+                <ChakraCheckbox.Indicator />
+              </ChakraCheckbox.Control>
+              <ChakraCheckbox.Label>{option.label}</ChakraCheckbox.Label>
+            </ChakraCheckbox.Root>
+          ))}
+        </ChakraFieldset.Content>
+      </ChakraCheckboxGroup>
       {errorMessage && (
-        <ChakraField.ErrorText>{errorMessage}</ChakraField.ErrorText>
+        <ChakraFieldset.ErrorText>{errorMessage}</ChakraFieldset.ErrorText>
       )}
-    </ChakraField.Root>
+    </ChakraFieldset.Root>
   )
 }
 
