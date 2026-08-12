@@ -9,6 +9,7 @@
     "wrappers/ts/react-aria/v1",
     "wrappers/ts/react-spectrum/v3",
     "wrappers/ts/react-spectrum/s2",
+    "wrappers/ts/heroui/v3",
     "wrappers/ts/mui/v9",
     "wrappers/ts/chakra/v3"
   ],
@@ -55,6 +56,8 @@
   "homepage": "https://github.com/thoughtbot/candy_wrapper#readme",
   "devDependencies": {
     "@react-aria/test-utils": "^1.0.0-alpha.7",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.1.0",
@@ -73,6 +76,7 @@
     "prettier-eslint": "^16.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "tailwindcss": "^4.3.3",
     "tsup": "^8.1.0",
     "typedoc": "^0.28.0",
     "typedoc-plugin-markdown": "^4.12.0",

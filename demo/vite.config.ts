@@ -4,6 +4,11 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react()],
+  css: {
+    postcss: {
+      plugins: [require('@tailwindcss/postcss')],
+    },
+  },
   root: __dirname,
   base: './',
   build: {
@@ -16,6 +21,7 @@ export default defineConfig({
         shadcn: path.resolve(__dirname, 'frames/shadcn.html'),
         chakra: path.resolve(__dirname, 'frames/chakra.html'),
         mantine: path.resolve(__dirname, 'frames/mantine.html'),
+        heroui: path.resolve(__dirname, 'frames/heroui.html'),
         mui: path.resolve(__dirname, 'frames/mui.html'),
         'react-aria': path.resolve(__dirname, 'frames/react-aria.html'),
         'react-spectrum': path.resolve(__dirname, 'frames/react-spectrum.html'),
