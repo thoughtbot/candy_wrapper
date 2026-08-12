@@ -309,8 +309,9 @@ export const CollectionRadioButtons = ({
         <RadioGroup.Label>{label}</RadioGroup.Label>
         {collection.map((option) => (
           <RadioGroup.Item key={option.value} value={option.value}>
-            <RadioGroup.ItemHiddenInput style={{ position: 'static', width: 'auto', height: 'auto', opacity: 1 }} />
+            <RadioGroup.ItemControl />
             <RadioGroup.ItemText>{option.label}</RadioGroup.ItemText>
+            <RadioGroup.ItemHiddenInput />
           </RadioGroup.Item>
         ))}
       </RadioGroup.Root>
