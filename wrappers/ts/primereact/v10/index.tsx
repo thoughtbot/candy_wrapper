@@ -242,19 +242,37 @@ export const CollectionCheckboxes = ({
 
   const { name } = collection[0]
 
+  const initialChecked = collection
+    .filter((opt) => opt.checked ?? opt.defaultChecked)
+    .map((opt) => opt.value)
+  const [checkedValues, setCheckedValues] = useState<string[]>(initialChecked)
+
   const checkboxes = collection.map((options) => {
     const {
       label: optionLabel,
       type: _type,
       includeHidden: _includeHidden,
       uncheckedValue: _uncheckedValue,
-      checked = false,
+      checked: _checked,
+      defaultChecked: _defaultChecked,
       ...rest
     } = options
 
     return (
       <div key={rest.id} className="field-checkbox">
-        <PrimeCheckbox inputId={rest.id} {...rest} checked={checked} />
+        <PrimeCheckbox
+          inputId={rest.id}
+          name={rest.name}
+          value={rest.value}
+          checked={checkedValues.includes(rest.value)}
+          onChange={(e) => {
+            if (e.checked) {
+              setCheckedValues((prev) => [...prev, rest.value])
+            } else {
+              setCheckedValues((prev) => prev.filter((v) => v !== rest.value))
+            }
+          }}
+        />
         <label htmlFor={rest.id}>{optionLabel}</label>
       </div>
     )
@@ -286,13 +304,23 @@ export const CollectionRadioButtons = ({
   }
 
   const { name } = collection[0]
+  const defaultItem = collection.find((option) => !!option.defaultChecked)
+  const checkedItem = collection.find((option) => !!option.checked)
+  const initialValue = checkedItem?.value ?? defaultItem?.value ?? null
+  const [selectedValue, setSelectedValue] = useState<string | null>(initialValue)
 
   const radioButtons = collection.map((options) => {
-    const { label: optionLabel, type: _type, ...rest } = options
+    const { label: optionLabel, type: _type, checked: _checked, defaultChecked: _defaultChecked, ...rest } = options
 
     return (
       <div key={rest.value} className="field-radiobutton">
-        <PrimeRadioButton inputId={rest.id} {...rest} />
+        <PrimeRadioButton
+          inputId={rest.id}
+          name={name}
+          value={rest.value}
+          checked={selectedValue === rest.value}
+          onChange={(e) => setSelectedValue(e.value)}
+        />
         <label htmlFor={rest.id}>{optionLabel}</label>
       </div>
     )
@@ -485,13 +513,7 @@ export const DateField = ({
   ...rest
 }: DateFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
-
-  const valueProps: TransformedValues<Date> = {}
-  if (value) {
-    valueProps.value = parseDate(value as string)
-  } else if (defaultValue) {
-    valueProps.defaultValue = parseDate(defaultValue as string)
-  }
+  const initialDate = parseDate((value ?? defaultValue) as string)
 
   const minMaxProps: { minDate?: Date; maxDate?: Date } = {}
   if (min) {
@@ -506,7 +528,7 @@ export const DateField = ({
       <Calendar
         {...rest}
         inputId={rest.id}
-        {...valueProps}
+        value={initialDate}
         {...minMaxProps}
         dateFormat="yy-mm-dd"
         className={errorMessage ? 'p-invalid' : undefined}
@@ -530,13 +552,7 @@ export const DateTimeLocalField = ({
   ...rest
 }: DateTimeLocalFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
-
-  const valueProps: TransformedValues<Date> = {}
-  if (value) {
-    valueProps.value = parseDate(value as string)
-  } else if (defaultValue) {
-    valueProps.defaultValue = parseDate(defaultValue as string)
-  }
+  const initialDate = parseDate((value ?? defaultValue) as string)
 
   const minMaxProps: { minDate?: Date; maxDate?: Date } = {}
   if (min) {
@@ -552,7 +568,7 @@ export const DateTimeLocalField = ({
         {...rest}
         inputId={rest.id}
         showTime
-        {...valueProps}
+        value={initialDate}
         {...minMaxProps}
         className={errorMessage ? 'p-invalid' : undefined}
       />
@@ -573,13 +589,7 @@ export const TimeField = ({
   ...rest
 }: TimeFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
-
-  const valueProps: TransformedValues<Date> = {}
-  if (value) {
-    valueProps.value = parseTime(value as string)
-  } else if (defaultValue) {
-    valueProps.defaultValue = parseTime(defaultValue as string)
-  }
+  const initialTime = parseTime((value ?? defaultValue) as string)
 
   return (
     <FieldWrapper label={label} id={rest.id} errorKey={errorKey}>
@@ -587,7 +597,7 @@ export const TimeField = ({
         {...rest}
         inputId={rest.id}
         timeOnly
-        {...valueProps}
+        value={initialTime}
         className={errorMessage ? 'p-invalid' : undefined}
       />
     </FieldWrapper>
@@ -609,13 +619,7 @@ export const MonthField = ({
   ...rest
 }: MonthFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
-
-  const valueProps: TransformedValues<Date> = {}
-  if (value) {
-    valueProps.value = parseDate(value as string)
-  } else if (defaultValue) {
-    valueProps.defaultValue = parseDate(defaultValue as string)
-  }
+  const initialDate = parseDate((value ?? defaultValue) as string)
 
   const minMaxProps: { minDate?: Date; maxDate?: Date } = {}
   if (min) {
@@ -632,7 +636,7 @@ export const MonthField = ({
         inputId={rest.id}
         view="month"
         dateFormat="yy-mm"
-        {...valueProps}
+        value={initialDate}
         {...minMaxProps}
         className={errorMessage ? 'p-invalid' : undefined}
       />
@@ -752,10 +756,10 @@ export const Select = ({
     const {
       multiple: _multiple,
       value,
-      defaultvalue,
+      defaultValue,
       ...multiRest
     } = rest as MultiSelectProps
-    const selectedValues = value || defaultvalue || []
+    const selectedValues = value || defaultValue || []
     const [values, setValues] = useState<string[]>(selectedValues)
 
     return (
@@ -787,10 +791,10 @@ export const Select = ({
   const {
     multiple: _multiple,
     value,
-    defaultvalue,
+    defaultValue,
     ...singleRest
   } = rest as SingleSelectProps
-  const selectedValue = value || defaultvalue
+  const selectedValue = value || defaultValue
 
   return (
     <FieldWrapper label={rest.label} id={id} errorKey={errorKey}>
