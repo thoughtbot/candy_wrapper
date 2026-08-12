@@ -71,6 +71,7 @@ import {
   Checkbox as MantineCheckbox,
   Radio as MantineRadio,
   Group as MantineGroup,
+  Input as MantineInput,
   TextInput as MantineTextInput,
   ColorInput as MantineColorInput,
   NumberInput as MantineNumberInput,
@@ -829,7 +830,11 @@ export const RangeField = ({
 }: RangeFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
-  return <MantineSlider label={label} error={errorMessage} {...rest} />
+  return (
+    <MantineInput.Wrapper label={label} error={errorMessage}>
+      <MantineSlider {...rest} />
+    </MantineInput.Wrapper>
+  )
 }
 
 type SubmitButtonProps = ComponentProps<typeof MantineButton> &

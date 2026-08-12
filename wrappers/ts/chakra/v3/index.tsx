@@ -58,11 +58,13 @@ import {
   Textarea as ChakraTextarea,
   Checkbox as ChakraCheckbox,
   RadioGroup as ChakraRadioGroup,
-  NativeSelect as ChakraNativeSelect,
+  Select as ChakraSelect,
   NumberInput as ChakraNumberInput,
   Slider as ChakraSlider,
   Field as ChakraField,
   Button as ChakraButton,
+  Portal,
+  createListCollection,
 } from '@chakra-ui/react'
 
 export const ValidationContext = createContext<ValidationErrors>({})
@@ -555,42 +557,86 @@ export const Select = ({
   errorKey,
   multiple,
   type: _type,
+  defaultValue,
+  value,
   ...rest
 }: SelectProps) => {
   const errorMessage = useErrorMessage(errorKey)
   const addHidden = includeHidden && multiple
 
-  const optionElements = options.map((item) => {
+  const flatItems = options.flatMap((item) => {
     if ('options' in item) {
-      return (
-        <optgroup label={item.label} key={item.label}>
-          {item.options.map((opt) => (
-            <option key={opt.label} {...opt} />
-          ))}
-        </optgroup>
-      )
-    } else {
-      return <option key={item.label} {...item} />
+      return item.options
     }
+    return [item]
   })
+
+  const collection = createListCollection({ items: flatItems })
+
+  const defaultValueArray = defaultValue
+    ? Array.isArray(defaultValue)
+      ? defaultValue
+      : [defaultValue]
+    : undefined
+
+  const valueArray = value
+    ? Array.isArray(value)
+      ? value
+      : [value]
+    : undefined
 
   return (
     <ChakraField.Root invalid={!!errorMessage}>
       {addHidden && (
         <input type="hidden" name={name} value={''} autoComplete="off" />
       )}
-      <ChakraField.Label>{label}</ChakraField.Label>
-      <ChakraNativeSelect.Root>
-        <ChakraNativeSelect.Field
-          name={name}
-          id={id}
-          multiple={multiple}
-          {...rest}
-        >
-          {optionElements}
-        </ChakraNativeSelect.Field>
-        <ChakraNativeSelect.Indicator />
-      </ChakraNativeSelect.Root>
+      <ChakraSelect.Root
+        name={name}
+        collection={collection}
+        multiple={multiple}
+        defaultValue={defaultValueArray}
+        value={valueArray}
+      >
+        <ChakraSelect.HiddenSelect />
+        <ChakraSelect.Label>{label}</ChakraSelect.Label>
+        <ChakraSelect.Control>
+          <ChakraSelect.Trigger>
+            <ChakraSelect.ValueText placeholder="Select..." />
+          </ChakraSelect.Trigger>
+          <ChakraSelect.IndicatorGroup>
+            <ChakraSelect.Indicator />
+          </ChakraSelect.IndicatorGroup>
+        </ChakraSelect.Control>
+        <Portal>
+          <ChakraSelect.Positioner>
+            <ChakraSelect.Content>
+              {options.map((item) => {
+                if ('options' in item) {
+                  return (
+                    <ChakraSelect.ItemGroup key={item.label}>
+                      <ChakraSelect.ItemGroupLabel>
+                        {item.label}
+                      </ChakraSelect.ItemGroupLabel>
+                      {item.options.map((opt) => (
+                        <ChakraSelect.Item item={opt} key={opt.value}>
+                          {opt.label}
+                          <ChakraSelect.ItemIndicator />
+                        </ChakraSelect.Item>
+                      ))}
+                    </ChakraSelect.ItemGroup>
+                  )
+                }
+                return (
+                  <ChakraSelect.Item item={item} key={item.value}>
+                    {item.label}
+                    <ChakraSelect.ItemIndicator />
+                  </ChakraSelect.Item>
+                )
+              })}
+            </ChakraSelect.Content>
+          </ChakraSelect.Positioner>
+        </Portal>
+      </ChakraSelect.Root>
       {errorMessage && (
         <ChakraField.ErrorText>{errorMessage}</ChakraField.ErrorText>
       )}
