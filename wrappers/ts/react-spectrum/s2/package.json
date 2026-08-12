@@ -1,0 +1,12 @@
+{
+  "name": "@candy_wrapper/react-spectrum-s2",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json"
+  },
+  "devDependencies": {
+    "@react-spectrum/s2": "^1.6.0",
+    "@internationalized/date": "^3.0.0"
+  }
+}

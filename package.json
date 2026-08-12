@@ -8,6 +8,7 @@
     "wrappers/ts/shadcn/v4",
     "wrappers/ts/react-aria/v1",
     "wrappers/ts/react-spectrum/v3",
+    "wrappers/ts/react-spectrum/s2",
     "wrappers/ts/primereact/v10",
     "wrappers/ts/mui/v9",
     "wrappers/ts/chakra/v3"

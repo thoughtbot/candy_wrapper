@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>candy_wrapper — Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      height: 100vh;
+      background: #f8f9fa;
+      color: #1a1a2e;
+    }
+
+    aside {
+      width: 240px;
+      min-width: 240px;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      padding: 16px 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    aside h1 {
+      font-size: 16px;
+      padding: 0 16px 12px;
+      border-bottom: 1px solid #2a2a4e;
+      margin-bottom: 8px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    aside h1 span { color: #818cf8; }
+
+    aside button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: #c0c0d0;
+      padding: 8px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    aside button:hover { background: #2a2a4e; color: #fff; }
+    aside button.active { background: #818cf8; color: #fff; font-weight: 600; }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      padding: 12px 20px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header h2 {
+      font-size: 18px;
+      font-weight: 600;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    header span {
+      font-size: 12px;
+      color: #6b7280;
+      background: #f3f4f6;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 1px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .cell {
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cell-label {
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #6b7280;
+      background: #fafafa;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .cell iframe {
+      flex: 1;
+      border: none;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <aside>
+    <h1><span>candy</span>_wrapper</h1>
+  </aside>
+
+  <main>
+    <header>
+      <h2 id="current-field">TextField</h2>
+      <span>Same Rails payload → 8 UI libraries</span>
+    </header>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <script>
+    const FIELD_TYPES = [
+      'TextField', 'EmailField', 'PasswordField', 'NumberField',
+      'DateField', 'DateTimeLocalField', 'TimeField', 'MonthField',
+      'ColorField', 'SearchField', 'TelField', 'UrlField', 'RangeField',
+      'Checkbox', 'CollectionCheckboxes', 'CollectionRadioButtons',
+      'Select', 'MultiSelect', 'TextArea', 'FileField', 'SubmitButton',
+    ]
+
+    const LIBRARIES = [
+      { id: 'vanilla', label: 'Vanilla' },
+      { id: 'shadcn', label: 'shadcn/ui' },
+      { id: 'chakra', label: 'Chakra UI' },
+      { id: 'react-spectrum', label: 'React Spectrum' },
+      { id: 'mantine', label: 'Mantine' },
+      { id: 'mui', label: 'MUI' },
+      { id: 'primereact', label: 'PrimeReact' },
+      { id: 'react-aria', label: 'React Aria' },
+    ]
+
+    const sidebar = document.querySelector('aside')
+    const grid = document.getElementById('grid')
+    const heading = document.getElementById('current-field')
+    let currentField = 'TextField'
+
+    // Build sidebar buttons
+    FIELD_TYPES.forEach(type => {
+      const btn = document.createElement('button')
+      btn.textContent = type
+      btn.dataset.field = type
+      if (type === currentField) btn.classList.add('active')
+      btn.addEventListener('click', () => selectField(type))
+      sidebar.appendChild(btn)
+    })
+
+    // Build iframe grid
+    LIBRARIES.forEach(lib => {
+      const cell = document.createElement('div')
+      cell.className = 'cell'
+
+      const label = document.createElement('div')
+      label.className = 'cell-label'
+      label.textContent = lib.label
+      cell.appendChild(label)
+
+      const iframe = document.createElement('iframe')
+      iframe.src = `frames/${lib.id}.html`
+      iframe.dataset.lib = lib.id
+      cell.appendChild(iframe)
+
+      grid.appendChild(cell)
+    })
+
+    function selectField(type) {
+      currentField = type
+      heading.textContent = type
+
+      sidebar.querySelectorAll('button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.field === type)
+      })
+
+      document.querySelectorAll('iframe').forEach(iframe => {
+        iframe.contentWindow.postMessage({ type: 'SELECT_FIELD', field: type }, '*')
+      })
+    }
+  </script>
+</body>
+</html>
