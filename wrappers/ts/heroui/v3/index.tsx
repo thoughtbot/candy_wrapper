@@ -6,7 +6,7 @@
  * You modify these components to fit your design needs.
  */
 
-import React, { createContext, useContext, useMemo } from 'react'
+import React, { createContext, useContext, useMemo, useState } from 'react'
 import {
   parseDate,
   parseDateTime,
@@ -89,7 +89,10 @@ import {
   Slider as HeroSlider,
   Button as HeroButton,
   ColorField as HeroColorField,
+  ColorSwatch as HeroColorSwatch,
+  parseColor,
 } from '@heroui/react'
+import type { Color } from '@heroui/react'
 
 export const ValidationContext = createContext<ValidationErrors>({})
 
@@ -297,7 +300,12 @@ export const CollectionRadioButtons = ({
         <HeroLabel>{label}</HeroLabel>
         {collection.map((option) => (
           <HeroRadio key={option.value} value={option.value}>
-            {option.label}
+            <HeroRadio.Content>
+              <HeroRadio.Control>
+                <HeroRadio.Indicator />
+              </HeroRadio.Control>
+              {option.label}
+            </HeroRadio.Content>
           </HeroRadio>
         ))}
       </HeroRadioGroup>
@@ -363,16 +371,27 @@ export const ColorField = ({
   ...rest
 }: ColorFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
+  const initialColor = rest.value || rest.defaultValue
+  const [color, setColor] = useState<Color | null>(
+    initialColor ? parseColor(initialColor) : null
+  )
 
   return (
     <HeroColorField
-      label={label}
       name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
+      value={color}
+      onChange={setColor}
       isInvalid={!!errorMessage}
-      errorMessage={errorMessage}
-    />
+    >
+      <HeroLabel>{label}</HeroLabel>
+      <HeroColorField.Group>
+        <HeroColorField.Prefix>
+          <HeroColorSwatch color={color ?? undefined} size="xs" />
+        </HeroColorField.Prefix>
+        <HeroColorField.Input />
+      </HeroColorField.Group>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroColorField>
   )
 }
 
@@ -410,13 +429,19 @@ export const DateField = ({
 
   return (
     <HeroDateField
-      label={label}
       name={rest.name}
       {...valueProps}
       {...minMaxProps}
       isInvalid={!!errorMessage}
-      errorMessage={errorMessage}
-    />
+    >
+      <HeroLabel>{label}</HeroLabel>
+      <HeroDateField.Group>
+        <HeroDateField.Input>
+          {(segment) => <HeroDateField.Segment segment={segment} />}
+        </HeroDateField.Input>
+      </HeroDateField.Group>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroDateField>
   )
 }
 
@@ -456,15 +481,21 @@ export const DateTimeLocalField = ({
   }
 
   return (
-    <HeroDatePicker
-      label={label}
+    <HeroDateField
       name={rest.name}
       granularity="second"
       {...valueProps}
       {...minMaxProps}
       isInvalid={!!errorMessage}
-      errorMessage={errorMessage}
-    />
+    >
+      <HeroLabel>{label}</HeroLabel>
+      <HeroDateField.Group>
+        <HeroDateField.Input>
+          {(segment) => <HeroDateField.Segment segment={segment} />}
+        </HeroDateField.Input>
+      </HeroDateField.Group>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroDateField>
   )
 }
 
@@ -489,12 +520,18 @@ export const TimeField = ({
 
   return (
     <HeroTimeField
-      label={label}
       name={rest.name}
       {...valueProps}
       isInvalid={!!errorMessage}
-      errorMessage={errorMessage}
-    />
+    >
+      <HeroLabel>{label}</HeroLabel>
+      <HeroTimeField.Group>
+        <HeroTimeField.Input>
+          {(segment) => <HeroTimeField.Segment segment={segment} />}
+        </HeroTimeField.Input>
+      </HeroTimeField.Group>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroTimeField>
   )
 }
 
@@ -623,14 +660,20 @@ export const NumberField = ({
 
   return (
     <HeroNumberField
-      label={label}
       name={rest.name}
       {...valueProps}
       minValue={min}
       maxValue={max}
       isInvalid={!!errorMessage}
-      errorMessage={errorMessage}
-    />
+    >
+      <HeroLabel>{label}</HeroLabel>
+      <HeroNumberField.Group>
+        <HeroNumberField.DecrementButton />
+        <HeroNumberField.Input />
+        <HeroNumberField.IncrementButton />
+      </HeroNumberField.Group>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroNumberField>
   )
 }
 
@@ -654,13 +697,25 @@ export const RangeField = ({
   return (
     <>
       <HeroSlider
-        label={label}
         name={rest.name}
         defaultValue={numericDefault}
         value={numericValue}
         minValue={min}
         maxValue={max}
-      />
+      >
+        <HeroLabel>{label}</HeroLabel>
+        <HeroSlider.Output />
+        <HeroSlider.Track>
+          {({ state }) => (
+            <>
+              <HeroSlider.Fill />
+              {state.values.map((_: number, i: number) => (
+                <HeroSlider.Thumb key={i} index={i} />
+              ))}
+            </>
+          )}
+        </HeroSlider.Track>
+      </HeroSlider>
       {errorMessage && <span>{errorMessage}</span>}
     </>
   )
@@ -685,7 +740,7 @@ export const PasswordField = ({
       isInvalid={!!errorMessage}
     >
       <HeroLabel>{label}</HeroLabel>
-      <HeroInput id={rest.id} />
+      <HeroInput id={rest.id} placeholder={rest.placeholder} />
       {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
     </HeroTextField>
   )
@@ -714,22 +769,24 @@ export const Select = ({
   const selectionProps: Record<string, unknown> = {}
   if (multiple) {
     selectionProps.selectionMode = 'multiple'
-    if (selectedValue && Array.isArray(selectedValue)) {
-      selectionProps.selectedKeys = new Set(selectedValue)
-    } else if (selectedDefault && Array.isArray(selectedDefault)) {
-      selectionProps.defaultSelectedKeys = new Set(selectedDefault)
+    if (selectedValue) {
+      selectionProps.value = Array.isArray(selectedValue)
+        ? selectedValue
+        : [selectedValue]
+    } else if (selectedDefault) {
+      selectionProps.defaultValue = Array.isArray(selectedDefault)
+        ? selectedDefault
+        : [selectedDefault]
     }
   } else {
-    const singleValue = Array.isArray(selectedValue)
-      ? selectedValue[0]
-      : selectedValue
-    const singleDefault = Array.isArray(selectedDefault)
-      ? selectedDefault[0]
-      : selectedDefault
-    if (singleValue) {
-      selectionProps.selectedKey = singleValue
-    } else if (singleDefault) {
-      selectionProps.defaultSelectedKey = singleDefault
+    if (selectedValue) {
+      selectionProps.value = Array.isArray(selectedValue)
+        ? selectedValue[0]
+        : selectedValue
+    } else if (selectedDefault) {
+      selectionProps.defaultValue = Array.isArray(selectedDefault)
+        ? selectedDefault[0]
+        : selectedDefault
     }
   }
 
