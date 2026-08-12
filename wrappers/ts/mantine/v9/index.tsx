@@ -52,6 +52,7 @@ import {
   MonthField as RailsMonthField,
   NumberField as RailsNumberField,
   PasswordField as RailsPasswordField,
+  RangeField as RailsRangeField,
   SearchField as RailsSearchField,
   SingleSelect as RailsSingleSelect,
   MultiSelect as RailsMultiSelect,
@@ -74,6 +75,7 @@ import {
   ColorInput as MantineColorInput,
   NumberInput as MantineNumberInput,
   PasswordInput as MantinePasswordInput,
+  Slider as MantineSlider,
   Select as MantineSelect,
   MultiSelect as MantineMultiSelect,
   Textarea as MantineTextArea,
@@ -247,6 +249,7 @@ export const CollectionCheckboxes = ({
   )
 
   const { name } = collection[0]
+  debugger
 
   return (
     <>
@@ -812,6 +815,21 @@ export const FileField = ({
   const errorMessage = useErrorMessage(errorKey)
 
   return <MantineFileInput label={label} error={errorMessage} {...rest} />
+}
+
+type RangeFieldProps = Omit<ComponentProps<typeof MantineSlider>, 'type'> &
+  RailsRangeField &
+  InputProps
+
+export const RangeField = ({
+  type: _type,
+  errorKey,
+  label,
+  ...rest
+}: RangeFieldProps) => {
+  const errorMessage = useErrorMessage(errorKey)
+
+  return <MantineSlider label={label} error={errorMessage} {...rest} />
 }
 
 type SubmitButtonProps = ComponentProps<typeof MantineButton> &
