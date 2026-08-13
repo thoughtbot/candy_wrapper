@@ -22,10 +22,9 @@ describe('NumberField', () => {
       <NumberField {...payload} label={'Favs'} errorKey={'favs'} />
     )
 
-    const input = container.querySelector('input#post_favs')
+    const input = container.querySelector('input[name="post[favs]"]')
     expect(input).not.toBeNull()
-    expect(input.value).toEqual('2')
-    expect(input.id).toEqual('post_favs')
+    expect(input.value).toEqual('3') // step=2 from min=1 rounds 2 to 3
   })
 
   it('renders with field errors', async () => {

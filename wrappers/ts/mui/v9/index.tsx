@@ -141,17 +141,18 @@ type InputProps = {
   errorKey?: string
 }
 
+// TextField
 type TextFieldComponentProps = ComponentProps<typeof TextField> &
   RailsTextField &
   InputProps
-export const TextFieldComponent = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: TextFieldComponentProps) => {
+export const TextFieldComponent = (props: TextFieldComponentProps) => {
+  // Strip candy_wrapper-specific props
+  const { type, errorKey, label, ...rest } = props
+
+  // Transform
   const errorMessage = useErrorMessage(errorKey)
 
+  // Spread rest into MUI TextField
   return (
     <TextField
       label={label}
@@ -164,15 +165,13 @@ export const TextFieldComponent = ({
 }
 export { TextFieldComponent as TextField }
 
+// EmailField
 type EmailFieldProps = ComponentProps<typeof TextField> &
   RailsEmailField &
   InputProps
-export const EmailField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: EmailFieldProps) => {
+export const EmailField = (props: EmailFieldProps) => {
+  const { type, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -186,16 +185,13 @@ export const EmailField = ({
   )
 }
 
+// ColorField — also strips `color` since it clashes with MUI's `color` prop
 type ColorFieldProps = ComponentProps<typeof TextField> &
   RailsColorField &
   InputProps
-export const ColorField = ({
-  type: _type,
-  color: _color,
-  label,
-  errorKey,
-  ...rest
-}: ColorFieldProps) => {
+export const ColorField = (props: ColorFieldProps) => {
+  const { type, color, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -214,15 +210,13 @@ export const ColorField = ({
   )
 }
 
+// DateField
 type DateFieldProps = ComponentProps<typeof TextField> &
   RailsDateField &
   InputProps
-export const DateField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: DateFieldProps) => {
+export const DateField = (props: DateFieldProps) => {
+  const { type, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -237,15 +231,13 @@ export const DateField = ({
   )
 }
 
+// DateTimeLocalField
 type DateTimeLocalFieldProps = ComponentProps<typeof TextField> &
   RailsDateTimeLocalField &
   InputProps
-export const DateTimeLocalField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: DateTimeLocalFieldProps) => {
+export const DateTimeLocalField = (props: DateTimeLocalFieldProps) => {
+  const { type, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -260,15 +252,13 @@ export const DateTimeLocalField = ({
   )
 }
 
+// SearchField
 type SearchFieldProps = ComponentProps<typeof TextField> &
   RailsSearchField &
   InputProps
-export const SearchField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: SearchFieldProps) => {
+export const SearchField = (props: SearchFieldProps) => {
+  const { type, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -282,15 +272,13 @@ export const SearchField = ({
   )
 }
 
+// TelField
 type TelFieldProps = ComponentProps<typeof TextField> &
   RailsTelField &
   InputProps
-export const TelField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: TelFieldProps) => {
+export const TelField = (props: TelFieldProps) => {
+  const { type, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -304,15 +292,13 @@ export const TelField = ({
   )
 }
 
+// UrlField
 type UrlFieldProps = ComponentProps<typeof TextField> &
   RailsUrlField &
   InputProps
-export const UrlField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: UrlFieldProps) => {
+export const UrlField = (props: UrlFieldProps) => {
+  const { type, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -326,15 +312,13 @@ export const UrlField = ({
   )
 }
 
+// MonthField
 type MonthFieldProps = ComponentProps<typeof TextField> &
   RailsMonthField &
   InputProps
-export const MonthField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: MonthFieldProps) => {
+export const MonthField = (props: MonthFieldProps) => {
+  const { type, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -349,15 +333,13 @@ export const MonthField = ({
   )
 }
 
+// TimeField
 type TimeFieldProps = ComponentProps<typeof TextField> &
   RailsTimeField &
   InputProps
-export const TimeField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: TimeFieldProps) => {
+export const TimeField = (props: TimeFieldProps) => {
+  const { type, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -372,18 +354,13 @@ export const TimeField = ({
   )
 }
 
+// NumberField — strips `min`, `max`, `step` and transforms them into slotProps
 type NumberFieldProps = ComponentProps<typeof TextField> &
   RailsNumberField &
   InputProps & { step?: number }
-export const NumberField = ({
-  type: _type,
-  label,
-  errorKey,
-  min,
-  max,
-  step,
-  ...rest
-}: NumberFieldProps) => {
+export const NumberField = (props: NumberFieldProps) => {
+  const { type, errorKey, label, min, max, step, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -398,15 +375,13 @@ export const NumberField = ({
   )
 }
 
+// PasswordField
 type PasswordFieldProps = ComponentProps<typeof TextField> &
   RailsPasswordField &
   InputProps
-export const PasswordField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: PasswordFieldProps) => {
+export const PasswordField = (props: PasswordFieldProps) => {
+  const { type, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -420,23 +395,21 @@ export const PasswordField = ({
   )
 }
 
+// RangeField — transforms string value/defaultValue to numbers for MUI Slider
 type RangeFieldProps = ComponentProps<typeof Slider> &
   RailsRangeField &
   InputProps
-export const RangeField = ({
-  type: _type,
-  label,
-  errorKey,
-  value,
-  defaultValue,
-  ...rest
-}: RangeFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
+export const RangeField = (props: RangeFieldProps) => {
+  // Strip candy_wrapper-specific props
+  const { type, errorKey, label, value, defaultValue, ...rest } = props
 
+  // Transform string values to numbers for MUI Slider
+  const errorMessage = useErrorMessage(errorKey)
   const sliderValue = value !== undefined ? Number(value) : undefined
   const sliderDefaultValue =
     defaultValue !== undefined ? Number(defaultValue) : undefined
 
+  // Spread rest into Slider
   return (
     <FormControl error={!!errorMessage} fullWidth>
       <FormLabel>{label}</FormLabel>
@@ -451,20 +424,19 @@ export const RangeField = ({
   )
 }
 
+// Checkbox — strips includeHidden, uncheckedValue; passes defaultChecked/checked through natively
 type CheckboxProps = ComponentProps<typeof MuiCheckbox> &
   RailsCheckboxField &
   InputProps
-export const Checkbox = ({
-  type: _type,
-  includeHidden,
-  uncheckedValue,
-  errorKey,
-  label,
-  ...rest
-}: CheckboxProps) => {
-  const { name } = rest
-  const errorMessage = useErrorMessage(errorKey)
+export const Checkbox = (props: CheckboxProps) => {
+  // Strip candy_wrapper-specific props
+  const { type, includeHidden, uncheckedValue, errorKey, label, ...rest } = props
 
+  // Transform
+  const errorMessage = useErrorMessage(errorKey)
+  const { name } = rest
+
+  // Spread rest into MuiCheckbox (defaultChecked/checked pass through natively)
   return (
     <FormControl error={!!errorMessage}>
       {includeHidden && (
@@ -481,14 +453,13 @@ export const Checkbox = ({
   )
 }
 
+// CollectionCheckboxes — strips candy_wrapper props from each collection item
 type CollectionCheckboxesFieldProps = RailsCollectionCheckboxesField &
   InputProps
-export const CollectionCheckboxes = ({
-  includeHidden,
-  collection,
-  label,
-  errorKey,
-}: CollectionCheckboxesFieldProps) => {
+export const CollectionCheckboxes = (props: CollectionCheckboxesFieldProps) => {
+  // Strip candy_wrapper-specific props
+  const { includeHidden, collection, label, errorKey } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   if (collection.length === 0) {
@@ -497,14 +468,9 @@ export const CollectionCheckboxes = ({
 
   const { name } = collection[0]
 
-  const checkboxes = collection.map((options) => {
-    const {
-      label: checkboxLabel,
-      type: _type,
-      includeHidden: _includeHidden,
-      uncheckedValue: _uncheckedValue,
-      ...rest
-    } = options
+  const checkboxes = collection.map((item) => {
+    // Strip candy_wrapper-specific props from each collection item
+    const { label: checkboxLabel, type, includeHidden: _ih, uncheckedValue: _uv, ...rest } = item
 
     return (
       <FormControlLabel
@@ -527,40 +493,35 @@ export const CollectionCheckboxes = ({
   )
 }
 
+// CollectionRadioButtons — extracts value from checked/defaultChecked items for RadioGroup
 type CollectionRadioButtonsFieldProps = RailsCollectionRadioButtonsField &
   InputProps
-export const CollectionRadioButtons = ({
-  includeHidden,
-  collection,
-  label,
-  errorKey,
-}: CollectionRadioButtonsFieldProps) => {
+export const CollectionRadioButtons = (props: CollectionRadioButtonsFieldProps) => {
+  // Strip candy_wrapper-specific props
+  const { includeHidden, collection, label, errorKey } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   if (collection.length === 0) {
     return null
   }
 
+  // Transform: extract value/defaultValue for RadioGroup from checked/defaultChecked items
   const defaultItem = collection.find((option) => !!option.defaultChecked)
-  const item = collection.find((option) => !!option.checked)
+  const checkedItem = collection.find((option) => !!option.checked)
 
   const valueProps: { value?: string; defaultValue?: string } = {}
   if (defaultItem) {
     valueProps.defaultValue = defaultItem.value
-  } else if (item) {
-    valueProps.value = item.value
+  } else if (checkedItem) {
+    valueProps.value = checkedItem.value
   }
 
   const { name } = collection[0]
 
-  const radioButtons = collection.map((options) => {
-    const {
-      label: radioLabel,
-      checked: _checked,
-      defaultChecked: _defaultChecked,
-      type: _type,
-      ...rest
-    } = options
+  const radioButtons = collection.map((item) => {
+    // Strip candy_wrapper-specific props from each collection item
+    const { label: radioLabel, checked, defaultChecked, type, ...rest } = item
 
     return (
       <FormControlLabel
@@ -585,25 +546,21 @@ export const CollectionRadioButtons = ({
   )
 }
 
+// Select — strips candy_wrapper props, transforms options to MenuItem children
 type SelectProps = (
   | (ComponentProps<typeof MuiSelect> & RailsSingleSelect)
   | (ComponentProps<typeof MuiSelect> & RailsMultiSelect)
 ) &
   InputProps
-export const Select = ({
-  includeHidden,
-  name,
-  id,
-  options,
-  label,
-  errorKey,
-  multiple,
-  type: _type,
-  ...rest
-}: SelectProps) => {
+export const Select = (props: SelectProps) => {
+  // Strip candy_wrapper-specific props
+  const { type, includeHidden, options, errorKey, label, name, id, multiple, ...rest } = props
+
+  // Transform
   const errorMessage = useErrorMessage(errorKey)
   const addHidden = includeHidden && multiple
 
+  // Transform options into MenuItem children (flattening optgroups)
   const menuItems = options.flatMap((item) => {
     if ('options' in item) {
       return item.options.map((opt) => (
@@ -626,6 +583,7 @@ export const Select = ({
 
   const labelId = id ? `${id}-label` : undefined
 
+  // Spread rest into MuiSelect
   return (
     <FormControl error={!!errorMessage} fullWidth>
       {addHidden && (
@@ -647,16 +605,13 @@ export const Select = ({
   )
 }
 
+// TextArea
 type TextAreaProps = ComponentProps<typeof TextField> &
   RailsTextArea &
   InputProps
-export const TextArea = ({
-  type: _type,
-  label,
-  errorKey,
-  rows,
-  ...rest
-}: TextAreaProps) => {
+export const TextArea = (props: TextAreaProps) => {
+  const { type, errorKey, label, rows, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -671,15 +626,11 @@ export const TextArea = ({
   )
 }
 
+// FileField — strips `color` and `size` since they clash with MUI props
 type FileFieldProps = React.InputHTMLAttributes<HTMLInputElement> & InputProps
-export const FileField = ({
-  type: _type,
-  color: _color,
-  size: _size,
-  label,
-  errorKey,
-  ...rest
-}: FileFieldProps) => {
+export const FileField = (props: FileFieldProps) => {
+  const { type, color, size, errorKey, label, ...rest } = props
+
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -694,12 +645,11 @@ export const FileField = ({
   )
 }
 
+// SubmitButton
 type SubmitButtonProps = ComponentProps<typeof Button> & RailsSubmitButton
-export const SubmitButton = ({
-  type: _type,
-  text,
-  ...rest
-}: SubmitButtonProps) => {
+export const SubmitButton = (props: SubmitButtonProps) => {
+  const { type, text, ...rest } = props
+
   return (
     <Button {...rest} type="submit" variant="contained">
       {text}

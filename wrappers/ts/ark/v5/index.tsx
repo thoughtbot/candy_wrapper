@@ -192,11 +192,8 @@ export const CheckboxComponent = ({
   uncheckedValue,
   errorKey,
   label,
-  checked,
-  defaultChecked,
   ...rest
 }: CheckboxProps) => {
-  const { name, id } = rest
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -204,16 +201,13 @@ export const CheckboxComponent = ({
       {includeHidden && (
         <input
           type="hidden"
-          name={name}
+          name={rest.name}
           defaultValue={uncheckedValue}
           autoComplete="off"
         />
       )}
       <Checkbox.Root
-        name={name}
-        value={rest.value}
-        checked={checked}
-        defaultChecked={defaultChecked}
+        {...rest}
         invalid={!!errorMessage}
       >
         <Checkbox.Control>
@@ -328,14 +322,7 @@ export const TextField = ({
 }: TextFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input
-        id={rest.id}
-        name={rest.name}
-        defaultValue={rest.defaultValue}
-        value={rest.value}
-        placeholder={rest.placeholder}
-        type="text"
-      />
+      <Field.Input {...rest} type="text" />
     </FieldWrapperWithError>
   )
 }
@@ -350,14 +337,7 @@ export const EmailField = ({
 }: EmailFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input
-        id={rest.id}
-        name={rest.name}
-        defaultValue={rest.defaultValue}
-        value={rest.value}
-        placeholder={rest.placeholder}
-        type="email"
-      />
+      <Field.Input {...rest} type="email" />
     </FieldWrapperWithError>
   )
 }
@@ -371,11 +351,12 @@ export const ColorField = ({
   ...rest
 }: ColorFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
-  const colorValue = rest.value || rest.defaultValue || '#000000'
+  const { name, value, defaultValue, ...colorRest } = rest
+  const colorValue = value || defaultValue || '#000000'
 
   return (
     <Field.Root invalid={!!errorMessage}>
-      <ColorPicker.Root defaultValue={colorValue}>
+      <ColorPicker.Root {...colorRest} defaultValue={colorValue}>
         <ColorPicker.Label>{label}</ColorPicker.Label>
         <ColorPicker.Control>
           <ColorPicker.ChannelInput channel="hex" />
@@ -397,7 +378,7 @@ export const ColorField = ({
             </ColorPicker.Content>
           </ColorPicker.Positioner>
         </Portal>
-        <ColorPicker.HiddenInput name={rest.name} />
+        <ColorPicker.HiddenInput name={name} />
       </ColorPicker.Root>
       {errorMessage && <Field.ErrorText>{errorMessage}</Field.ErrorText>}
     </Field.Root>
@@ -416,12 +397,7 @@ export const DateField = ({
 }: DateFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input
-        id={rest.id}
-        name={rest.name}
-        defaultValue={value ?? defaultValue}
-        type="date"
-      />
+      <Field.Input {...rest} defaultValue={value ?? defaultValue} type="date" />
     </FieldWrapperWithError>
   )
 }
@@ -438,12 +414,7 @@ export const DateTimeLocalField = ({
 }: DateTimeLocalFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input
-        id={rest.id}
-        name={rest.name}
-        defaultValue={value ?? defaultValue}
-        type="datetime-local"
-      />
+      <Field.Input {...rest} defaultValue={value ?? defaultValue} type="datetime-local" />
     </FieldWrapperWithError>
   )
 }
@@ -460,12 +431,7 @@ export const TimeField = ({
 }: TimeFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input
-        id={rest.id}
-        name={rest.name}
-        defaultValue={value ?? defaultValue}
-        type="time"
-      />
+      <Field.Input {...rest} defaultValue={value ?? defaultValue} type="time" />
     </FieldWrapperWithError>
   )
 }
@@ -482,12 +448,7 @@ export const MonthField = ({
 }: MonthFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input
-        id={rest.id}
-        name={rest.name}
-        defaultValue={value ?? defaultValue}
-        type="month"
-      />
+      <Field.Input {...rest} defaultValue={value ?? defaultValue} type="month" />
     </FieldWrapperWithError>
   )
 }
@@ -506,14 +467,7 @@ export const SearchField = ({
 }: SearchFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input
-        id={rest.id}
-        name={rest.name}
-        defaultValue={rest.defaultValue}
-        value={rest.value}
-        placeholder={rest.placeholder}
-        type="search"
-      />
+      <Field.Input {...rest} type="search" />
     </FieldWrapperWithError>
   )
 }
@@ -528,14 +482,7 @@ export const TelField = ({
 }: TelFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input
-        id={rest.id}
-        name={rest.name}
-        defaultValue={rest.defaultValue}
-        value={rest.value}
-        placeholder={rest.placeholder}
-        type="tel"
-      />
+      <Field.Input {...rest} type="tel" />
     </FieldWrapperWithError>
   )
 }
@@ -550,14 +497,7 @@ export const UrlField = ({
 }: UrlFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input
-        id={rest.id}
-        name={rest.name}
-        defaultValue={rest.defaultValue}
-        value={rest.value}
-        placeholder={rest.placeholder}
-        type="url"
-      />
+      <Field.Input {...rest} type="url" />
     </FieldWrapperWithError>
   )
 }
@@ -572,14 +512,7 @@ export const PasswordField = ({
 }: PasswordFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input
-        id={rest.id}
-        name={rest.name}
-        defaultValue={rest.defaultValue}
-        value={rest.value}
-        placeholder={rest.placeholder}
-        type="password"
-      />
+      <Field.Input {...rest} type="password" />
     </FieldWrapperWithError>
   )
 }
@@ -592,8 +525,6 @@ export const NumberField = ({
   errorKey,
   value,
   defaultValue,
-  min,
-  max,
   ...rest
 }: NumberFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
@@ -608,11 +539,9 @@ export const NumberField = ({
   return (
     <Field.Root invalid={!!errorMessage}>
       <NumberInput.Root
-        name={rest.name}
+        {...rest}
         defaultValue={numericDefault}
         value={numericValue}
-        min={min}
-        max={max}
       >
         <NumberInput.Label>{label}</NumberInput.Label>
         <NumberInput.Control>
@@ -634,8 +563,6 @@ export const RangeField = ({
   errorKey,
   value,
   defaultValue,
-  min,
-  max,
   ...rest
 }: RangeFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
@@ -645,11 +572,9 @@ export const RangeField = ({
   return (
     <Field.Root invalid={!!errorMessage}>
       <Slider.Root
-        name={rest.name}
+        {...rest}
         defaultValue={numericDefault}
         value={numericValue}
-        min={min}
-        max={max}
       >
         <Slider.Label>{label}</Slider.Label>
         <Slider.ValueText />
@@ -671,8 +596,6 @@ type SelectProps = (RailsSingleSelect | RailsMultiSelect) & InputProps
 
 export const SelectComponent = ({
   includeHidden,
-  name,
-  id,
   options,
   label,
   errorKey,
@@ -682,6 +605,12 @@ export const SelectComponent = ({
 }: SelectProps) => {
   const errorMessage = useErrorMessage(errorKey)
   const addHidden = includeHidden && multiple
+  const { name, id, value, defaultValue, ...selectRest } = rest as {
+    name: string
+    id?: string
+    value?: string | string[]
+    defaultValue?: string | string[]
+  }
 
   const flatItems = options.flatMap((item) => {
     if ('options' in item) {
@@ -692,27 +621,21 @@ export const SelectComponent = ({
 
   const collection = createListCollection({ items: flatItems })
 
-  const selectedValue = 'value' in rest ? rest.value : undefined
-  const selectedDefault =
-    'defaultValue' in rest ? rest.defaultValue : undefined
-
   const valueProps: Record<string, unknown> = {}
   if (multiple) {
     valueProps.multiple = true
-    if (selectedValue && Array.isArray(selectedValue)) {
-      valueProps.value = selectedValue
-    } else if (selectedDefault && Array.isArray(selectedDefault)) {
-      valueProps.defaultValue = selectedDefault
+    if (value && Array.isArray(value)) {
+      valueProps.value = value
+    } else if (defaultValue && Array.isArray(defaultValue)) {
+      valueProps.defaultValue = defaultValue
     }
   } else {
-    if (selectedValue) {
-      valueProps.value = Array.isArray(selectedValue)
-        ? selectedValue
-        : [selectedValue]
-    } else if (selectedDefault) {
-      valueProps.defaultValue = Array.isArray(selectedDefault)
-        ? selectedDefault
-        : [selectedDefault]
+    if (value) {
+      valueProps.value = Array.isArray(value) ? value : [value]
+    } else if (defaultValue) {
+      valueProps.defaultValue = Array.isArray(defaultValue)
+        ? defaultValue
+        : [defaultValue]
     }
   }
 
@@ -722,6 +645,7 @@ export const SelectComponent = ({
         <input type="hidden" name={name} value={''} autoComplete="off" />
       )}
       <Select.Root
+        {...selectRest}
         name={name}
         collection={collection}
         {...valueProps}
@@ -763,15 +687,7 @@ export const TextArea = ({
 }: TextAreaProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Textarea
-        id={rest.id}
-        name={rest.name}
-        defaultValue={rest.defaultValue}
-        value={rest.value}
-        placeholder={rest.placeholder}
-        rows={rest.rows}
-        cols={rest.cols}
-      />
+      <Field.Textarea {...rest} />
     </FieldWrapperWithError>
   )
 }
@@ -791,7 +707,7 @@ export const FileField = ({
       <FileUpload.Root>
         <FileUpload.Label>{label}</FileUpload.Label>
         <FileUpload.Trigger>Choose file</FileUpload.Trigger>
-        <FileUpload.HiddenInput name={rest.name} />
+        <FileUpload.HiddenInput {...rest} />
       </FileUpload.Root>
       {errorMessage && <Field.ErrorText>{errorMessage}</Field.ErrorText>}
     </Field.Root>

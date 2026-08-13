@@ -179,8 +179,9 @@ export const Checkbox = ({
   defaultChecked,
   ...rest
 }: CheckboxProps) => {
-  const { name } = rest
   const errorMessage = useErrorMessage(errorKey)
+
+  // Transform: Rails checked/defaultChecked → Spectrum isSelected/defaultSelected
   const isSelected = checked ?? undefined
   const defaultSelected = defaultChecked ?? undefined
 
@@ -189,14 +190,13 @@ export const Checkbox = ({
       {includeHidden && (
         <input
           type="hidden"
-          name={name}
+          name={rest.name}
           defaultValue={uncheckedValue}
           autoComplete="off"
         />
       )}
       <SpectrumCheckbox
-        name={name}
-        value={rest.value}
+        {...rest}
         isSelected={isSelected}
         defaultSelected={defaultSelected}
         isInvalid={!!errorMessage}
@@ -314,11 +314,8 @@ export const TextField = ({
 
   return (
     <SpectrumTextField
+      {...rest}
       label={label}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
-      maxLength={rest.maxLength}
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
     />
@@ -337,12 +334,9 @@ export const EmailField = ({
 
   return (
     <SpectrumTextField
+      {...rest}
       label={label}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
       type="email"
-      maxLength={rest.maxLength}
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
     />
@@ -361,10 +355,8 @@ export const ColorField = ({
 
   return (
     <SpectrumColorField
+      {...rest}
       label={label}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
     />
@@ -385,6 +377,7 @@ export const DateField = ({
 }: DateFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
+  // Transform: string values → CalendarDate objects
   const valueProps: { value?: CalendarDate; defaultValue?: CalendarDate } = {}
   if (value) {
     valueProps.value = parseDate(value)
@@ -392,6 +385,7 @@ export const DateField = ({
     valueProps.defaultValue = parseDate(defaultValue)
   }
 
+  // Transform: min/max → minValue/maxValue
   const minMaxProps: {
     minValue?: CalendarDate
     maxValue?: CalendarDate
@@ -405,8 +399,8 @@ export const DateField = ({
 
   return (
     <SpectrumDateField
+      {...rest}
       label={label}
-      name={rest.name}
       {...valueProps}
       {...minMaxProps}
       isInvalid={!!errorMessage}
@@ -429,6 +423,7 @@ export const DateTimeLocalField = ({
 }: DateTimeLocalFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
+  // Transform: string values → CalendarDateTime objects
   const valueProps: {
     value?: CalendarDateTime
     defaultValue?: CalendarDateTime
@@ -439,6 +434,7 @@ export const DateTimeLocalField = ({
     valueProps.defaultValue = parseDateTime(defaultValue)
   }
 
+  // Transform: min/max → minValue/maxValue
   const minMaxProps: {
     minValue?: CalendarDateTime
     maxValue?: CalendarDateTime
@@ -452,8 +448,8 @@ export const DateTimeLocalField = ({
 
   return (
     <SpectrumDatePicker
+      {...rest}
       label={label}
-      name={rest.name}
       granularity="second"
       {...valueProps}
       {...minMaxProps}
@@ -475,6 +471,7 @@ export const TimeField = ({
 }: TimeFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
+  // Transform: string values → Time objects
   const valueProps: { value?: Time; defaultValue?: Time } = {}
   if (value) {
     valueProps.value = parseTime(value)
@@ -484,8 +481,8 @@ export const TimeField = ({
 
   return (
     <SpectrumTimeField
+      {...rest}
       label={label}
-      name={rest.name}
       {...valueProps}
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
@@ -509,8 +506,8 @@ export const SearchField = ({
 
   return (
     <SpectrumSearchField
-      label={label}
       {...rest}
+      label={label}
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
     />
@@ -529,12 +526,9 @@ export const TelField = ({
 
   return (
     <SpectrumTextField
+      {...rest}
       label={label}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
       type="tel"
-      maxLength={rest.maxLength}
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
     />
@@ -553,12 +547,9 @@ export const UrlField = ({
 
   return (
     <SpectrumTextField
+      {...rest}
       label={label}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
       type="url"
-      maxLength={rest.maxLength}
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
     />
@@ -571,16 +562,16 @@ export const MonthField = ({
   type: _type,
   label,
   errorKey,
+  min: _min,
+  max: _max,
   ...rest
 }: MonthFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
   return (
     <SpectrumTextField
+      {...rest}
       label={label}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
       type="month"
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
@@ -602,6 +593,7 @@ export const NumberField = ({
 }: NumberFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
+  // Transform: string/number values → number
   const valueProps: { value?: number; defaultValue?: number } = {}
   if (value !== undefined && value !== '') {
     valueProps.value = Number(value)
@@ -609,10 +601,13 @@ export const NumberField = ({
     valueProps.defaultValue = Number(defaultValue)
   }
 
+  // Strip HTML-specific props that clash with Spectrum's API
+  const { step: _step, size: _size, ...numberRest } = rest as Record<string, unknown>
+
   return (
     <SpectrumNumberField
+      {...numberRest}
       label={label}
-      name={rest.name}
       {...valueProps}
       minValue={min}
       maxValue={max}
@@ -634,6 +629,7 @@ export const RangeField = ({
 }: RangeFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
+  // Transform: string values → numbers
   const numericValue = value ? Number(value) : undefined
   const numericDefault = defaultValue ? Number(defaultValue) : undefined
 
@@ -666,12 +662,9 @@ export const PasswordField = ({
 
   return (
     <SpectrumTextField
+      {...rest}
       label={label}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
       type="password"
-      maxLength={rest.maxLength}
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
     />
@@ -783,10 +776,8 @@ export const TextArea = ({
 
   return (
     <SpectrumTextArea
+      {...rest}
       label={label}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
     />

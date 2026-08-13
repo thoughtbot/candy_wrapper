@@ -15,11 +15,12 @@ describe('MonthField', () => {
   it('renders', () => {
     const payload = buildPayload()
 
-    const { getByRole } = render(
+    const { container, getByText } = render(
       <MonthField {...payload} label={'Month'} errorKey={'month'} />
     )
 
-    const input = getByRole('textbox', { name: 'Month' })
+    getByText('Month')
+    const input = container.querySelector('input[type="month"]')
     expect(input).not.toBeNull()
     expect(input.value).toEqual('2004-06')
   })

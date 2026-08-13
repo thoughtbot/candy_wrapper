@@ -11,9 +11,6 @@ import {
   parseDate,
   parseDateTime,
   parseTime,
-  CalendarDate,
-  CalendarDateTime,
-  Time,
 } from '@internationalized/date'
 
 export type {
@@ -73,10 +70,13 @@ import {
   Button as AriaButton,
   Checkbox as AriaCheckbox,
   CheckboxGroup as AriaCheckboxGroup,
+  CheckboxProps as AriaCheckboxProps,
   ColorField as AriaColorField,
   DateField as AriaDateField,
   DateInput as AriaDateInput,
+  DatePickerProps as AriaDatePickerProps,
   DateSegment as AriaDateSegment,
+  DateValue,
   FieldError as AriaFieldError,
   FileTrigger as AriaFileTrigger,
   Form as AriaForm,
@@ -88,6 +88,7 @@ import {
   ListBox as AriaListBox,
   ListBoxItem as AriaListBoxItem,
   NumberField as AriaNumberField,
+  NumberFieldProps as AriaNumberFieldProps,
   Popover as AriaPopover,
   Radio as AriaRadio,
   RadioGroup as AriaRadioGroup,
@@ -100,7 +101,10 @@ import {
   SliderTrack as AriaSliderTrack,
   TextArea as AriaTextArea,
   TextField as AriaTextField,
+  TextFieldProps as AriaTextFieldProps,
   TimeField as AriaTimeField,
+  TimeFieldProps as AriaTimeFieldProps,
+  TimeValue,
 } from 'react-aria-components'
 
 // Re-export FormValidationContext as ValidationContext for backwards compat
@@ -192,26 +196,110 @@ type InputProps = {
   errorKey?: string
 }
 
+// -- Transform functions --
+
+export const checkboxPropsToRACProps = (
+  props: Partial<RailsCheckboxField>
+) => {
+  const { defaultChecked, checked, type: _type, ...rest } = props
+  const racProps: Partial<AriaCheckboxProps> = { ...rest }
+
+  if (defaultChecked !== undefined) {
+    racProps.defaultSelected = defaultChecked
+  }
+  if (checked !== undefined) {
+    racProps.isSelected = checked
+  }
+
+  return racProps
+}
+
+export const textFieldToRACProps = (
+  props: Partial<RailsTextField & { type?: string }>
+) => {
+  const { type: _type, ...rest } = props
+  return rest as AriaTextFieldProps
+}
+
+export const numberFieldToRACProps = (
+  props: Partial<RailsNumberField>
+) => {
+  const { value, defaultValue, min, max, type: _type, ...rest } = props
+  const racProps: Partial<AriaNumberFieldProps> = { ...rest }
+
+  if (value !== undefined && value !== '') {
+    racProps.value = Number(value)
+  }
+  if (defaultValue !== undefined && defaultValue !== '') {
+    racProps.defaultValue = Number(defaultValue)
+  }
+  if (min !== undefined) {
+    racProps.minValue = min
+  }
+  if (max !== undefined) {
+    racProps.maxValue = max
+  }
+
+  return racProps
+}
+
+export const dateFieldToRACProps = (
+  props: Partial<RailsDateField>
+) => {
+  const { max, min, value, defaultValue, type: _type, ...rest } = props
+  const racProps: Partial<AriaDatePickerProps<DateValue>> = { ...rest }
+
+  if (max) racProps.maxValue = parseDate(max)
+  if (min) racProps.minValue = parseDate(min)
+  if (defaultValue) racProps.defaultValue = parseDate(defaultValue)
+  if (value) racProps.value = parseDate(value)
+
+  return racProps
+}
+
+export const dateTimeLocalFieldToRACProps = (
+  props: Partial<RailsDateTimeLocalField>
+) => {
+  const { max, min, value, defaultValue, type: _type, ...rest } = props
+  const racProps: Partial<AriaDatePickerProps<DateValue>> = { ...rest }
+  racProps.granularity = 'second'
+
+  if (max) racProps.maxValue = parseDateTime(max)
+  if (min) racProps.minValue = parseDateTime(min)
+  if (defaultValue) racProps.defaultValue = parseDateTime(defaultValue)
+  if (value) racProps.value = parseDateTime(value)
+
+  return racProps
+}
+
+export const timeFieldToRACProps = (
+  props: Partial<RailsTimeField>
+) => {
+  const { min, max, value, defaultValue, type: _type, ...rest } = props
+  const racProps: Partial<AriaTimeFieldProps<TimeValue>> = { ...rest }
+
+  if (value) racProps.value = parseTime(value)
+  if (defaultValue) racProps.defaultValue = parseTime(defaultValue)
+  if (min) racProps.minValue = parseTime(min)
+  if (max) racProps.maxValue = parseTime(max)
+
+  return racProps
+}
+
+// -- Components --
+
 type CheckboxProps = RailsCheckboxField & InputProps
 
 export const Checkbox = ({
-  type: _type,
   includeHidden,
   uncheckedValue,
   errorKey,
   label,
-  checked,
-  defaultChecked,
   ...rest
 }: CheckboxProps) => {
-  const { name } = rest
+  const racProps = checkboxPropsToRACProps(rest)
+  const { name } = racProps
   const validationErrors = useErrorKeyValidation({ errorKey, name })
-  const valueProps: { isSelected?: boolean; defaultSelected?: boolean } = {}
-  if (checked !== undefined) {
-    valueProps.isSelected = checked
-  } else if (defaultChecked !== undefined) {
-    valueProps.defaultSelected = defaultChecked
-  }
 
   return (
     <FormValidationContext.Provider value={validationErrors}>
@@ -223,12 +311,7 @@ export const Checkbox = ({
           autoComplete="off"
         />
       )}
-      <AriaCheckbox
-        name={name}
-        value={rest.value}
-        id={rest.id}
-        {...valueProps}
-      >
+      <AriaCheckbox {...racProps}>
         <div className="checkbox">
           <svg viewBox="0 0 18 18" aria-hidden="true">
             <polyline points="1 9 7 14 15 4" />
@@ -264,34 +347,33 @@ export const CollectionCheckboxes = ({
 
   const { name } = collection[0]
   const validationErrors = useErrorKeyValidation({ errorKey, name })
-
   const errorMessage = useErrorMessage(errorKey)
 
   return (
-    <>
+    <FormValidationContext.Provider value={validationErrors}>
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
       <AriaCheckboxGroup {...valueProps} isInvalid={!!errorMessage}>
         <AriaLabel>{label}</AriaLabel>
-        {collection.map((option) => (
+        {collection.map(({ checked: _checked, defaultChecked: _defaultChecked, ...checkboxProps }) => (
           <AriaCheckbox
-            key={option.id}
+            key={checkboxProps.id}
             name={name}
-            value={option.value}
-            id={option.id}
+            value={checkboxProps.value}
+            id={checkboxProps.id}
           >
             <div className="checkbox">
               <svg viewBox="0 0 18 18" aria-hidden="true">
                 <polyline points="1 9 7 14 15 4" />
               </svg>
             </div>
-            {option.label}
+            {checkboxProps.label}
           </AriaCheckbox>
         ))}
         {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
       </AriaCheckboxGroup>
-    </>
+    </FormValidationContext.Provider>
   )
 }
 
@@ -319,20 +401,21 @@ export const CollectionRadioButtons = ({
 
   const { name } = collection[0]
   const validationErrors = useErrorKeyValidation({ errorKey, name })
+  const errorMessage = useErrorMessage(errorKey)
 
   return (
     <FormValidationContext.Provider value={validationErrors}>
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
-      <AriaRadioGroup name={name} {...valueProps}>
+      <AriaRadioGroup name={name} {...valueProps} isInvalid={!!errorMessage}>
         <AriaLabel>{label}</AriaLabel>
-        {collection.map((option) => (
-          <AriaRadio key={option.value} value={option.value} id={option.id}>
-            {option.label}
+        {collection.map(({ label: optionLabel, type: _type, ...radioProps }) => (
+          <AriaRadio key={radioProps.value} value={radioProps.value} id={radioProps.id}>
+            {optionLabel}
           </AriaRadio>
         ))}
-        <AriaFieldError />
+        {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
       </AriaRadioGroup>
     </FormValidationContext.Provider>
   )
@@ -340,19 +423,14 @@ export const CollectionRadioButtons = ({
 
 const TextBase = ({
   errorKey,
-  name,
   children,
   ...props
-}: {
-  errorKey?: string
-  name?: string
-  children: React.ReactNode
-} & React.ComponentProps<typeof AriaTextField>) => {
-  const validationErrors = useErrorKeyValidation({ errorKey, name })
+}: { errorKey?: string; children: React.ReactNode } & AriaTextFieldProps) => {
+  const validationErrors = useErrorKeyValidation({ errorKey, name: props.name })
 
   return (
     <FormValidationContext.Provider value={validationErrors}>
-      <AriaTextField name={name} {...props}>
+      <AriaTextField {...props}>
         {children}
       </AriaTextField>
     </FormValidationContext.Provider>
@@ -361,21 +439,13 @@ const TextBase = ({
 
 export type TextFieldProps = RailsTextField & InputProps
 
-export const TextField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: TextFieldProps) => {
+export const TextField = ({ label, errorKey, ...rest }: TextFieldProps) => {
+  const racProps = textFieldToRACProps(rest)
+
   return (
-    <TextBase
-      errorKey={errorKey}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
-    >
+    <TextBase errorKey={errorKey} {...racProps}>
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} placeholder={rest.placeholder} />
+      <AriaInput />
       <AriaFieldError />
     </TextBase>
   )
@@ -383,22 +453,13 @@ export const TextField = ({
 
 export type EmailFieldProps = RailsEmailField & InputProps
 
-export const EmailField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: EmailFieldProps) => {
+export const EmailField = ({ label, errorKey, ...rest }: EmailFieldProps) => {
+  const { type: _type, ...props } = rest
+
   return (
-    <TextBase
-      errorKey={errorKey}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
-      type="email"
-    >
+    <TextBase errorKey={errorKey} {...props} type="email">
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} placeholder={rest.placeholder} />
+      <AriaInput />
       <AriaFieldError />
     </TextBase>
   )
@@ -406,26 +467,14 @@ export const EmailField = ({
 
 export type ColorFieldProps = RailsColorField & InputProps
 
-export const ColorField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: ColorFieldProps) => {
-  const validationErrors = useErrorKeyValidation({
-    errorKey,
-    name: rest.name,
-  })
+export const ColorField = ({ label, errorKey, type: _type, ...rest }: ColorFieldProps) => {
+  const validationErrors = useErrorKeyValidation({ errorKey, name: rest.name })
 
   return (
     <FormValidationContext.Provider value={validationErrors}>
-      <AriaColorField
-        name={rest.name}
-        defaultValue={rest.defaultValue}
-        value={rest.value}
-      >
+      <AriaColorField {...rest}>
         <AriaLabel>{label}</AriaLabel>
-        <AriaInput id={rest.id} />
+        <AriaInput />
         <AriaFieldError />
       </AriaColorField>
     </FormValidationContext.Provider>
@@ -434,42 +483,13 @@ export const ColorField = ({
 
 export type DateFieldProps = RailsDateField & InputProps
 
-export const DateField = ({
-  type: _type,
-  label,
-  errorKey,
-  value,
-  defaultValue,
-  min,
-  max,
-  ...rest
-}: DateFieldProps) => {
-  const validationErrors = useErrorKeyValidation({
-    errorKey,
-    name: rest.name,
-  })
-
-  const valueProps: { value?: CalendarDate; defaultValue?: CalendarDate } = {}
-  if (value) {
-    valueProps.value = parseDate(value)
-  } else if (defaultValue) {
-    valueProps.defaultValue = parseDate(defaultValue)
-  }
-
-  const minMaxProps: {
-    minValue?: CalendarDate
-    maxValue?: CalendarDate
-  } = {}
-  if (min) {
-    minMaxProps.minValue = parseDate(min)
-  }
-  if (max) {
-    minMaxProps.maxValue = parseDate(max)
-  }
+export const DateField = ({ label, errorKey, ...rest }: DateFieldProps) => {
+  const racProps = dateFieldToRACProps(rest)
+  const validationErrors = useErrorKeyValidation({ errorKey, name: rest.name })
 
   return (
     <FormValidationContext.Provider value={validationErrors}>
-      <AriaDateField name={rest.name} {...valueProps} {...minMaxProps}>
+      <AriaDateField {...racProps}>
         <AriaLabel>{label}</AriaLabel>
         <AriaDateInput>
           {(segment) => <AriaDateSegment segment={segment} />}
@@ -482,50 +502,13 @@ export const DateField = ({
 
 export type DateTimeLocalFieldProps = RailsDateTimeLocalField & InputProps
 
-export const DateTimeLocalField = ({
-  type: _type,
-  label,
-  errorKey,
-  value,
-  defaultValue,
-  min,
-  max,
-  ...rest
-}: DateTimeLocalFieldProps) => {
-  const validationErrors = useErrorKeyValidation({
-    errorKey,
-    name: rest.name,
-  })
-
-  const valueProps: {
-    value?: CalendarDateTime
-    defaultValue?: CalendarDateTime
-  } = {}
-  if (value) {
-    valueProps.value = parseDateTime(value)
-  } else if (defaultValue) {
-    valueProps.defaultValue = parseDateTime(defaultValue)
-  }
-
-  const minMaxProps: {
-    minValue?: CalendarDateTime
-    maxValue?: CalendarDateTime
-  } = {}
-  if (min) {
-    minMaxProps.minValue = parseDateTime(min)
-  }
-  if (max) {
-    minMaxProps.maxValue = parseDateTime(max)
-  }
+export const DateTimeLocalField = ({ label, errorKey, ...rest }: DateTimeLocalFieldProps) => {
+  const racProps = dateTimeLocalFieldToRACProps(rest)
+  const validationErrors = useErrorKeyValidation({ errorKey, name: rest.name })
 
   return (
     <FormValidationContext.Provider value={validationErrors}>
-      <AriaDateField
-        name={rest.name}
-        granularity="second"
-        {...valueProps}
-        {...minMaxProps}
-      >
+      <AriaDateField {...racProps}>
         <AriaLabel>{label}</AriaLabel>
         <AriaDateInput>
           {(segment) => <AriaDateSegment segment={segment} />}
@@ -538,29 +521,13 @@ export const DateTimeLocalField = ({
 
 export type TimeFieldProps = RailsTimeField & InputProps
 
-export const TimeField = ({
-  type: _type,
-  label,
-  errorKey,
-  value,
-  defaultValue,
-  ...rest
-}: TimeFieldProps) => {
-  const validationErrors = useErrorKeyValidation({
-    errorKey,
-    name: rest.name,
-  })
-
-  const valueProps: { value?: Time; defaultValue?: Time } = {}
-  if (value) {
-    valueProps.value = parseTime(value)
-  } else if (defaultValue) {
-    valueProps.defaultValue = parseTime(defaultValue)
-  }
+export const TimeField = ({ label, errorKey, ...rest }: TimeFieldProps) => {
+  const racProps = timeFieldToRACProps(rest)
+  const validationErrors = useErrorKeyValidation({ errorKey, name: rest.name })
 
   return (
     <FormValidationContext.Provider value={validationErrors}>
-      <AriaTimeField name={rest.name} {...valueProps}>
+      <AriaTimeField {...racProps}>
         <AriaLabel>{label}</AriaLabel>
         <AriaDateInput>
           {(segment) => <AriaDateSegment segment={segment} />}
@@ -574,29 +541,22 @@ export const TimeField = ({
 export type SearchFieldProps = RailsSearchField & InputProps
 
 export const SearchField = ({
-  type: _type,
   label,
   errorKey,
+  type: _type,
   autosave: _autosave,
   results: _results,
   onsearch: _onsearch,
   incremental: _incremental,
   ...rest
 }: SearchFieldProps) => {
-  const validationErrors = useErrorKeyValidation({
-    errorKey,
-    name: rest.name,
-  })
+  const validationErrors = useErrorKeyValidation({ errorKey, name: rest.name })
 
   return (
     <FormValidationContext.Provider value={validationErrors}>
-      <AriaSearchField
-        name={rest.name}
-        defaultValue={rest.defaultValue}
-        value={rest.value}
-      >
+      <AriaSearchField {...rest}>
         <AriaLabel>{label}</AriaLabel>
-        <AriaInput id={rest.id} placeholder={rest.placeholder} />
+        <AriaInput />
         <AriaFieldError />
       </AriaSearchField>
     </FormValidationContext.Provider>
@@ -605,22 +565,13 @@ export const SearchField = ({
 
 export type TelFieldProps = RailsTelField & InputProps
 
-export const TelField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: TelFieldProps) => {
+export const TelField = ({ label, errorKey, ...rest }: TelFieldProps) => {
+  const { type: _type, ...props } = rest
+
   return (
-    <TextBase
-      errorKey={errorKey}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
-      type="tel"
-    >
+    <TextBase errorKey={errorKey} {...props} type="tel">
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} placeholder={rest.placeholder} />
+      <AriaInput />
       <AriaFieldError />
     </TextBase>
   )
@@ -628,22 +579,13 @@ export const TelField = ({
 
 export type UrlFieldProps = RailsUrlField & InputProps
 
-export const UrlField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: UrlFieldProps) => {
+export const UrlField = ({ label, errorKey, ...rest }: UrlFieldProps) => {
+  const { type: _type, ...props } = rest
+
   return (
-    <TextBase
-      errorKey={errorKey}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
-      type="url"
-    >
+    <TextBase errorKey={errorKey} {...props} type="url">
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} placeholder={rest.placeholder} />
+      <AriaInput />
       <AriaFieldError />
     </TextBase>
   )
@@ -651,21 +593,11 @@ export const UrlField = ({
 
 export type MonthFieldProps = RailsMonthField & InputProps
 
-export const MonthField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: MonthFieldProps) => {
+export const MonthField = ({ label, errorKey, type: _type, ...rest }: MonthFieldProps) => {
   return (
-    <TextBase
-      errorKey={errorKey}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
-    >
+    <TextBase errorKey={errorKey} {...rest}>
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} type="month" />
+      <AriaInput type="month" />
       <AriaFieldError />
     </TextBase>
   )
@@ -673,40 +605,17 @@ export const MonthField = ({
 
 export type NumberFieldProps = RailsNumberField & InputProps
 
-export const NumberField = ({
-  type: _type,
-  label,
-  errorKey,
-  value,
-  defaultValue,
-  min,
-  max,
-  ...rest
-}: NumberFieldProps) => {
-  const validationErrors = useErrorKeyValidation({
-    errorKey,
-    name: rest.name,
-  })
-
-  const valueProps: { value?: number; defaultValue?: number } = {}
-  if (value !== undefined && value !== '') {
-    valueProps.value = Number(value)
-  } else if (defaultValue !== undefined && defaultValue !== '') {
-    valueProps.defaultValue = Number(defaultValue)
-  }
+export const NumberField = ({ label, errorKey, ...rest }: NumberFieldProps) => {
+  const racProps = numberFieldToRACProps(rest)
+  const validationErrors = useErrorKeyValidation({ errorKey, name: rest.name })
 
   return (
     <FormValidationContext.Provider value={validationErrors}>
-      <AriaNumberField
-        name={rest.name}
-        {...valueProps}
-        minValue={min}
-        maxValue={max}
-      >
+      <AriaNumberField {...racProps}>
         <AriaLabel>{label}</AriaLabel>
         <AriaGroup>
           <AriaButton slot="decrement">-</AriaButton>
-          <AriaInput id={rest.id} />
+          <AriaInput />
           <AriaButton slot="increment">+</AriaButton>
         </AriaGroup>
         <AriaFieldError />
@@ -718,15 +627,14 @@ export const NumberField = ({
 export type RangeFieldProps = RailsRangeField & InputProps
 
 export const RangeField = ({
-  type: _type,
   label,
   errorKey,
   value,
   defaultValue,
+  type: _type,
   ...rest
 }: RangeFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
-
   const numericValue = value ? Number(value) : undefined
   const numericDefault = defaultValue ? Number(defaultValue) : undefined
 
@@ -751,22 +659,13 @@ export const RangeField = ({
 
 export type PasswordFieldProps = RailsPasswordField & InputProps
 
-export const PasswordField = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: PasswordFieldProps) => {
+export const PasswordField = ({ label, errorKey, ...rest }: PasswordFieldProps) => {
+  const { type: _type, ...props } = rest
+
   return (
-    <TextBase
-      errorKey={errorKey}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
-      type="password"
-    >
+    <TextBase errorKey={errorKey} {...props} type="password">
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} placeholder={rest.placeholder} />
+      <AriaInput />
       <AriaFieldError />
     </TextBase>
   )
@@ -776,15 +675,14 @@ type SelectProps = (RailsSingleSelect | RailsMultiSelect) & InputProps
 
 export const Select = ({
   includeHidden,
-  name,
-  id,
-  options,
   label,
   errorKey,
   multiple,
   type: _type,
+  options,
   ...rest
 }: SelectProps) => {
+  const { name } = rest
   const validationErrors = useErrorKeyValidation({ errorKey, name })
   const addHidden = includeHidden && multiple
 
@@ -856,21 +754,11 @@ export const Select = ({
 
 export type TextAreaProps = RailsTextArea & InputProps
 
-export const TextArea = ({
-  type: _type,
-  label,
-  errorKey,
-  ...rest
-}: TextAreaProps) => {
+export const TextArea = ({ label, errorKey, type: _type, ...rest }: TextAreaProps) => {
   return (
-    <TextBase
-      errorKey={errorKey}
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
-    >
+    <TextBase errorKey={errorKey} {...rest}>
       <AriaLabel>{label}</AriaLabel>
-      <AriaTextArea id={rest.id} rows={rest.rows} cols={rest.cols} />
+      <AriaTextArea />
       <AriaFieldError />
     </TextBase>
   )
@@ -893,11 +781,7 @@ export const FileField = ({ type: _type, label, errorKey }: FileFieldProps) => {
 
 export type SubmitButtonProps = RailsSubmitButton
 
-export const SubmitButton = ({
-  type: _type,
-  text,
-  ...rest
-}: SubmitButtonProps) => {
+export const SubmitButton = ({ type: _type, text, ...rest }: SubmitButtonProps) => {
   return (
     <AriaButton {...rest} type="submit">
       {text}
