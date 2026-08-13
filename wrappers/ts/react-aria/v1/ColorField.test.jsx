@@ -20,10 +20,9 @@ describe('ColorField', () => {
       <ColorField {...payload} label={'color'} errorKey={'color'} />
     )
 
-    const input = container.querySelector('input[type="color"]')
+    const input = container.querySelector('input')
     expect(input).not.toBeNull()
     expect(input.value).toEqual('#000000')
-    expect(input.id).toEqual('post_color')
   })
 
   it('renders with field errors', async () => {

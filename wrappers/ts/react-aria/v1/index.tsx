@@ -1,4 +1,12 @@
-import React, { createContext, useContext, useMemo } from 'react'
+/**
+ * A set of [candy_wrappers](https://github.com/thoughtbot/candy_wrapper) around
+ * React Aria Components input components. It works with the output from
+ * [FormProps](https://github.com/thoughtbot/form_props).
+ *
+ * You modify these components to fit your design needs.
+ */
+
+import React, { useContext, useMemo } from 'react'
 import {
   parseDate,
   parseDateTime,
@@ -65,6 +73,7 @@ import {
   Button as AriaButton,
   Checkbox as AriaCheckbox,
   CheckboxGroup as AriaCheckboxGroup,
+  ColorField as AriaColorField,
   DateField as AriaDateField,
   DateInput as AriaDateInput,
   DateSegment as AriaDateSegment,
@@ -72,6 +81,8 @@ import {
   FileTrigger as AriaFileTrigger,
   Form as AriaForm,
   FormProps as AriaFormProps,
+  FormValidationContext,
+  Group as AriaGroup,
   Input as AriaInput,
   Label as AriaLabel,
   ListBox as AriaListBox,
@@ -92,10 +103,33 @@ import {
   TimeField as AriaTimeField,
 } from 'react-aria-components'
 
-export const ValidationContext = createContext<ValidationErrors>({})
+// Re-export FormValidationContext as ValidationContext for backwards compat
+export { FormValidationContext as ValidationContext } from 'react-aria-components'
+
+/**
+ * Maps an errorKey to the field's name in FormValidationContext.
+ * This bridges Rails error keys (e.g., 'birth_date') to React Aria's
+ * native validation system which keys errors by field name.
+ */
+export const useErrorKeyValidation = ({
+  errorKey,
+  name,
+}: {
+  errorKey?: string
+  name?: string
+}) => {
+  const serverErrors = useContext(FormValidationContext)
+
+  return useMemo(() => {
+    if (name && serverErrors && errorKey && serverErrors[errorKey]) {
+      return { [name]: serverErrors[errorKey] }
+    }
+    return serverErrors
+  }, [serverErrors, errorKey, name])
+}
 
 export const useErrorMessage = (errorKey?: string) => {
-  const errors = useContext(ValidationContext)
+  const errors = useContext(FormValidationContext)
 
   return useMemo(() => {
     if (!errorKey) {
@@ -103,9 +137,7 @@ export const useErrorMessage = (errorKey?: string) => {
     }
 
     const validationError = errors[errorKey]
-    const hasErrors = errorKey && validationError
-
-    if (!hasErrors) {
+    if (!validationError) {
       return null
     }
 
@@ -147,10 +179,10 @@ export const Form = ({
 }: FormElementProps) => {
   return (
     <AriaForm {...props} validationErrors={validationErrors}>
-      <ValidationContext.Provider value={validationErrors}>
+      <FormValidationContext.Provider value={validationErrors}>
         <Extras {...extras}></Extras>
         {children}
-      </ValidationContext.Provider>
+      </FormValidationContext.Provider>
     </AriaForm>
   )
 }
@@ -173,7 +205,7 @@ export const Checkbox = ({
   ...rest
 }: CheckboxProps) => {
   const { name } = rest
-  const errorMessage = useErrorMessage(errorKey)
+  const validationErrors = useErrorKeyValidation({ errorKey, name })
   const valueProps: { isSelected?: boolean; defaultSelected?: boolean } = {}
   if (checked !== undefined) {
     valueProps.isSelected = checked
@@ -182,7 +214,7 @@ export const Checkbox = ({
   }
 
   return (
-    <>
+    <FormValidationContext.Provider value={validationErrors}>
       {includeHidden && (
         <input
           type="hidden"
@@ -196,12 +228,10 @@ export const Checkbox = ({
         value={rest.value}
         id={rest.id}
         {...valueProps}
-        isInvalid={!!errorMessage}
       >
         {label}
       </AriaCheckbox>
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </>
+    </FormValidationContext.Provider>
   )
 }
 
@@ -214,8 +244,6 @@ export const CollectionCheckboxes = ({
   label,
   errorKey,
 }: CollectionCheckboxesFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
-
   if (collection.length === 0) {
     return null
   }
@@ -230,6 +258,9 @@ export const CollectionCheckboxes = ({
   }
 
   const { name } = collection[0]
+  const validationErrors = useErrorKeyValidation({ errorKey, name })
+
+  const errorMessage = useErrorMessage(errorKey)
 
   return (
     <>
@@ -263,8 +294,6 @@ export const CollectionRadioButtons = ({
   label,
   errorKey,
 }: CollectionRadioButtonsFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
-
   if (collection.length === 0) {
     return null
   }
@@ -279,22 +308,44 @@ export const CollectionRadioButtons = ({
   }
 
   const { name } = collection[0]
+  const validationErrors = useErrorKeyValidation({ errorKey, name })
 
   return (
-    <>
+    <FormValidationContext.Provider value={validationErrors}>
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
-      <AriaRadioGroup name={name} {...valueProps} isInvalid={!!errorMessage}>
+      <AriaRadioGroup name={name} {...valueProps}>
         <AriaLabel>{label}</AriaLabel>
         {collection.map((option) => (
           <AriaRadio key={option.value} value={option.value} id={option.id}>
             {option.label}
           </AriaRadio>
         ))}
-        {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
+        <AriaFieldError />
       </AriaRadioGroup>
-    </>
+    </FormValidationContext.Provider>
+  )
+}
+
+const TextBase = ({
+  errorKey,
+  name,
+  children,
+  ...props
+}: {
+  errorKey?: string
+  name?: string
+  children: React.ReactNode
+} & React.ComponentProps<typeof AriaTextField>) => {
+  const validationErrors = useErrorKeyValidation({ errorKey, name })
+
+  return (
+    <FormValidationContext.Provider value={validationErrors}>
+      <AriaTextField name={name} {...props}>
+        {children}
+      </AriaTextField>
+    </FormValidationContext.Provider>
   )
 }
 
@@ -306,19 +357,17 @@ export const TextField = ({
   errorKey,
   ...rest
 }: TextFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
-
   return (
-    <AriaTextField
+    <TextBase
+      errorKey={errorKey}
       name={rest.name}
       defaultValue={rest.defaultValue}
       value={rest.value}
-      isInvalid={!!errorMessage}
     >
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} />
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaTextField>
+      <AriaInput id={rest.id} placeholder={rest.placeholder} />
+      <AriaFieldError />
+    </TextBase>
   )
 }
 
@@ -330,20 +379,18 @@ export const EmailField = ({
   errorKey,
   ...rest
 }: EmailFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
-
   return (
-    <AriaTextField
+    <TextBase
+      errorKey={errorKey}
       name={rest.name}
       defaultValue={rest.defaultValue}
       value={rest.value}
       type="email"
-      isInvalid={!!errorMessage}
     >
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} />
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaTextField>
+      <AriaInput id={rest.id} placeholder={rest.placeholder} />
+      <AriaFieldError />
+    </TextBase>
   )
 }
 
@@ -355,19 +402,23 @@ export const ColorField = ({
   errorKey,
   ...rest
 }: ColorFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
+  const validationErrors = useErrorKeyValidation({
+    errorKey,
+    name: rest.name,
+  })
 
   return (
-    <AriaTextField
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
-      isInvalid={!!errorMessage}
-    >
-      <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} type="color" />
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaTextField>
+    <FormValidationContext.Provider value={validationErrors}>
+      <AriaColorField
+        name={rest.name}
+        defaultValue={rest.defaultValue}
+        value={rest.value}
+      >
+        <AriaLabel>{label}</AriaLabel>
+        <AriaInput id={rest.id} />
+        <AriaFieldError />
+      </AriaColorField>
+    </FormValidationContext.Provider>
   )
 }
 
@@ -383,7 +434,10 @@ export const DateField = ({
   max,
   ...rest
 }: DateFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
+  const validationErrors = useErrorKeyValidation({
+    errorKey,
+    name: rest.name,
+  })
 
   const valueProps: { value?: CalendarDate; defaultValue?: CalendarDate } = {}
   if (value) {
@@ -404,18 +458,15 @@ export const DateField = ({
   }
 
   return (
-    <AriaDateField
-      name={rest.name}
-      {...valueProps}
-      {...minMaxProps}
-      isInvalid={!!errorMessage}
-    >
-      <AriaLabel>{label}</AriaLabel>
-      <AriaDateInput>
-        {(segment) => <AriaDateSegment segment={segment} />}
-      </AriaDateInput>
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaDateField>
+    <FormValidationContext.Provider value={validationErrors}>
+      <AriaDateField name={rest.name} {...valueProps} {...minMaxProps}>
+        <AriaLabel>{label}</AriaLabel>
+        <AriaDateInput>
+          {(segment) => <AriaDateSegment segment={segment} />}
+        </AriaDateInput>
+        <AriaFieldError />
+      </AriaDateField>
+    </FormValidationContext.Provider>
   )
 }
 
@@ -431,7 +482,10 @@ export const DateTimeLocalField = ({
   max,
   ...rest
 }: DateTimeLocalFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
+  const validationErrors = useErrorKeyValidation({
+    errorKey,
+    name: rest.name,
+  })
 
   const valueProps: {
     value?: CalendarDateTime
@@ -455,18 +509,20 @@ export const DateTimeLocalField = ({
   }
 
   return (
-    <AriaDateField
-      name={rest.name}
-      {...valueProps}
-      {...minMaxProps}
-      isInvalid={!!errorMessage}
-    >
-      <AriaLabel>{label}</AriaLabel>
-      <AriaDateInput>
-        {(segment) => <AriaDateSegment segment={segment} />}
-      </AriaDateInput>
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaDateField>
+    <FormValidationContext.Provider value={validationErrors}>
+      <AriaDateField
+        name={rest.name}
+        granularity="second"
+        {...valueProps}
+        {...minMaxProps}
+      >
+        <AriaLabel>{label}</AriaLabel>
+        <AriaDateInput>
+          {(segment) => <AriaDateSegment segment={segment} />}
+        </AriaDateInput>
+        <AriaFieldError />
+      </AriaDateField>
+    </FormValidationContext.Provider>
   )
 }
 
@@ -480,7 +536,10 @@ export const TimeField = ({
   defaultValue,
   ...rest
 }: TimeFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
+  const validationErrors = useErrorKeyValidation({
+    errorKey,
+    name: rest.name,
+  })
 
   const valueProps: { value?: Time; defaultValue?: Time } = {}
   if (value) {
@@ -490,13 +549,15 @@ export const TimeField = ({
   }
 
   return (
-    <AriaTimeField name={rest.name} {...valueProps} isInvalid={!!errorMessage}>
-      <AriaLabel>{label}</AriaLabel>
-      <AriaDateInput>
-        {(segment) => <AriaDateSegment segment={segment} />}
-      </AriaDateInput>
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaTimeField>
+    <FormValidationContext.Provider value={validationErrors}>
+      <AriaTimeField name={rest.name} {...valueProps}>
+        <AriaLabel>{label}</AriaLabel>
+        <AriaDateInput>
+          {(segment) => <AriaDateSegment segment={segment} />}
+        </AriaDateInput>
+        <AriaFieldError />
+      </AriaTimeField>
+    </FormValidationContext.Provider>
   )
 }
 
@@ -512,19 +573,23 @@ export const SearchField = ({
   incremental: _incremental,
   ...rest
 }: SearchFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
+  const validationErrors = useErrorKeyValidation({
+    errorKey,
+    name: rest.name,
+  })
 
   return (
-    <AriaSearchField
-      name={rest.name}
-      defaultValue={rest.defaultValue}
-      value={rest.value}
-      isInvalid={!!errorMessage}
-    >
-      <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} />
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaSearchField>
+    <FormValidationContext.Provider value={validationErrors}>
+      <AriaSearchField
+        name={rest.name}
+        defaultValue={rest.defaultValue}
+        value={rest.value}
+      >
+        <AriaLabel>{label}</AriaLabel>
+        <AriaInput id={rest.id} placeholder={rest.placeholder} />
+        <AriaFieldError />
+      </AriaSearchField>
+    </FormValidationContext.Provider>
   )
 }
 
@@ -536,20 +601,18 @@ export const TelField = ({
   errorKey,
   ...rest
 }: TelFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
-
   return (
-    <AriaTextField
+    <TextBase
+      errorKey={errorKey}
       name={rest.name}
       defaultValue={rest.defaultValue}
       value={rest.value}
       type="tel"
-      isInvalid={!!errorMessage}
     >
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} />
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaTextField>
+      <AriaInput id={rest.id} placeholder={rest.placeholder} />
+      <AriaFieldError />
+    </TextBase>
   )
 }
 
@@ -561,20 +624,18 @@ export const UrlField = ({
   errorKey,
   ...rest
 }: UrlFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
-
   return (
-    <AriaTextField
+    <TextBase
+      errorKey={errorKey}
       name={rest.name}
       defaultValue={rest.defaultValue}
       value={rest.value}
       type="url"
-      isInvalid={!!errorMessage}
     >
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} />
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaTextField>
+      <AriaInput id={rest.id} placeholder={rest.placeholder} />
+      <AriaFieldError />
+    </TextBase>
   )
 }
 
@@ -586,19 +647,17 @@ export const MonthField = ({
   errorKey,
   ...rest
 }: MonthFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
-
   return (
-    <AriaTextField
+    <TextBase
+      errorKey={errorKey}
       name={rest.name}
       defaultValue={rest.defaultValue}
       value={rest.value}
-      isInvalid={!!errorMessage}
     >
       <AriaLabel>{label}</AriaLabel>
       <AriaInput id={rest.id} type="month" />
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaTextField>
+      <AriaFieldError />
+    </TextBase>
   )
 }
 
@@ -614,7 +673,10 @@ export const NumberField = ({
   max,
   ...rest
 }: NumberFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
+  const validationErrors = useErrorKeyValidation({
+    errorKey,
+    name: rest.name,
+  })
 
   const valueProps: { value?: number; defaultValue?: number } = {}
   if (value !== undefined && value !== '') {
@@ -624,17 +686,22 @@ export const NumberField = ({
   }
 
   return (
-    <AriaNumberField
-      name={rest.name}
-      {...valueProps}
-      minValue={min}
-      maxValue={max}
-      isInvalid={!!errorMessage}
-    >
-      <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} />
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaNumberField>
+    <FormValidationContext.Provider value={validationErrors}>
+      <AriaNumberField
+        name={rest.name}
+        {...valueProps}
+        minValue={min}
+        maxValue={max}
+      >
+        <AriaLabel>{label}</AriaLabel>
+        <AriaGroup>
+          <AriaButton slot="decrement">-</AriaButton>
+          <AriaInput id={rest.id} />
+          <AriaButton slot="increment">+</AriaButton>
+        </AriaGroup>
+        <AriaFieldError />
+      </AriaNumberField>
+    </FormValidationContext.Provider>
   )
 }
 
@@ -680,19 +747,18 @@ export const PasswordField = ({
   errorKey,
   ...rest
 }: PasswordFieldProps) => {
-  const errorMessage = useErrorMessage(errorKey)
-
   return (
-    <AriaTextField
+    <TextBase
+      errorKey={errorKey}
       name={rest.name}
       defaultValue={rest.defaultValue}
       value={rest.value}
-      isInvalid={!!errorMessage}
+      type="password"
     >
       <AriaLabel>{label}</AriaLabel>
-      <AriaInput id={rest.id} type="password" />
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaTextField>
+      <AriaInput id={rest.id} placeholder={rest.placeholder} />
+      <AriaFieldError />
+    </TextBase>
   )
 }
 
@@ -709,7 +775,7 @@ export const Select = ({
   type: _type,
   ...rest
 }: SelectProps) => {
-  const errorMessage = useErrorMessage(errorKey)
+  const validationErrors = useErrorKeyValidation({ errorKey, name })
   const addHidden = includeHidden && multiple
 
   const flatOptions = options.flatMap((item) => {
@@ -720,94 +786,61 @@ export const Select = ({
   })
 
   const selectedValue = 'value' in rest ? rest.value : undefined
-  const selectedDefault = 'defaultvalue' in rest ? rest.defaultvalue : undefined
+  const selectedDefault =
+    'defaultValue' in rest ? rest.defaultValue : undefined
 
+  const selectionProps: Record<string, unknown> = {}
   if (multiple) {
-    const selectedKeys = selectedValue
-      ? Array.isArray(selectedValue)
+    selectionProps.selectionMode = 'multiple'
+    if (selectedValue) {
+      selectionProps.value = Array.isArray(selectedValue)
         ? selectedValue
         : [selectedValue]
-      : undefined
-    const defaultKeys = selectedDefault
-      ? Array.isArray(selectedDefault)
+    } else if (selectedDefault) {
+      selectionProps.defaultValue = Array.isArray(selectedDefault)
         ? selectedDefault
         : [selectedDefault]
-      : undefined
-
-    return (
-      <>
-        {addHidden && (
-          <input type="hidden" name={name} value={''} autoComplete="off" />
-        )}
-        <AriaSelect
-          name={name}
-          isInvalid={!!errorMessage}
-          selectionMode="multiple"
-          value={selectedKeys}
-          defaultValue={defaultKeys}
-        >
-          <AriaLabel>{label}</AriaLabel>
-          <AriaButton>
-            <AriaSelectValue />
-          </AriaButton>
-          <AriaPopover>
-            <AriaListBox>
-              {flatOptions.map((opt) => (
-                <AriaListBoxItem
-                  key={opt.value}
-                  id={opt.value}
-                  textValue={opt.label}
-                  isDisabled={opt.disabled}
-                >
-                  {opt.label}
-                </AriaListBoxItem>
-              ))}
-            </AriaListBox>
-          </AriaPopover>
-          {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-        </AriaSelect>
-      </>
-    )
+    }
+  } else {
+    if (selectedValue) {
+      selectionProps.selectedKey = Array.isArray(selectedValue)
+        ? selectedValue[0]
+        : selectedValue
+    } else if (selectedDefault) {
+      selectionProps.defaultSelectedKey = Array.isArray(selectedDefault)
+        ? selectedDefault[0]
+        : selectedDefault
+    }
   }
 
-  const selectedKey = selectedValue
-    ? Array.isArray(selectedValue)
-      ? selectedValue[0]
-      : selectedValue
-    : undefined
-  const defaultKey = selectedDefault
-    ? Array.isArray(selectedDefault)
-      ? selectedDefault[0]
-      : selectedDefault
-    : undefined
-
   return (
-    <AriaSelect
-      name={name}
-      isInvalid={!!errorMessage}
-      selectedKey={selectedKey}
-      defaultSelectedKey={defaultKey}
-    >
-      <AriaLabel>{label}</AriaLabel>
-      <AriaButton>
-        <AriaSelectValue />
-      </AriaButton>
-      <AriaPopover>
-        <AriaListBox>
-          {flatOptions.map((opt) => (
-            <AriaListBoxItem
-              key={opt.value}
-              id={opt.value}
-              textValue={opt.label}
-              isDisabled={opt.disabled}
-            >
-              {opt.label}
-            </AriaListBoxItem>
-          ))}
-        </AriaListBox>
-      </AriaPopover>
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaSelect>
+    <FormValidationContext.Provider value={validationErrors}>
+      {addHidden && (
+        <input type="hidden" name={name} value={''} autoComplete="off" />
+      )}
+      <AriaSelect name={name} {...selectionProps}>
+        <AriaLabel>{label}</AriaLabel>
+        <AriaButton>
+          <AriaSelectValue />
+          <span aria-hidden="true">▼</span>
+        </AriaButton>
+        <AriaFieldError />
+        <AriaPopover>
+          <AriaListBox>
+            {flatOptions.map((opt) => (
+              <AriaListBoxItem
+                key={opt.value}
+                id={opt.value}
+                textValue={opt.label}
+                isDisabled={opt.disabled}
+              >
+                {opt.label}
+              </AriaListBoxItem>
+            ))}
+          </AriaListBox>
+        </AriaPopover>
+      </AriaSelect>
+    </FormValidationContext.Provider>
   )
 }
 
@@ -819,19 +852,17 @@ export const TextArea = ({
   errorKey,
   ...rest
 }: TextAreaProps) => {
-  const errorMessage = useErrorMessage(errorKey)
-
   return (
-    <AriaTextField
+    <TextBase
+      errorKey={errorKey}
       name={rest.name}
       defaultValue={rest.defaultValue}
       value={rest.value}
-      isInvalid={!!errorMessage}
     >
       <AriaLabel>{label}</AriaLabel>
       <AriaTextArea id={rest.id} rows={rest.rows} cols={rest.cols} />
-      {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
-    </AriaTextField>
+      <AriaFieldError />
+    </TextBase>
   )
 }
 
