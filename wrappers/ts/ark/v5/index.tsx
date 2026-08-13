@@ -254,12 +254,12 @@ export const CollectionCheckboxes = ({
   }
 
   return (
-    <Field.Root invalid={!!errorMessage}>
+    <>
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
       <Checkbox.Group name={name} {...valueProps}>
-        <Field.Label>{label}</Field.Label>
+        <label>{label}</label>
         {collection.map((option) => (
           <Checkbox.Root key={option.id} value={option.value}>
             <Checkbox.Control>
@@ -270,8 +270,7 @@ export const CollectionCheckboxes = ({
           </Checkbox.Root>
         ))}
       </Checkbox.Group>
-      {errorMessage && <Field.ErrorText>{errorMessage}</Field.ErrorText>}
-    </Field.Root>
+    </>
   )
 }
 
@@ -301,7 +300,7 @@ export const CollectionRadioButtons = ({
   }
 
   return (
-    <Field.Root invalid={!!errorMessage}>
+    <>
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
@@ -315,8 +314,7 @@ export const CollectionRadioButtons = ({
           </RadioGroup.Item>
         ))}
       </RadioGroup.Root>
-      {errorMessage && <Field.ErrorText>{errorMessage}</Field.ErrorText>}
-    </Field.Root>
+    </>
   )
 }
 
