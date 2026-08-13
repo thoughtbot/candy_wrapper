@@ -581,6 +581,7 @@ export const MonthField = ({
       name={rest.name}
       defaultValue={rest.defaultValue}
       value={rest.value}
+      type="month"
       isInvalid={!!errorMessage}
       errorMessage={errorMessage}
     />

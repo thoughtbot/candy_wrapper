@@ -1,3 +1,4 @@
+import './react-aria.css'
 import {
   TextField,
   EmailField,
@@ -6,6 +7,7 @@ import {
   DateField,
   DateTimeLocalField,
   TimeField,
+  MonthField,
   ColorField,
   SearchField,
   TelField,
@@ -29,6 +31,7 @@ renderFrame({
   DateField,
   DateTimeLocalField,
   TimeField,
+  MonthField,
   ColorField,
   SearchField,
   TelField,

@@ -229,6 +229,11 @@ export const Checkbox = ({
         id={rest.id}
         {...valueProps}
       >
+        <div className="checkbox">
+          <svg viewBox="0 0 18 18" aria-hidden="true">
+            <polyline points="1 9 7 14 15 4" />
+          </svg>
+        </div>
         {label}
       </AriaCheckbox>
     </FormValidationContext.Provider>
@@ -276,6 +281,11 @@ export const CollectionCheckboxes = ({
             value={option.value}
             id={option.id}
           >
+            <div className="checkbox">
+              <svg viewBox="0 0 18 18" aria-hidden="true">
+                <polyline points="1 9 7 14 15 4" />
+              </svg>
+            </div>
             {option.label}
           </AriaCheckbox>
         ))}
