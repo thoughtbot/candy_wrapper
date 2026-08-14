@@ -68,6 +68,7 @@ import {
   Portal,
   createListCollection,
 } from '@chakra-ui/react'
+import { PasswordInput as ChakraPasswordInput } from './components/ui/password-input'
 
 export const ValidationContext = createContext<ValidationErrors>({})
 
@@ -298,18 +299,22 @@ export const CollectionRadioButtons = ({
   const { name } = collection[0]
 
   return (
-    <ChakraField.Root invalid={!!errorMessage}>
+    <ChakraFieldset.Root invalid={!!errorMessage}>
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
       <ChakraRadioGroup.Root name={name} {...valueProps}>
-        <ChakraField.Label>{label}</ChakraField.Label>
-        {radioButtons}
+        <ChakraFieldset.Legend fontSize="sm" mb="2">
+          {label}
+        </ChakraFieldset.Legend>
+        <ChakraFieldset.Content>
+          {radioButtons}
+        </ChakraFieldset.Content>
       </ChakraRadioGroup.Root>
       {errorMessage && (
-        <ChakraField.ErrorText>{errorMessage}</ChakraField.ErrorText>
+        <ChakraFieldset.ErrorText>{errorMessage}</ChakraFieldset.ErrorText>
       )}
-    </ChakraField.Root>
+    </ChakraFieldset.Root>
   )
 }
 
@@ -550,7 +555,7 @@ export const PasswordField = ({
 }: PasswordFieldProps) => {
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
-      <ChakraInput type="password" {...rest} />
+      <ChakraPasswordInput {...rest} />
     </ChakraFieldWrapper>
   )
 }
