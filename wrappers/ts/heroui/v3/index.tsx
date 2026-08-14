@@ -166,9 +166,11 @@ type InputProps = {
 
 export const checkboxPropsToHeroProps = (
   props: Partial<RailsCheckboxField>
-) => {
+): Partial<React.ComponentProps<typeof HeroCheckbox>> => {
   const { defaultChecked, checked, type: _type, ...rest } = props
-  const heroProps: Record<string, unknown> = { ...rest }
+  const heroProps: Partial<React.ComponentProps<typeof HeroCheckbox>> = {
+    ...rest,
+  }
 
   if (defaultChecked !== undefined) {
     heroProps.defaultSelected = defaultChecked
@@ -183,13 +185,11 @@ export const checkboxPropsToHeroProps = (
 export const textFieldToHeroProps = (
   props: Partial<RailsTextField & { type?: string }>
 ) => {
-  const { type: _type, ...rest } = props
-  return rest
+  const { type: _type, placeholder, ...fieldProps } = props
+  return { fieldProps, inputProps: { placeholder } }
 }
 
-export const numberFieldToHeroProps = (
-  props: Partial<RailsNumberField>
-) => {
+export const numberFieldToHeroProps = (props: Partial<RailsNumberField>) => {
   const { value, defaultValue, min, max, type: _type, ...rest } = props
   const heroProps: Record<string, unknown> = { ...rest }
 
@@ -209,9 +209,7 @@ export const numberFieldToHeroProps = (
   return heroProps
 }
 
-export const dateFieldToHeroProps = (
-  props: Partial<RailsDateField>
-) => {
+export const dateFieldToHeroProps = (props: Partial<RailsDateField>) => {
   const { max, min, value, defaultValue, type: _type, ...rest } = props
   const heroProps: Record<string, unknown> = { ...rest }
 
@@ -238,9 +236,7 @@ export const dateTimeLocalFieldToHeroProps = (
   return heroProps
 }
 
-export const timeFieldToHeroProps = (
-  props: Partial<RailsTimeField>
-) => {
+export const timeFieldToHeroProps = (props: Partial<RailsTimeField>) => {
   const { min, max, value, defaultValue, type: _type, ...rest } = props
   const heroProps: Record<string, unknown> = { ...rest }
 
@@ -272,7 +268,7 @@ export const Checkbox = ({
       {includeHidden && (
         <input
           type="hidden"
-          name={name as string}
+          name={name}
           defaultValue={uncheckedValue}
           autoComplete="off"
         />
@@ -398,13 +394,13 @@ export const CollectionRadioButtons = ({
 export type TextFieldProps = RailsTextField & InputProps
 
 export const TextField = ({ label, errorKey, ...rest }: TextFieldProps) => {
-  const heroProps = textFieldToHeroProps(rest)
+  const { fieldProps, inputProps } = textFieldToHeroProps(rest)
   const errorMessage = useErrorMessage(errorKey)
 
   return (
-    <HeroTextField {...heroProps} isInvalid={!!errorMessage}>
+    <HeroTextField {...fieldProps} isInvalid={!!errorMessage}>
       <HeroLabel>{label}</HeroLabel>
-      <HeroInput />
+      <HeroInput {...inputProps} />
       {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
     </HeroTextField>
   )
@@ -413,13 +409,13 @@ export const TextField = ({ label, errorKey, ...rest }: TextFieldProps) => {
 export type EmailFieldProps = RailsEmailField & InputProps
 
 export const EmailField = ({ label, errorKey, ...rest }: EmailFieldProps) => {
-  const { type: _type, ...props } = rest
+  const { fieldProps, inputProps } = textFieldToHeroProps(rest)
   const errorMessage = useErrorMessage(errorKey)
 
   return (
-    <HeroTextField {...props} type="email" isInvalid={!!errorMessage}>
+    <HeroTextField {...fieldProps} type="email" isInvalid={!!errorMessage}>
       <HeroLabel>{label}</HeroLabel>
-      <HeroInput />
+      <HeroInput {...inputProps} />
       {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
     </HeroTextField>
   )
@@ -479,7 +475,11 @@ export const DateField = ({ label, errorKey, ...rest }: DateFieldProps) => {
 
 export type DateTimeLocalFieldProps = RailsDateTimeLocalField & InputProps
 
-export const DateTimeLocalField = ({ label, errorKey, ...rest }: DateTimeLocalFieldProps) => {
+export const DateTimeLocalField = ({
+  label,
+  errorKey,
+  ...rest
+}: DateTimeLocalFieldProps) => {
   const heroProps = dateTimeLocalFieldToHeroProps(rest)
   const errorMessage = useErrorMessage(errorKey)
 
@@ -525,6 +525,7 @@ export const SearchField = ({
   results: _results,
   onsearch: _onsearch,
   incremental: _incremental,
+  placeholder,
   ...rest
 }: SearchFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
@@ -532,7 +533,7 @@ export const SearchField = ({
   return (
     <HeroSearchField {...rest} isInvalid={!!errorMessage}>
       <HeroLabel>{label}</HeroLabel>
-      <HeroInput />
+      <HeroInput placeholder={placeholder} />
       {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
     </HeroSearchField>
   )
@@ -541,13 +542,13 @@ export const SearchField = ({
 export type TelFieldProps = RailsTelField & InputProps
 
 export const TelField = ({ label, errorKey, ...rest }: TelFieldProps) => {
-  const { type: _type, ...props } = rest
+  const { fieldProps, inputProps } = textFieldToHeroProps(rest)
   const errorMessage = useErrorMessage(errorKey)
 
   return (
-    <HeroTextField {...props} type="tel" isInvalid={!!errorMessage}>
+    <HeroTextField {...fieldProps} type="tel" isInvalid={!!errorMessage}>
       <HeroLabel>{label}</HeroLabel>
-      <HeroInput />
+      <HeroInput {...inputProps} />
       {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
     </HeroTextField>
   )
@@ -556,13 +557,13 @@ export const TelField = ({ label, errorKey, ...rest }: TelFieldProps) => {
 export type UrlFieldProps = RailsUrlField & InputProps
 
 export const UrlField = ({ label, errorKey, ...rest }: UrlFieldProps) => {
-  const { type: _type, ...props } = rest
+  const { fieldProps, inputProps } = textFieldToHeroProps(rest)
   const errorMessage = useErrorMessage(errorKey)
 
   return (
-    <HeroTextField {...props} type="url" isInvalid={!!errorMessage}>
+    <HeroTextField {...fieldProps} type="url" isInvalid={!!errorMessage}>
       <HeroLabel>{label}</HeroLabel>
-      <HeroInput />
+      <HeroInput {...inputProps} />
       {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
     </HeroTextField>
   )
@@ -570,7 +571,12 @@ export const UrlField = ({ label, errorKey, ...rest }: UrlFieldProps) => {
 
 export type MonthFieldProps = RailsMonthField & InputProps
 
-export const MonthField = ({ label, errorKey, type: _type, ...rest }: MonthFieldProps) => {
+export const MonthField = ({
+  label,
+  errorKey,
+  type: _type,
+  ...rest
+}: MonthFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
   return (
@@ -646,14 +652,18 @@ export const RangeField = ({
 
 export type PasswordFieldProps = RailsPasswordField & InputProps
 
-export const PasswordField = ({ label, errorKey, ...rest }: PasswordFieldProps) => {
-  const { type: _type, ...props } = rest
+export const PasswordField = ({
+  label,
+  errorKey,
+  ...rest
+}: PasswordFieldProps) => {
+  const { fieldProps, inputProps } = textFieldToHeroProps(rest)
   const errorMessage = useErrorMessage(errorKey)
 
   return (
-    <HeroTextField {...props} type="password" isInvalid={!!errorMessage}>
+    <HeroTextField {...fieldProps} type="password" isInvalid={!!errorMessage}>
       <HeroLabel>{label}</HeroLabel>
-      <HeroInput />
+      <HeroInput {...inputProps} />
       {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
     </HeroTextField>
   )
@@ -675,8 +685,7 @@ export const Select = ({
   const addHidden = includeHidden && multiple
 
   const selectedValue = 'value' in rest ? rest.value : undefined
-  const selectedDefault =
-    'defaultValue' in rest ? rest.defaultValue : undefined
+  const selectedDefault = 'defaultValue' in rest ? rest.defaultValue : undefined
 
   const selectionProps: Record<string, unknown> = {}
   if (multiple) {
@@ -774,7 +783,12 @@ export const Select = ({
 
 export type TextAreaProps = RailsTextArea & InputProps
 
-export const TextArea = ({ label, errorKey, type: _type, ...rest }: TextAreaProps) => {
+export const TextArea = ({
+  label,
+  errorKey,
+  type: _type,
+  ...rest
+}: TextAreaProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
   return (
