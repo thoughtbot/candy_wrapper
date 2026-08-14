@@ -183,7 +183,7 @@ export const checkboxPropsToHeroProps = (
 }
 
 export const textFieldToHeroProps = (
-  props: Partial<RailsTextField & { type?: string }>
+  props: Partial<RailsTextField & { type?: string; placeholder: string }>
 ) => {
   const { type: _type, placeholder, ...fieldProps } = props
   return { fieldProps, inputProps: { placeholder } }
@@ -520,20 +520,19 @@ export type SearchFieldProps = RailsSearchField & InputProps
 export const SearchField = ({
   label,
   errorKey,
-  type: _type,
   autosave: _autosave,
   results: _results,
   onsearch: _onsearch,
   incremental: _incremental,
-  placeholder,
   ...rest
 }: SearchFieldProps) => {
+  const { fieldProps, inputProps } = textFieldToHeroProps(rest)
   const errorMessage = useErrorMessage(errorKey)
 
   return (
-    <HeroSearchField {...rest} isInvalid={!!errorMessage}>
+    <HeroSearchField {...fieldProps} isInvalid={!!errorMessage}>
       <HeroLabel>{label}</HeroLabel>
-      <HeroInput placeholder={placeholder} />
+      <HeroInput {...inputProps} />
       {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
     </HeroSearchField>
   )
