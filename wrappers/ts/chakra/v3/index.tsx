@@ -56,6 +56,8 @@ import {
 import {
   Input as ChakraInput,
   Textarea as ChakraTextarea,
+  FileUpload as ChakraFileUpload,
+  ColorPicker as ChakraColorPicker,
   Checkbox as ChakraCheckbox,
   CheckboxGroup as ChakraCheckboxGroup,
   RadioGroup as ChakraRadioGroup,
@@ -67,6 +69,7 @@ import {
   Button as ChakraButton,
   Portal,
   createListCollection,
+  parseColor,
 } from '@chakra-ui/react'
 import { PasswordInput as ChakraPasswordInput } from './components/ui/password-input'
 
@@ -357,12 +360,34 @@ export const ColorField = ({
   label,
   errorKey,
   size: _size,
+  value,
+  defaultValue,
   ...rest
 }: ColorFieldProps) => {
+  const errorMessage = useErrorMessage(errorKey)
+  const colorValue = parseColor(value || defaultValue || '#000000')
+
   return (
-    <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
-      <ChakraInput type="color" {...rest} />
-    </ChakraFieldWrapper>
+    <ChakraField.Root invalid={!!errorMessage}>
+      <ChakraColorPicker.Root {...rest} defaultValue={colorValue}>
+        <ChakraColorPicker.HiddenInput name={rest.name} />
+        <ChakraColorPicker.Label>{label}</ChakraColorPicker.Label>
+        <ChakraColorPicker.Control>
+          <ChakraColorPicker.Input />
+          <ChakraColorPicker.Trigger />
+        </ChakraColorPicker.Control>
+        <ChakraColorPicker.Positioner>
+          <ChakraColorPicker.Content>
+            <ChakraColorPicker.Area />
+            <ChakraColorPicker.EyeDropper />
+            <ChakraColorPicker.Sliders />
+          </ChakraColorPicker.Content>
+        </ChakraColorPicker.Positioner>
+      </ChakraColorPicker.Root>
+      {errorMessage && (
+        <ChakraField.ErrorText>{errorMessage}</ChakraField.ErrorText>
+      )}
+    </ChakraField.Root>
   )
 }
 
@@ -578,7 +603,16 @@ export const Select = ({
   const errorMessage = useErrorMessage(errorKey)
   const addHidden = includeHidden && multiple
 
-  const flatItems = options.flatMap((item) => {
+  const nextOptions = options.slice()
+  const firstOption = nextOptions[0]
+  let placeholder = 'Select...'
+
+  if (firstOption && !('options' in firstOption) && firstOption.value === '') {
+    placeholder = firstOption.label
+    nextOptions.shift()
+  }
+
+  const flatItems = nextOptions.flatMap((item) => {
     if ('options' in item) {
       return item.options
     }
@@ -605,6 +639,7 @@ export const Select = ({
         <input type="hidden" name={name} value={''} autoComplete="off" />
       )}
       <ChakraSelect.Root
+        {...rest}
         name={name}
         collection={collection}
         multiple={multiple}
@@ -615,7 +650,7 @@ export const Select = ({
         <ChakraSelect.Label>{label}</ChakraSelect.Label>
         <ChakraSelect.Control>
           <ChakraSelect.Trigger>
-            <ChakraSelect.ValueText placeholder="Select..." />
+            <ChakraSelect.ValueText placeholder={placeholder} />
           </ChakraSelect.Trigger>
           <ChakraSelect.IndicatorGroup>
             <ChakraSelect.Indicator />
@@ -624,7 +659,7 @@ export const Select = ({
         <Portal>
           <ChakraSelect.Positioner>
             <ChakraSelect.Content>
-              {options.map((item) => {
+              {nextOptions.map((item) => {
                 if ('options' in item) {
                   return (
                     <ChakraSelect.ItemGroup key={item.label}>
@@ -686,10 +721,34 @@ export const FileField = ({
   errorKey,
   ...rest
 }: FileFieldProps) => {
+  const errorMessage = useErrorMessage(errorKey)
+
   return (
-    <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
-      <ChakraInput type="file" {...rest} />
-    </ChakraFieldWrapper>
+    <ChakraField.Root invalid={!!errorMessage}>
+      <ChakraFileUpload.Root>
+        <ChakraFileUpload.HiddenInput name={rest.name} />
+        <ChakraFileUpload.Label>{label}</ChakraFileUpload.Label>
+        <ChakraFileUpload.Trigger>
+          <ChakraButton variant="outline">Choose file</ChakraButton>
+        </ChakraFileUpload.Trigger>
+        <ChakraFileUpload.ItemGroup>
+          <ChakraFileUpload.Context>
+            {({ acceptedFiles }) =>
+              acceptedFiles.map((file) => (
+                <ChakraFileUpload.Item key={file.name} file={file}>
+                  <ChakraFileUpload.ItemName />
+                  <ChakraFileUpload.ItemSizeText />
+                  <ChakraFileUpload.ItemDeleteTrigger />
+                </ChakraFileUpload.Item>
+              ))
+            }
+          </ChakraFileUpload.Context>
+        </ChakraFileUpload.ItemGroup>
+      </ChakraFileUpload.Root>
+      {errorMessage && (
+        <ChakraField.ErrorText>{errorMessage}</ChakraField.ErrorText>
+      )}
+    </ChakraField.Root>
   )
 }
 
