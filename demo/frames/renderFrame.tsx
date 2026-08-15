@@ -30,7 +30,7 @@ export function renderFrame(
 
     return (
       <div style={{ padding: 16 }}>
-        <Component {...props} />
+        <Component key={field} {...props} />
       </div>
     )
   }
