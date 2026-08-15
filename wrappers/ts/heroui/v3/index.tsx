@@ -71,6 +71,7 @@ import {
 
 import {
   TextField as HeroTextField,
+  Header as HeroHeader,
   Input as HeroInput,
   Label as HeroLabel,
   FieldError as HeroFieldError,
@@ -327,7 +328,6 @@ export const CollectionCheckboxes = ({
         name={name}
         {...valueProps}
         isInvalid={!!errorMessage}
-        errorMessage={errorMessage}
       >
         <HeroLabel>{label}</HeroLabel>
         {collection.map((option) => (
@@ -340,6 +340,7 @@ export const CollectionCheckboxes = ({
             </HeroCheckbox.Content>
           </HeroCheckbox>
         ))}
+        {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
       </HeroCheckboxGroup>
     </>
   )
@@ -380,7 +381,6 @@ export const CollectionRadioButtons = ({
         name={name}
         {...valueProps}
         isInvalid={!!errorMessage}
-        errorMessage={errorMessage}
       >
         <HeroLabel>{label}</HeroLabel>
         {collection.map((option) => (
@@ -393,6 +393,7 @@ export const CollectionRadioButtons = ({
             </HeroRadio.Content>
           </HeroRadio>
         ))}
+        {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
       </HeroRadioGroup>
     </>
   )
@@ -739,7 +740,8 @@ export const Select = ({
               ? options.map((item) => {
                   if ('options' in item) {
                     return (
-                      <HeroListBox.Section key={item.label} title={item.label}>
+                      <HeroListBox.Section key={item.label}>
+                        <HeroHeader>{item.label}</HeroHeader>
                         {item.options.map((opt) => (
                           <HeroListBox.Item
                             key={opt.value}
