@@ -5,9 +5,7 @@
   "workspaces": [
     "wrappers/ts/vanilla",
     "wrappers/ts/mantine/v9",
-    "wrappers/ts/shadcn/v4",
     "wrappers/ts/react-aria/v1",
-    "wrappers/ts/react-spectrum/v3",
     "wrappers/ts/react-spectrum/s2",
     "wrappers/ts/ark/v5",
     "wrappers/ts/heroui/v3",
