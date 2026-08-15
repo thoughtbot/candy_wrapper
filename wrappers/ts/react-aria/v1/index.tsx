@@ -215,7 +215,7 @@ export const checkboxPropsToRACProps = (
 }
 
 export const textFieldToRACProps = (
-  props: Partial<RailsTextField & { type?: string }>
+  props: Partial<RailsTextField>
 ) => {
   const { type: _type, ...rest } = props
   return rest as AriaTextFieldProps
@@ -631,6 +631,8 @@ export const RangeField = ({
   errorKey,
   value,
   defaultValue,
+  min,
+  max,
   type: _type,
   ...rest
 }: RangeFieldProps) => {
@@ -640,7 +642,7 @@ export const RangeField = ({
 
   return (
     <>
-      <AriaSlider defaultValue={numericDefault} value={numericValue}>
+      <AriaSlider defaultValue={numericDefault} value={numericValue} minValue={min} maxValue={max}>
         <AriaLabel>{label}</AriaLabel>
         <AriaSliderOutput />
         <AriaSliderTrack>
@@ -711,11 +713,11 @@ export const Select = ({
     }
   } else {
     if (selectedValue) {
-      selectionProps.selectedKey = Array.isArray(selectedValue)
+      selectionProps.value = Array.isArray(selectedValue)
         ? selectedValue[0]
         : selectedValue
     } else if (selectedDefault) {
-      selectionProps.defaultSelectedKey = Array.isArray(selectedDefault)
+      selectionProps.defaultValue = Array.isArray(selectedDefault)
         ? selectedDefault[0]
         : selectedDefault
     }

@@ -357,7 +357,7 @@ export const TimeField = (props: TimeFieldProps) => {
 // NumberField — strips `min`, `max`, `step` and transforms them into slotProps
 type NumberFieldProps = ComponentProps<typeof TextField> &
   RailsNumberField &
-  InputProps & { step?: number }
+  InputProps
 export const NumberField = (props: NumberFieldProps) => {
   const { type, errorKey, label, min, max, step, ...rest } = props
 
@@ -626,10 +626,9 @@ export const TextArea = (props: TextAreaProps) => {
   )
 }
 
-// FileField — strips `color` and `size` since they clash with MUI props
-type FileFieldProps = React.InputHTMLAttributes<HTMLInputElement> & InputProps
+type FileFieldProps = RailsFileField & InputProps
 export const FileField = (props: FileFieldProps) => {
-  const { type, color, size, errorKey, label, ...rest } = props
+  const { type, errorKey, label, ...rest } = props
 
   const errorMessage = useErrorMessage(errorKey)
 
