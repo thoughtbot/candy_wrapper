@@ -172,6 +172,10 @@
       <span>Same Rails payload → 8 UI libraries</span>
       <div class="spacer"></div>
       <label class="error-toggle">
+        <input type="checkbox" id="payload-toggle" />
+        Show usage
+      </label>
+      <label class="error-toggle">
         <input type="checkbox" id="error-toggle" />
         Show errors
       </label>
@@ -244,6 +248,13 @@
         iframe.contentWindow.postMessage({ type: 'SELECT_FIELD', field: type }, '*')
       })
     }
+
+    document.getElementById('payload-toggle').addEventListener('change', (e) => {
+      const enabled = e.target.checked
+      document.querySelectorAll('iframe').forEach(iframe => {
+        iframe.contentWindow.postMessage({ type: 'TOGGLE_PAYLOAD', enabled }, '*')
+      })
+    })
 
     document.getElementById('error-toggle').addEventListener('change', (e) => {
       const enabled = e.target.checked

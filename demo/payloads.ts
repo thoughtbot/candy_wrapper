@@ -47,6 +47,54 @@ export const errorPayloads: Partial<Record<FieldType, { errorKey: string; errors
   FileField: { errorKey: 'avatar', errors: { avatar: 'File is required' } },
 }
 
+export const rubySource: Record<FieldType, string> = {
+  TextField: `f.text_field :name, placeholder: "Enter your name"`,
+  EmailField: `f.email_field :email, placeholder: "you@example.com"`,
+  PasswordField: `f.password_field :password, placeholder: "Enter password"`,
+  NumberField: `f.number_field :quantity, in: 0..100`,
+  DateField: `f.date_field :date, min: "2024-01-01", max: "2025-12-31"`,
+  DateTimeLocalField: `f.datetime_local_field :starts_at`,
+  TimeField: `f.time_field :time`,
+  MonthField: `f.month_field :month, min: "2024-01", max: "2025-12"`,
+  ColorField: `f.color_field :primary_color`,
+  SearchField: `f.search_field :q, placeholder: "Search..."`,
+  TelField: `f.tel_field :phone, placeholder: "+1 (555) 000-0000"`,
+  UrlField: `f.url_field :website, placeholder: "https://"`,
+  RangeField: `f.range_field :volume, in: 0..100`,
+  Checkbox: `f.check_box :terms`,
+  CollectionCheckboxes: `f.collection_check_boxes :roles, Role.all, :id, :name`,
+  CollectionRadioButtons: `f.collection_radio_buttons :plan, Plan.all, :id, :name`,
+  Select: `f.select :country, options_for_select(countries, "us")`,
+  MultiSelect: `f.select :languages, options_for_select(languages, ["en", "fr"]), {}, { multiple: true }`,
+  TextArea: `f.text_area :bio, rows: 4, placeholder: "Tell us about yourself..."`,
+  FileField: `f.file_field :avatar`,
+  SubmitButton: `f.submit "Save Changes"`,
+}
+
+export const tsUsage: Record<FieldType, string> = {
+  TextField: `<TextField {...json} label="Full Name" />`,
+  EmailField: `<EmailField {...json} label="Email Address" />`,
+  PasswordField: `<PasswordField {...json} label="Password" />`,
+  NumberField: `<NumberField {...json} label="Quantity" />`,
+  DateField: `<DateField {...json} label="Event Date" />`,
+  DateTimeLocalField: `<DateTimeLocalField {...json} label="Start Time" />`,
+  TimeField: `<TimeField {...json} label="Preferred Time" />`,
+  MonthField: `<MonthField {...json} label="Report Month" />`,
+  ColorField: `<ColorField {...json} label="Primary Color" />`,
+  SearchField: `<SearchField {...json} label="Search" />`,
+  TelField: `<TelField {...json} label="Phone Number" />`,
+  UrlField: `<UrlField {...json} label="Website" />`,
+  RangeField: `<RangeField {...json} label="Volume" />`,
+  Checkbox: `<Checkbox {...json} label="I agree to the terms" />`,
+  CollectionCheckboxes: `<CollectionCheckboxes {...json} label="Roles" />`,
+  CollectionRadioButtons: `<CollectionRadioButtons {...json} label="Plan" />`,
+  Select: `<Select {...json} label="Country" />`,
+  MultiSelect: `<Select {...json} label="Languages" />`,
+  TextArea: `<TextArea {...json} label="Bio" />`,
+  FileField: `<FileField {...json} label="Avatar" />`,
+  SubmitButton: `<SubmitButton {...json} />`,
+}
+
 export const payloads: Record<FieldType, Record<string, unknown>> = {
   TextField: {
     type: 'text',
