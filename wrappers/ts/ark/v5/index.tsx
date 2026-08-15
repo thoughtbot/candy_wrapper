@@ -66,7 +66,7 @@ import { RadioGroup } from '@ark-ui/react/radio-group'
 import { Select, createListCollection } from '@ark-ui/react/select'
 import { NumberInput } from '@ark-ui/react/number-input'
 import { Slider } from '@ark-ui/react/slider'
-import { ColorPicker } from '@ark-ui/react/color-picker'
+import { ColorPicker, parseColor } from '@ark-ui/react/color-picker'
 import { DateInput } from '@ark-ui/react/date-input'
 import { Field } from '@ark-ui/react/field'
 import { FileUpload } from '@ark-ui/react/file-upload'
@@ -138,28 +138,6 @@ export const Form = ({
 type InputProps = {
   label: string
   errorKey?: string
-}
-
-const FieldWrapper = ({
-  label,
-  id,
-  errorKey,
-  invalid,
-  children,
-}: {
-  label: string
-  id?: string
-  errorKey?: string
-  invalid?: boolean
-  children: React.ReactNode
-}) => {
-  return (
-    <Field.Root invalid={invalid}>
-      <Field.Label htmlFor={id}>{label}</Field.Label>
-      {children}
-      {invalid && <Field.ErrorText>{errorKey}</Field.ErrorText>}
-    </Field.Root>
-  )
 }
 
 const FieldWrapperWithError = ({
@@ -352,7 +330,7 @@ export const ColorField = ({
 }: ColorFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
   const { name, value, defaultValue, ...colorRest } = rest
-  const colorValue = value || defaultValue || '#000000'
+  const colorValue = parseColor(value || defaultValue || '#000000')
 
   return (
     <Field.Root invalid={!!errorMessage}>
