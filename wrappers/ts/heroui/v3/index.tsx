@@ -90,6 +90,7 @@ import {
   Button as HeroButton,
   ColorField as HeroColorField,
   ColorSwatch as HeroColorSwatch,
+  ErrorMessage as HeroErrorMessage,
   parseColor,
 } from '@heroui/react'
 import type { Color } from '@heroui/react'
@@ -182,9 +183,15 @@ export const checkboxPropsToHeroProps = (
   return heroProps
 }
 
-export const textFieldToHeroProps = (
-  props: Partial<RailsTextField & { type?: string; placeholder: string }>
-) => {
+type RailsTextLikeField =
+  | RailsTextField
+  | RailsEmailField
+  | RailsPasswordField
+  | RailsSearchField
+  | RailsTelField
+  | RailsUrlField
+
+export const textFieldToHeroProps = (props: Partial<RailsTextLikeField>) => {
   const { type: _type, placeholder, ...fieldProps } = props
   return { fieldProps, inputProps: { placeholder } }
 }
@@ -623,29 +630,27 @@ export const RangeField = ({
   const numericDefault = defaultValue ? Number(defaultValue) : undefined
 
   return (
-    <>
-      <HeroSlider
-        {...rest}
-        defaultValue={numericDefault}
-        value={numericValue}
-        minValue={min}
-        maxValue={max}
-      >
-        <HeroLabel>{label}</HeroLabel>
-        <HeroSlider.Output />
-        <HeroSlider.Track>
-          {({ state }) => (
-            <>
-              <HeroSlider.Fill />
-              {state.values.map((_: number, i: number) => (
-                <HeroSlider.Thumb key={i} index={i} />
-              ))}
-            </>
-          )}
-        </HeroSlider.Track>
-      </HeroSlider>
-      {errorMessage && <span>{errorMessage}</span>}
-    </>
+    <HeroSlider
+      {...rest}
+      defaultValue={numericDefault}
+      value={numericValue}
+      minValue={min}
+      maxValue={max}
+    >
+      <HeroLabel>{label}</HeroLabel>
+      <HeroSlider.Output />
+      <HeroSlider.Track>
+        {({ state }) => (
+          <>
+            <HeroSlider.Fill />
+            {state.values.map((_: number, i: number) => (
+              <HeroSlider.Thumb key={i} index={i} />
+            ))}
+          </>
+        )}
+      </HeroSlider.Track>
+      <HeroErrorMessage>{errorMessage}</HeroErrorMessage>
+    </HeroSlider>
   )
 }
 
@@ -722,7 +727,6 @@ export const Select = ({
         id={id}
         {...selectionProps}
         isInvalid={!!errorMessage}
-        errorMessage={errorMessage}
       >
         <HeroLabel>{label}</HeroLabel>
         <HeroSelect.Trigger>
@@ -775,6 +779,7 @@ export const Select = ({
                 })}
           </HeroListBox>
         </HeroSelect.Popover>
+        {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
       </HeroSelect>
     </>
   )
