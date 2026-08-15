@@ -21,6 +21,7 @@ import {
   TextArea,
   FileField,
   SubmitButton,
+  ValidationContext,
 } from '../../wrappers/ts/chakra/v3/index'
 import { renderFrame } from './renderFrame'
 
@@ -52,5 +53,6 @@ renderFrame(
     FileField,
     SubmitButton,
   },
-  Provider
+  Provider,
+  ValidationContext
 )

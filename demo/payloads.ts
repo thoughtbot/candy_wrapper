@@ -24,6 +24,29 @@ export const FIELD_TYPES = [
 
 export type FieldType = (typeof FIELD_TYPES)[number]
 
+export const errorPayloads: Partial<Record<FieldType, { errorKey: string; errors: Record<string, string> }>> = {
+  TextField: { errorKey: 'name', errors: { name: 'Name is required' } },
+  EmailField: { errorKey: 'email', errors: { email: 'Invalid email address' } },
+  PasswordField: { errorKey: 'password', errors: { password: 'Password is too short' } },
+  NumberField: { errorKey: 'quantity', errors: { quantity: 'Must be between 0 and 100' } },
+  DateField: { errorKey: 'date', errors: { date: 'Date is required' } },
+  DateTimeLocalField: { errorKey: 'starts_at', errors: { starts_at: 'Start time is required' } },
+  TimeField: { errorKey: 'time', errors: { time: 'Invalid time' } },
+  MonthField: { errorKey: 'month', errors: { month: 'Month is required' } },
+  ColorField: { errorKey: 'primary_color', errors: { primary_color: 'Invalid color' } },
+  SearchField: { errorKey: 'search', errors: { search: 'No results found' } },
+  TelField: { errorKey: 'phone', errors: { phone: 'Invalid phone number' } },
+  UrlField: { errorKey: 'website', errors: { website: 'Invalid URL' } },
+  RangeField: { errorKey: 'volume', errors: { volume: 'Volume out of range' } },
+  Checkbox: { errorKey: 'terms', errors: { terms: 'You must accept the terms' } },
+  CollectionCheckboxes: { errorKey: 'roles', errors: { roles: 'Select at least one role' } },
+  CollectionRadioButtons: { errorKey: 'plan', errors: { plan: 'Please select a plan' } },
+  Select: { errorKey: 'country', errors: { country: 'Country is required' } },
+  MultiSelect: { errorKey: 'languages', errors: { languages: 'Select at least one language' } },
+  TextArea: { errorKey: 'bio', errors: { bio: 'Bio is too short' } },
+  FileField: { errorKey: 'avatar', errors: { avatar: 'File is required' } },
+}
+
 export const payloads: Record<FieldType, Record<string, unknown>> = {
   TextField: {
     type: 'text',

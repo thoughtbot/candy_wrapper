@@ -84,6 +84,49 @@
       border-radius: 4px;
     }
 
+    header .spacer { flex: 1; }
+
+    .error-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #6b7280;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .error-toggle input {
+      appearance: none;
+      width: 36px;
+      height: 20px;
+      background: #d1d5db;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .error-toggle input:checked {
+      background: #ef4444;
+    }
+
+    .error-toggle input::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    .error-toggle input:checked::after {
+      transform: translateX(16px);
+    }
+
     .grid {
       flex: 1;
       display: grid;
@@ -127,6 +170,11 @@
     <header>
       <h2 id="current-field">TextField</h2>
       <span>Same Rails payload → 8 UI libraries</span>
+      <div class="spacer"></div>
+      <label class="error-toggle">
+        <input type="checkbox" id="error-toggle" />
+        Show errors
+      </label>
     </header>
     <div class="grid" id="grid"></div>
   </main>
@@ -196,6 +244,13 @@
         iframe.contentWindow.postMessage({ type: 'SELECT_FIELD', field: type }, '*')
       })
     }
+
+    document.getElementById('error-toggle').addEventListener('change', (e) => {
+      const enabled = e.target.checked
+      document.querySelectorAll('iframe').forEach(iframe => {
+        iframe.contentWindow.postMessage({ type: 'TOGGLE_ERRORS', enabled }, '*')
+      })
+    })
   </script>
 </body>
 </html>

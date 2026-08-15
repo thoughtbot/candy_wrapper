@@ -23,6 +23,7 @@ import {
   TextArea,
   FileField,
   SubmitButton,
+  ValidationContext,
 } from '../../wrappers/ts/mantine/v9/index'
 import { renderFrame } from './renderFrame'
 
@@ -54,5 +55,6 @@ renderFrame(
     FileField,
     SubmitButton,
   },
-  Provider
+  Provider,
+  ValidationContext
 )
