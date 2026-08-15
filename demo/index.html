@@ -4,56 +4,127 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>candy_wrapper — Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --bg: #fff5f9;
+      --sidebar-bg: linear-gradient(180deg, #5b2154 0%, #3d1240 100%);
+      --sidebar-text: #f0b4d8;
+      --sidebar-hover: rgba(244, 164, 210, 0.15);
+      --sidebar-active-bg: linear-gradient(135deg, #f472b6, #c084fc);
+      --sidebar-active-text: #fff;
+      --header-bg: #fff;
+      --header-border: #fce7f3;
+      --accent: #db2777;
+      --accent-light: #f9a8d4;
+      --accent-muted: #fce7f3;
+      --text: #4a1942;
+      --text-secondary: #9f7aea;
+      --border: #fce7f3;
+      --cell-label-bg: linear-gradient(90deg, #fff0f6, #fdf2f8);
+      --cell-label-text: #be185d;
+      --panel-bg: #fffbfd;
+      --code-bg: #fdf2f8;
+      --code-border: #fce7f3;
+      --toggle-bg: #fbcfe8;
+      --toggle-checked: #ec4899;
+      --error-toggle: #f87171;
+      --link: #be185d;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       display: flex;
       height: 100vh;
-      background: #f8f9fa;
-      color: #1a1a2e;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* ── Sidebar ── */
     aside {
-      width: 240px;
-      min-width: 240px;
-      background: #1a1a2e;
-      color: #e0e0e0;
-      padding: 16px 0;
+      width: 260px;
+      min-width: 260px;
+      background: var(--sidebar-bg);
+      padding: 20px 0;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
     }
 
-    aside h1 {
-      font-size: 16px;
-      padding: 0 16px 12px;
-      border-bottom: 1px solid #2a2a4e;
-      margin-bottom: 8px;
-      font-weight: 600;
-      letter-spacing: -0.3px;
+    aside .brand {
+      padding: 0 20px 16px;
+      border-bottom: 1px solid rgba(244, 164, 210, 0.2);
+      margin-bottom: 12px;
     }
 
-    aside h1 span { color: #818cf8; }
+    aside .brand h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    aside .brand h1 .candy {
+      background: linear-gradient(135deg, #f9a8d4, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    aside .brand p {
+      font-size: 11px;
+      color: var(--sidebar-text);
+      margin-top: 4px;
+      opacity: 0.7;
+    }
+
+    aside .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(244, 164, 210, 0.5);
+      padding: 12px 20px 6px;
+    }
 
     aside button {
       display: block;
-      width: 100%;
+      width: calc(100% - 16px);
+      margin: 1px 8px;
       text-align: left;
       background: none;
       border: none;
-      color: #c0c0d0;
-      padding: 8px 16px;
+      color: var(--sidebar-text);
+      padding: 7px 12px;
       font-size: 13px;
       cursor: pointer;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      transition: background 0.15s, color 0.15s;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      border-radius: 6px;
+      transition: all 0.15s;
     }
 
-    aside button:hover { background: #2a2a4e; color: #fff; }
-    aside button.active { background: #818cf8; color: #fff; font-weight: 600; }
+    aside button:hover {
+      background: var(--sidebar-hover);
+      color: #fce7f3;
+    }
 
+    aside button.active {
+      background: var(--sidebar-active-bg);
+      color: var(--sidebar-active-text);
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+      transform: rotate(-1.5deg);
+    }
+
+    /* ── Main ── */
     main {
       flex: 1;
       display: flex;
@@ -61,10 +132,11 @@
       overflow: hidden;
     }
 
+    /* ── Header ── */
     header {
-      padding: 12px 20px;
-      background: #fff;
-      border-bottom: 1px solid #e5e7eb;
+      padding: 14px 24px;
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--header-border);
       display: flex;
       align-items: center;
       gap: 12px;
@@ -73,74 +145,86 @@
     header h2 {
       font-size: 18px;
       font-weight: 600;
-      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
     }
 
-    header span {
-      font-size: 12px;
-      color: #6b7280;
-      background: #f3f4f6;
-      padding: 2px 8px;
-      border-radius: 4px;
+    header .badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--cell-label-text);
+      background: var(--accent-muted);
+      padding: 3px 10px;
+      border-radius: 99px;
     }
 
     header .spacer { flex: 1; }
 
+    /* ── Toggles ── */
     .toggle {
       display: flex;
       align-items: center;
       gap: 8px;
       font-size: 13px;
-      color: #6b7280;
+      font-weight: 500;
+      color: var(--text-secondary);
       cursor: pointer;
       user-select: none;
     }
 
     .toggle input {
       appearance: none;
-      width: 36px;
-      height: 20px;
-      background: #d1d5db;
-      border-radius: 10px;
+      width: 38px;
+      height: 22px;
+      background: #fbcfe8;
+      border-radius: 11px;
       position: relative;
       cursor: pointer;
       transition: background 0.2s;
     }
 
     .toggle input:checked {
-      background: #818cf8;
+      background: var(--toggle-checked);
     }
 
     .toggle.error-toggle input:checked {
-      background: #ef4444;
+      background: var(--error-toggle);
     }
 
     .toggle input::after {
       content: '';
       position: absolute;
-      top: 2px;
-      left: 2px;
+      top: 3px;
+      left: 3px;
       width: 16px;
       height: 16px;
       background: #fff;
       border-radius: 50%;
       transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
 
     .toggle input:checked::after {
       transform: translateX(16px);
     }
 
+    /* ── Usage Panel (Dracula-inspired) ── */
     #usage-panel {
-      display: none;
-      background: #fff;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 12px 20px;
+      display: flex;
+      gap: 16px;
+      background: #282a36;
+      border-bottom: 1px solid #44475a;
+      padding: 0 24px;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.25s ease;
     }
 
     #usage-panel.visible {
-      display: flex;
-      gap: 16px;
+      max-height: 300px;
+      padding: 16px 24px;
+      opacity: 1;
     }
 
     .usage-section {
@@ -152,36 +236,82 @@
       font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #9ca3af;
-      margin-bottom: 4px;
+      letter-spacing: 0.8px;
+      color: #6272a4;
+      margin-bottom: 6px;
     }
 
     .usage-section .label a {
-      color: #6366f1;
+      color: #bd93f9;
       text-decoration: none;
     }
 
-    .usage-section pre {
-      padding: 8px 10px;
-      background: #f8f9fa;
-      border: 1px solid #e5e7eb;
-      border-radius: 4px;
-      font-size: 11px;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      line-height: 1.5;
-      overflow: auto;
-      white-space: pre;
-      max-height: 160px;
+    .usage-section .label a:hover {
+      color: #ff79c6;
+      text-decoration: underline;
     }
 
+    .usage-section pre {
+      padding: 10px 12px;
+      background: #21222c;
+      border: 1px solid #44475a;
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.6;
+      overflow: auto;
+      white-space: pre;
+      max-height: 180px;
+      color: #f8f8f2;
+    }
+
+    /* Dracula syntax highlighting */
+    #usage-panel .token.comment,
+    #usage-panel .token.prolog,
+    #usage-panel .token.doctype,
+    #usage-panel .token.cdata { color: #6272a4; }
+
+    #usage-panel .token.punctuation { color: #f8f8f2; }
+
+    #usage-panel .token.property,
+    #usage-panel .token.tag,
+    #usage-panel .token.constant,
+    #usage-panel .token.symbol,
+    #usage-panel .token.deleted { color: #ff79c6; }
+
+    #usage-panel .token.boolean,
+    #usage-panel .token.number { color: #bd93f9; }
+
+    #usage-panel .token.selector,
+    #usage-panel .token.attr-name,
+    #usage-panel .token.string,
+    #usage-panel .token.char,
+    #usage-panel .token.builtin,
+    #usage-panel .token.inserted { color: #50fa7b; }
+
+    #usage-panel .token.operator,
+    #usage-panel .token.entity,
+    #usage-panel .token.url,
+    #usage-panel .token.variable { color: #f8f8f2; }
+
+    #usage-panel .token.atrule,
+    #usage-panel .token.attr-value,
+    #usage-panel .token.function,
+    #usage-panel .token.class-name { color: #f1fa8c; }
+
+    #usage-panel .token.keyword { color: #ff79c6; }
+
+    #usage-panel .token.regex,
+    #usage-panel .token.important { color: #ffb86c; }
+
+    /* ── Grid ── */
     .grid {
       flex: 1;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: repeat(2, 1fr);
       gap: 1px;
-      background: #e5e7eb;
+      background: var(--border);
       overflow: hidden;
     }
 
@@ -192,14 +322,14 @@
     }
 
     .cell-label {
-      padding: 6px 12px;
+      padding: 7px 14px;
       font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #6b7280;
-      background: #fafafa;
-      border-bottom: 1px solid #e5e7eb;
+      color: var(--cell-label-text);
+      background: var(--cell-label-bg);
+      border-bottom: 1px solid var(--header-border);
     }
 
     .cell iframe {
@@ -207,17 +337,33 @@
       border: none;
       width: 100%;
     }
+
+    /* ── Scrollbar ── */
+    aside::-webkit-scrollbar {
+      width: 6px;
+    }
+    aside::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    aside::-webkit-scrollbar-thumb {
+      background: rgba(244, 164, 210, 0.3);
+      border-radius: 3px;
+    }
   </style>
 </head>
 <body>
   <aside>
-    <h1><span>candy</span>_wrapper</h1>
+    <div class="brand">
+      <h1><span class="candy">candy</span>_wrapper</h1>
+      <p>Same Rails payload, any UI library</p>
+    </div>
+    <div class="section-label">Field Types</div>
   </aside>
 
   <main>
     <header>
       <h2 id="current-field">TextField</h2>
-      <span>Same Rails payload → 8 UI libraries</span>
+      <span class="badge">Same payload &rarr; 8 libraries</span>
       <div class="spacer"></div>
       <label class="toggle">
         <input type="checkbox" id="usage-toggle" />
@@ -231,21 +377,25 @@
     <div id="usage-panel">
       <div class="usage-section">
         <div class="label"><a href="https://github.com/thoughtbot/form_props" target="_blank" rel="noopener noreferrer">form_props</a></div>
-        <pre id="usage-ruby"></pre>
+        <pre id="usage-ruby"><code class="language-ruby"></code></pre>
       </div>
       <div class="usage-section">
         <div class="label">JSON</div>
-        <pre id="usage-json"></pre>
+        <pre id="usage-json"><code class="language-json"></code></pre>
       </div>
       <div class="usage-section">
         <div class="label">Usage</div>
-        <pre id="usage-tsx"></pre>
+        <pre id="usage-tsx"><code class="language-jsx"></code></pre>
       </div>
     </div>
     <div class="grid" id="grid"></div>
   </main>
 
   <script type="module">
+    import Prism from 'prismjs'
+    import 'prismjs/components/prism-ruby'
+    import 'prismjs/components/prism-json'
+    import 'prismjs/components/prism-jsx'
     import { payloads, rubySource, tsUsage } from './payloads.ts'
 
     const FIELD_TYPES = [
@@ -277,12 +427,19 @@
     let currentField = 'TextField'
 
     function updateUsagePanel() {
-      usageRuby.textContent = rubySource[currentField]
-      usageJson.textContent = JSON.stringify(payloads[currentField], null, 2)
-      usageTsx.textContent = tsUsage[currentField]
+      const rubyCode = usageRuby.querySelector('code')
+      const jsonCode = usageJson.querySelector('code')
+      const tsxCode = usageTsx.querySelector('code')
+
+      rubyCode.textContent = rubySource[currentField]
+      jsonCode.textContent = JSON.stringify(payloads[currentField], null, 2)
+      tsxCode.textContent = tsUsage[currentField]
+
+      Prism.highlightElement(rubyCode)
+      Prism.highlightElement(jsonCode)
+      Prism.highlightElement(tsxCode)
     }
 
-    // Build sidebar buttons
     FIELD_TYPES.forEach(type => {
       const btn = document.createElement('button')
       btn.textContent = type
@@ -292,7 +449,6 @@
       sidebar.appendChild(btn)
     })
 
-    // Build iframe grid
     LIBRARIES.forEach(lib => {
       const cell = document.createElement('div')
       cell.className = 'cell'
