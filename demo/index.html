@@ -9,29 +9,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #fff5f9;
-      --sidebar-bg: linear-gradient(180deg, #5b2154 0%, #3d1240 100%);
-      --sidebar-text: #f0b4d8;
-      --sidebar-hover: rgba(244, 164, 210, 0.15);
+      --bg: #f9fafb;
+      --sidebar-bg: linear-gradient(180deg, #1e1b4b 0%, #171533 100%);
+      --sidebar-text: #a5b4fc;
+      --sidebar-hover: rgba(165, 180, 252, 0.1);
       --sidebar-active-bg: linear-gradient(135deg, #f472b6, #c084fc);
       --sidebar-active-text: #fff;
       --header-bg: #fff;
-      --header-border: #fce7f3;
-      --accent: #db2777;
-      --accent-light: #f9a8d4;
-      --accent-muted: #fce7f3;
-      --text: #4a1942;
-      --text-secondary: #9f7aea;
-      --border: #fce7f3;
-      --cell-label-bg: linear-gradient(90deg, #fff0f6, #fdf2f8);
-      --cell-label-text: #be185d;
-      --panel-bg: #fffbfd;
-      --code-bg: #fdf2f8;
-      --code-border: #fce7f3;
-      --toggle-bg: #fbcfe8;
-      --toggle-checked: #ec4899;
-      --error-toggle: #f87171;
-      --link: #be185d;
+      --header-border: #e5e7eb;
+      --accent: #6366f1;
+      --accent-light: #a5b4fc;
+      --accent-muted: #eef2ff;
+      --text: #1f2937;
+      --text-secondary: #6b7280;
+      --border: #e5e7eb;
+      --cell-label-bg: #fafafa;
+      --cell-label-text: #6366f1;
+      --panel-bg: #fafafa;
+      --code-bg: #f3f4f6;
+      --code-border: #e5e7eb;
+      --toggle-bg: #d1d5db;
+      --toggle-checked: #6366f1;
+      --error-toggle: #ef4444;
+      --link: #6366f1;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -58,7 +58,7 @@
 
     aside .brand {
       padding: 0 20px 16px;
-      border-bottom: 1px solid rgba(244, 164, 210, 0.2);
+      border-bottom: 1px solid rgba(165, 180, 252, 0.15);
       margin-bottom: 12px;
     }
 
@@ -73,7 +73,7 @@
     }
 
     aside .brand h1 .candy {
-      background: linear-gradient(135deg, #f9a8d4, #c084fc);
+      background: linear-gradient(135deg, #f0abfc, #818cf8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -90,7 +90,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: rgba(244, 164, 210, 0.5);
+      color: rgba(165, 180, 252, 0.4);
       padding: 12px 20px 6px;
     }
 
@@ -113,14 +113,14 @@
 
     aside button:hover {
       background: var(--sidebar-hover);
-      color: #fce7f3;
+      color: #e0e7ff;
     }
 
     aside button.active {
       background: var(--sidebar-active-bg);
       color: var(--sidebar-active-text);
       font-weight: 500;
-      box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+      box-shadow: 0 2px 8px rgba(196, 132, 252, 0.25);
       transform: rotate(-1.5deg);
     }
 
@@ -176,7 +176,7 @@
       appearance: none;
       width: 38px;
       height: 22px;
-      background: #fbcfe8;
+      background: #d1d5db;
       border-radius: 11px;
       position: relative;
       cursor: pointer;
@@ -346,7 +346,7 @@
       background: transparent;
     }
     aside::-webkit-scrollbar-thumb {
-      background: rgba(244, 164, 210, 0.3);
+      background: rgba(165, 180, 252, 0.25);
       border-radius: 3px;
     }
   </style>
