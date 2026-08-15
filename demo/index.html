@@ -86,7 +86,7 @@
 
     header .spacer { flex: 1; }
 
-    .error-toggle {
+    .toggle {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -96,7 +96,7 @@
       user-select: none;
     }
 
-    .error-toggle input {
+    .toggle input {
       appearance: none;
       width: 36px;
       height: 20px;
@@ -107,11 +107,15 @@
       transition: background 0.2s;
     }
 
-    .error-toggle input:checked {
+    .toggle input:checked {
+      background: #818cf8;
+    }
+
+    .toggle.error-toggle input:checked {
       background: #ef4444;
     }
 
-    .error-toggle input::after {
+    .toggle input::after {
       content: '';
       position: absolute;
       top: 2px;
@@ -123,8 +127,52 @@
       transition: transform 0.2s;
     }
 
-    .error-toggle input:checked::after {
+    .toggle input:checked::after {
       transform: translateX(16px);
+    }
+
+    #usage-panel {
+      display: none;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 20px;
+    }
+
+    #usage-panel.visible {
+      display: flex;
+      gap: 16px;
+    }
+
+    .usage-section {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .usage-section .label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .usage-section .label a {
+      color: #6366f1;
+      text-decoration: none;
+    }
+
+    .usage-section pre {
+      padding: 8px 10px;
+      background: #f8f9fa;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      line-height: 1.5;
+      overflow: auto;
+      white-space: pre;
+      max-height: 160px;
     }
 
     .grid {
@@ -171,19 +219,35 @@
       <h2 id="current-field">TextField</h2>
       <span>Same Rails payload → 8 UI libraries</span>
       <div class="spacer"></div>
-      <label class="error-toggle">
-        <input type="checkbox" id="payload-toggle" />
+      <label class="toggle">
+        <input type="checkbox" id="usage-toggle" />
         Show usage
       </label>
-      <label class="error-toggle">
+      <label class="toggle error-toggle">
         <input type="checkbox" id="error-toggle" />
         Show errors
       </label>
     </header>
+    <div id="usage-panel">
+      <div class="usage-section">
+        <div class="label"><a href="https://github.com/thoughtbot/form_props" target="_blank" rel="noopener noreferrer">form_props</a></div>
+        <pre id="usage-ruby"></pre>
+      </div>
+      <div class="usage-section">
+        <div class="label">JSON</div>
+        <pre id="usage-json"></pre>
+      </div>
+      <div class="usage-section">
+        <div class="label">Usage</div>
+        <pre id="usage-tsx"></pre>
+      </div>
+    </div>
     <div class="grid" id="grid"></div>
   </main>
 
-  <script>
+  <script type="module">
+    import { payloads, rubySource, tsUsage } from './payloads.ts'
+
     const FIELD_TYPES = [
       'TextField', 'EmailField', 'PasswordField', 'NumberField',
       'DateField', 'DateTimeLocalField', 'TimeField', 'MonthField',
@@ -206,7 +270,17 @@
     const sidebar = document.querySelector('aside')
     const grid = document.getElementById('grid')
     const heading = document.getElementById('current-field')
+    const usagePanel = document.getElementById('usage-panel')
+    const usageRuby = document.getElementById('usage-ruby')
+    const usageJson = document.getElementById('usage-json')
+    const usageTsx = document.getElementById('usage-tsx')
     let currentField = 'TextField'
+
+    function updateUsagePanel() {
+      usageRuby.textContent = rubySource[currentField]
+      usageJson.textContent = JSON.stringify(payloads[currentField], null, 2)
+      usageTsx.textContent = tsUsage[currentField]
+    }
 
     // Build sidebar buttons
     FIELD_TYPES.forEach(type => {
@@ -247,13 +321,13 @@
       document.querySelectorAll('iframe').forEach(iframe => {
         iframe.contentWindow.postMessage({ type: 'SELECT_FIELD', field: type }, '*')
       })
+
+      updateUsagePanel()
     }
 
-    document.getElementById('payload-toggle').addEventListener('change', (e) => {
-      const enabled = e.target.checked
-      document.querySelectorAll('iframe').forEach(iframe => {
-        iframe.contentWindow.postMessage({ type: 'TOGGLE_PAYLOAD', enabled }, '*')
-      })
+    document.getElementById('usage-toggle').addEventListener('change', (e) => {
+      usagePanel.classList.toggle('visible', e.target.checked)
+      updateUsagePanel()
     })
 
     document.getElementById('error-toggle').addEventListener('change', (e) => {
@@ -262,6 +336,8 @@
         iframe.contentWindow.postMessage({ type: 'TOGGLE_ERRORS', enabled }, '*')
       })
     })
+
+    updateUsagePanel()
   </script>
 </body>
 </html>
