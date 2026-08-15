@@ -601,12 +601,9 @@ export const NumberField = ({
     valueProps.defaultValue = Number(defaultValue)
   }
 
-  // Strip HTML-specific props that clash with Spectrum's API
-  const { step: _step, size: _size, ...numberRest } = rest as Record<string, unknown>
-
   return (
     <SpectrumNumberField
-      {...numberRest}
+      {...rest}
       label={label}
       {...valueProps}
       minValue={min}
@@ -625,11 +622,12 @@ export const RangeField = ({
   errorKey,
   value,
   defaultValue,
+  min,
+  max,
   ...rest
 }: RangeFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
-  // Transform: string values → numbers
   const numericValue = value ? Number(value) : undefined
   const numericDefault = defaultValue ? Number(defaultValue) : undefined
 
@@ -639,6 +637,8 @@ export const RangeField = ({
         label={label}
         defaultValue={numericDefault}
         value={numericValue}
+        minValue={min}
+        maxValue={max}
       />
       <input
         type="hidden"
