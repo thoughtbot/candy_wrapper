@@ -359,7 +359,6 @@ export const ColorField = ({
   type: _type,
   label,
   errorKey,
-  size: _size,
   value,
   defaultValue,
   ...rest
@@ -397,7 +396,6 @@ export const DateField = ({
   type: _type,
   label,
   errorKey,
-  size: _size,
   ...rest
 }: DateFieldProps) => {
   return (
@@ -415,10 +413,9 @@ export const DateTimeLocalField = ({
   errorKey,
   ...rest
 }: DateTimeLocalFieldProps) => {
-  const { size: _size, ...inputProps } = rest
   return (
     <ChakraFieldWrapper label={label} errorKey={errorKey} id={rest.id}>
-      <ChakraInput type="datetime-local" {...inputProps} />
+      <ChakraInput type="datetime-local" {...rest} />
     </ChakraFieldWrapper>
   )
 }
@@ -492,7 +489,6 @@ export const TimeField = ({
   type: _type,
   label,
   errorKey,
-  size: _size,
   ...rest
 }: TimeFieldProps) => {
   return (
@@ -529,10 +525,7 @@ export const NumberField = ({
   )
 }
 
-export type RangeFieldProps = Omit<
-  RailsRangeField & InputProps,
-  'maxLength' | 'size'
->
+export type RangeFieldProps = RailsRangeField & InputProps
 
 export const RangeField = ({
   type: _type,
