@@ -667,20 +667,14 @@ export const PasswordField = ({
   type: _type,
   label,
   errorKey,
-  size,
+  size: _size,
   ...rest
 }: PasswordFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
-  let inputProps: { inputSize?: string } = {}
-
-  if (size) {
-    inputProps.inputSize = `${size}`
-  }
 
   return (
     <MantinePasswordInput
       {...rest}
-      {...inputProps}
       label={label}
       error={errorMessage}
     />

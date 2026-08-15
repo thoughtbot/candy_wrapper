@@ -701,12 +701,7 @@ export const TextArea = ({
   )
 }
 
-export type FileFieldProps = Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  'size'
-> &
-  RailsFileField &
-  InputProps
+export type FileFieldProps = RailsFileField & InputProps
 
 export const FileField = ({
   type: _type,
