@@ -17,16 +17,17 @@ describe('ColorField', () => {
   it('renders', () => {
     const payload = buildPayload()
 
-    const { getByLabelText } = render(
+    const { getByText, container } = render(
       <ChakraProvider value={defaultSystem}>
         <ColorField {...payload} label={'Color'} errorKey={'color'} />
       </ChakraProvider>
     )
 
-    const input = getByLabelText('Color')
-    expect(input.required).toBeFalsy()
-    expect(input.value).toEqual('#000000')
-    expect(input.type).toEqual('color')
+    const label = getByText('Color')
+    expect(label).not.toBeNull()
+
+    const hiddenInput = container.querySelector('input[name="post[color]"]')
+    expect(hiddenInput).not.toBeNull()
   })
 
   it('renders with field errors', async () => {

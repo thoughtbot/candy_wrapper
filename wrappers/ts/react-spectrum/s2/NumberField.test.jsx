@@ -5,7 +5,7 @@ import { NumberField, ValidationContext } from '.'
 const buildPayload = () => {
   return {
     type: 'number',
-    defaultValue: '2',
+    defaultValue: '3',
     name: 'post[favs]',
     min: 1,
     max: 9,
@@ -29,7 +29,7 @@ describe('NumberField', () => {
       'input[type=hidden][name="post[favs]"]'
     )
     expect(hiddenInput).not.toBeNull()
-    expect(hiddenInput.value).toEqual('2')
+    expect(hiddenInput.value).toEqual('3')
   })
 
   it('renders with field errors', async () => {

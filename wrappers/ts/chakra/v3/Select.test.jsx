@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, within } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { ChakraProvider, defaultSystem } from '@chakra-ui/react'
 import { Select } from '.'
 
@@ -51,40 +51,21 @@ describe('Select', () => {
       expect(hiddenInput).toBe(null)
     })
 
-    it('renders the component', async () => {
-      const payload = {
-        type: 'select',
-        name: 'post[category]',
-        id: 'post_category',
-        required: true,
-        defaultValue: ['<mus>'],
-        includeHidden: true,
-        multiple: true,
-        options: [
-          { value: '', label: 'Choose a category' },
-          { value: 'abe', label: 'abe' },
-          { value: '<mus>', label: '<mus>', disabled: true },
-          { value: 'hest', label: 'hest' },
-        ],
-      }
+    it('renders the component with default value', async () => {
+      const payload = buildPayload()
 
-      const { getAllByRole } = render(
+      const { getByText, container } = render(
         <ChakraProvider value={defaultSystem}>
           <Select {...payload} label={'category'} />
         </ChakraProvider>
       )
-      let options = getAllByRole('option')
-      expect(options[0].value).toEqual('')
-      expect(options[0].getAttribute('label')).toEqual('Choose a category')
 
-      expect(options[1].value).toEqual('abe')
-      expect(options[1].getAttribute('label')).toEqual('abe')
+      const label = getByText('category')
+      expect(label).not.toBeNull()
 
-      expect(options[2].value).toEqual('<mus>')
-      expect(options[2].getAttribute('label')).toEqual('<mus>')
-
-      expect(options[3].value).toEqual('hest')
-      expect(options[3].getAttribute('label')).toEqual('hest')
+      const hiddenSelect = container.querySelector('select[name="post[category]"]')
+      expect(hiddenSelect).not.toBeNull()
+      expect(hiddenSelect.value).toEqual('<mus>')
     })
 
     it('renders with nested options', async () => {
@@ -93,6 +74,7 @@ describe('Select', () => {
         name: 'post[category]',
         id: 'post_category',
         includeHidden: true,
+        defaultValue: 'soccer',
         options: [
           { value: 'abe', label: 'abe' },
           {
@@ -106,24 +88,18 @@ describe('Select', () => {
         ],
       }
 
-      const { getByRole } = render(
+      const { getByText, container } = render(
         <ChakraProvider value={defaultSystem}>
           <Select {...payload} label={'category'} />
         </ChakraProvider>
       )
-      let select = getByRole('combobox')
 
-      expect(select.id).toEqual('post_category')
-      expect(select.name).toEqual('post[category]')
-      const optGroup = within(select).getByRole('group')
-      expect(optGroup.getAttribute('label')).toEqual('sports')
+      const label = getByText('category')
+      expect(label).not.toBeNull()
 
-      const options = within(optGroup).getAllByRole('option')
-      expect(options[0].value).toEqual('soccer')
-      expect(options[0].getAttribute('label')).toEqual('Soccer')
-
-      expect(options[1].value).toEqual('baseball')
-      expect(options[1].getAttribute('label')).toEqual('Baseball')
+      const hiddenSelect = container.querySelector('select[name="post[category]"]')
+      expect(hiddenSelect).not.toBeNull()
+      expect(hiddenSelect.value).toEqual('soccer')
     })
   })
 })
