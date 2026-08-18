@@ -1,0 +1,13 @@
+{
+  "name": "@candy_wrapper/mantine-v9",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json && mkdir -p ../../../../wrappers/js/mantine/v9 && cp dist/wrappers/ts/mantine/v9/index.jsx ../../../../wrappers/js/mantine/v9/index.jsx && rm -rf dist"
+  },
+  "devDependencies": {
+    "@mantine/core": "^9.0.0",
+    "@mantine/dates": "^9.0.0",
+    "@types/react": "^19.0.0"
+  }
+}

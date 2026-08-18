@@ -30,7 +30,7 @@ describe('DateTimeLocalField', () => {
     )
 
     const input = document.querySelector('[name="post[birth_date]"]')
-    expect(input.value).toEqual('2004-06-15T01:02:03.000Z')
+    expect(input.value).toEqual('2004-06-15 01:02:03')
 
     const button = document.querySelector('button')
     await userEvent.click(button)

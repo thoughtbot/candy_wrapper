@@ -52,6 +52,7 @@ import {
   MonthField as RailsMonthField,
   NumberField as RailsNumberField,
   PasswordField as RailsPasswordField,
+  RangeField as RailsRangeField,
   SearchField as RailsSearchField,
   SingleSelect as RailsSingleSelect,
   MultiSelect as RailsMultiSelect,
@@ -70,6 +71,7 @@ import {
   Checkbox as MantineCheckbox,
   Radio as MantineRadio,
   Group as MantineGroup,
+  Input as MantineInput,
   TextInput as MantineTextInput,
   ColorInput as MantineColorInput,
   NumberInput as MantineNumberInput,
@@ -81,16 +83,21 @@ import {
   FileInput as MantineFileInput,
   Button as MantineButton,
 } from '@mantine/core'
+import type {
+  MultiSelectProps as MantineMultiSelectProps,
+  SelectProps as MantineSelectProps,
+} from '@mantine/core'
 
 import {
-  DateValue as MantineDateValue,
   DateInput as MantineDateInput,
   DateTimePicker as MantineDateTimePicker,
   MonthPickerInput as MantineMonthPickerInput,
   TimeInput as MantineTimeInput,
 } from '@mantine/dates'
-
-import dayjs from 'dayjs'
+import type {
+  DateTimePickerProps as MantineDateTimePickerProps,
+  DateValue as MantineDateValue,
+} from '@mantine/dates'
 
 export const ValidationContext = createContext<ValidationErrors>({})
 
@@ -243,6 +250,7 @@ export const CollectionCheckboxes = ({
   )
 
   const { name } = collection[0]
+  debugger
 
   return (
     <>
@@ -408,9 +416,9 @@ export const DateField = ({
 
   const valueProps: TransformedValues<MantineDateValue> = {}
   if (value) {
-    valueProps.value = dayjs(value).toDate()
+    valueProps.value = value
   } else if (defaultValue) {
-    valueProps.defaultValue = dayjs(defaultValue).toDate()
+    valueProps.defaultValue = defaultValue
   }
   return (
     <MantineDateInput
@@ -423,9 +431,7 @@ export const DateField = ({
   )
 }
 
-export type DateTimeLocalFieldProps = ComponentProps<
-  typeof MantineDateTimePicker
-> &
+export type DateTimeLocalFieldProps = Omit<MantineDateTimePickerProps, 'type'> &
   RailsDateTimeLocalField &
   InputProps
 
@@ -449,24 +455,24 @@ export const DateTimeLocalField = ({
 
   const valueProps: TransformedValues<MantineDateValue> = {}
   if (value) {
-    valueProps.value = dayjs(value).toDate()
+    valueProps.value = value
   } else if (defaultValue) {
-    valueProps.defaultValue = dayjs(defaultValue).toDate()
+    valueProps.defaultValue = defaultValue
   }
 
-  const minMaxProps: { minDate?: Date; maxDate?: Date } = {}
+  const minMaxProps: { minDate?: string; maxDate?: string } = {}
 
   if (min) {
-    minMaxProps.minDate = dayjs(min).toDate()
+    minMaxProps.minDate = min
   }
   if (max) {
-    minMaxProps.maxDate = dayjs(max).toDate()
+    minMaxProps.maxDate = max
   }
 
   return (
     <MantineDateTimePicker
       label={label}
-      valueFormat="YYYY-MM-DD hh:mm:ss"
+      valueFormat="YYYY-MM-DD HH:mm:ss"
       withSeconds
       error={errorMessage}
       {...minMaxProps}
@@ -602,18 +608,18 @@ export const MonthField = ({
   const errorMessage = useErrorMessage(errorKey)
   const valueProps: TransformedValues<MantineDateValue> = {}
   if (value) {
-    valueProps.value = dayjs(value).toDate()
+    valueProps.value = value
   } else if (defaultValue) {
-    valueProps.defaultValue = dayjs(defaultValue).toDate()
+    valueProps.defaultValue = defaultValue
   }
 
-  const minMaxProps: { minDate?: Date; maxDate?: Date } = {}
+  const minMaxProps: { minDate?: string; maxDate?: string } = {}
 
   if (min) {
-    minMaxProps.minDate = dayjs(min).toDate()
+    minMaxProps.minDate = min
   }
   if (max) {
-    minMaxProps.maxDate = dayjs(max).toDate()
+    minMaxProps.maxDate = max
   }
 
   return (
@@ -651,27 +657,24 @@ export const NumberField = ({
   return <MantineNumberInput {...rest} label={label} error={errorMessage} />
 }
 
-export type PasswordFieldProps = typeof MantinePasswordInput &
+export type PasswordFieldProps = Omit<
+  ComponentProps<typeof MantinePasswordInput>,
+  'type'
+> &
   RailsPasswordField &
   InputProps
 export const PasswordField = ({
   type: _type,
   label,
   errorKey,
-  size,
+  size: _size,
   ...rest
 }: PasswordFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
-  let inputProps: { inputSize?: string } = {}
-
-  if (size) {
-    inputProps.inputSize = `${size}`
-  }
 
   return (
     <MantinePasswordInput
       {...rest}
-      {...inputProps}
       label={label}
       error={errorMessage}
     />
@@ -684,9 +687,7 @@ export const PasswordField = ({
  * Designed to work with a payload form_props's [month_field helper](https://github.com/thoughtbot/form_props?tab=readme-ov-file#number-helpers).
  * Mimics the rails equivalent. Please modify to your liking.
  */
-export const MultiSelect = (
-  props: ComponentProps<typeof MantineMultiSelect>
-) => {
+export const MultiSelect = (props: MantineMultiSelectProps<string>) => {
   const [values, setValues] = useState<string[]>(
     props.value || props.defaultValue || []
   )
@@ -705,9 +706,9 @@ export const MultiSelect = (
       {values.map((val) => (
         <input
           type="hidden"
-          key={val}
+          key={String(val)}
           name={name}
-          value={val}
+          value={String(val)}
           autoComplete="off"
         />
       ))}
@@ -715,8 +716,8 @@ export const MultiSelect = (
   )
 }
 
-type SingleProps = ComponentProps<typeof MantineSelect>
-type MultiProps = ComponentProps<typeof MantineMultiSelect>
+type SingleProps = MantineSelectProps<string>
+type MultiProps = MantineMultiSelectProps<string>
 type SelectProps = (
   | (SingleProps & RailsSingleSelect)
   | (MultiProps & RailsMultiSelect)
@@ -809,6 +810,25 @@ export const FileField = ({
   const errorMessage = useErrorMessage(errorKey)
 
   return <MantineFileInput label={label} error={errorMessage} {...rest} />
+}
+
+type RangeFieldProps = Omit<ComponentProps<typeof MantineSlider>, 'type'> &
+  RailsRangeField &
+  InputProps
+
+export const RangeField = ({
+  type: _type,
+  errorKey,
+  label,
+  ...rest
+}: RangeFieldProps) => {
+  const errorMessage = useErrorMessage(errorKey)
+
+  return (
+    <MantineInput.Wrapper label={label} error={errorMessage}>
+      <MantineSlider {...rest} />
+    </MantineInput.Wrapper>
+  )
 }
 
 type SubmitButtonProps = ComponentProps<typeof MantineButton> &
