@@ -1,0 +1,433 @@
+/**
+ * A set of [candy_wrappers](https://github.com/thoughtbot/candy_wrapper) around
+ * HeroUI v3 input components. It works with the output from
+ * [FormProps](https://github.com/thoughtbot/form_props).
+ *
+ * You modify these components to fit your design needs.
+ */
+import React, { createContext, useContext, useMemo, useState } from 'react';
+import { parseDate, parseDateTime, parseTime, } from '@internationalized/date';
+import { TextField as HeroTextField, Header as HeroHeader, Input as HeroInput, Label as HeroLabel, FieldError as HeroFieldError, TextArea as HeroTextArea, Checkbox as HeroCheckbox, CheckboxGroup as HeroCheckboxGroup, RadioGroup as HeroRadioGroup, Radio as HeroRadio, Select as HeroSelect, ListBox as HeroListBox, NumberField as HeroNumberField, SearchField as HeroSearchField, DateField as HeroDateField, TimeField as HeroTimeField, Slider as HeroSlider, Button as HeroButton, ColorField as HeroColorField, ColorSwatch as HeroColorSwatch, ErrorMessage as HeroErrorMessage, parseColor, } from '@heroui/react';
+export const ValidationContext = createContext({});
+export const useErrorMessage = (errorKey) => {
+    const errors = useContext(ValidationContext);
+    return useMemo(() => {
+        if (!errorKey) {
+            return null;
+        }
+        const validationError = errors[errorKey];
+        const hasErrors = errorKey && validationError;
+        if (!hasErrors) {
+            return null;
+        }
+        const errorMessages = Array.isArray(validationError)
+            ? validationError
+            : [validationError];
+        return errorMessages.join(' ');
+    }, [errors, errorKey]);
+};
+export const Extras = (hiddenInputAttributes) => {
+    const hiddenProps = Object.values(hiddenInputAttributes);
+    const hiddenInputs = hiddenProps.map((props) => (<input {...props} type="hidden" key={props.name}/>));
+    return <>{hiddenInputs}</>;
+};
+export const Form = ({ extras, validationErrors = {}, children, ...props }) => {
+    return (<form {...props}>
+      <ValidationContext.Provider value={validationErrors}>
+        <Extras {...extras}></Extras>
+        {children}
+      </ValidationContext.Provider>
+    </form>);
+};
+// -- Transform functions --
+export const checkboxPropsToHeroProps = (props) => {
+    const { defaultChecked, checked, type: _type, ...rest } = props;
+    const heroProps = {
+        ...rest,
+    };
+    if (defaultChecked !== undefined) {
+        heroProps.defaultSelected = defaultChecked;
+    }
+    if (checked !== undefined) {
+        heroProps.isSelected = checked;
+    }
+    return heroProps;
+};
+export const textFieldToHeroProps = (props) => {
+    const { type: _type, placeholder, ...fieldProps } = props;
+    return { fieldProps, inputProps: { placeholder } };
+};
+export const numberFieldToHeroProps = (props) => {
+    const { value, defaultValue, min, max, type: _type, ...rest } = props;
+    const heroProps = { ...rest };
+    if (value !== undefined && value !== '') {
+        heroProps.value = Number(value);
+    }
+    if (defaultValue !== undefined && defaultValue !== '') {
+        heroProps.defaultValue = Number(defaultValue);
+    }
+    if (min !== undefined) {
+        heroProps.minValue = min;
+    }
+    if (max !== undefined) {
+        heroProps.maxValue = max;
+    }
+    return heroProps;
+};
+export const dateFieldToHeroProps = (props) => {
+    const { max, min, value, defaultValue, type: _type, ...rest } = props;
+    const heroProps = { ...rest };
+    if (max)
+        heroProps.maxValue = parseDate(max);
+    if (min)
+        heroProps.minValue = parseDate(min);
+    if (defaultValue)
+        heroProps.defaultValue = parseDate(defaultValue);
+    if (value)
+        heroProps.value = parseDate(value);
+    return heroProps;
+};
+export const dateTimeLocalFieldToHeroProps = (props) => {
+    const { max, min, value, defaultValue, type: _type, ...rest } = props;
+    const heroProps = { ...rest };
+    heroProps.granularity = 'second';
+    if (max)
+        heroProps.maxValue = parseDateTime(max);
+    if (min)
+        heroProps.minValue = parseDateTime(min);
+    if (defaultValue)
+        heroProps.defaultValue = parseDateTime(defaultValue);
+    if (value)
+        heroProps.value = parseDateTime(value);
+    return heroProps;
+};
+export const timeFieldToHeroProps = (props) => {
+    const { min, max, value, defaultValue, type: _type, ...rest } = props;
+    const heroProps = { ...rest };
+    if (value)
+        heroProps.value = parseTime(value);
+    if (defaultValue)
+        heroProps.defaultValue = parseTime(defaultValue);
+    if (min)
+        heroProps.minValue = parseTime(min);
+    if (max)
+        heroProps.maxValue = parseTime(max);
+    return heroProps;
+};
+export const Checkbox = ({ includeHidden, uncheckedValue, errorKey, label, ...rest }) => {
+    const heroProps = checkboxPropsToHeroProps(rest);
+    const { name } = heroProps;
+    const errorMessage = useErrorMessage(errorKey);
+    return (<>
+      {includeHidden && (<input type="hidden" name={name} defaultValue={uncheckedValue} autoComplete="off"/>)}
+      <HeroCheckbox {...heroProps} isInvalid={!!errorMessage}>
+        <HeroCheckbox.Content>
+          <HeroCheckbox.Control>
+            <HeroCheckbox.Indicator />
+          </HeroCheckbox.Control>
+          {label}
+        </HeroCheckbox.Content>
+      </HeroCheckbox>
+    </>);
+};
+export const CollectionCheckboxes = ({ includeHidden, collection, label, errorKey, }) => {
+    const errorMessage = useErrorMessage(errorKey);
+    if (collection.length === 0) {
+        return null;
+    }
+    const defaultItems = collection.filter((option) => !!option.defaultChecked);
+    const items = collection.filter((option) => !!option.checked);
+    const valueProps = {};
+    if (defaultItems.length > 0) {
+        valueProps.defaultValue = defaultItems.map((option) => option.value);
+    }
+    else if (items.length > 0) {
+        valueProps.value = items.map((option) => option.value);
+    }
+    const { name } = collection[0];
+    return (<>
+      {includeHidden && (<input type="hidden" name={name} defaultValue={''} autoComplete="off"/>)}
+      <HeroCheckboxGroup name={name} {...valueProps} isInvalid={!!errorMessage}>
+        <HeroLabel>{label}</HeroLabel>
+        {collection.map((option) => (<HeroCheckbox key={option.id} value={option.value}>
+            <HeroCheckbox.Content>
+              <HeroCheckbox.Control>
+                <HeroCheckbox.Indicator />
+              </HeroCheckbox.Control>
+              {option.label}
+            </HeroCheckbox.Content>
+          </HeroCheckbox>))}
+        {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+      </HeroCheckboxGroup>
+    </>);
+};
+export const CollectionRadioButtons = ({ includeHidden, collection, label, errorKey, }) => {
+    const errorMessage = useErrorMessage(errorKey);
+    if (collection.length === 0) {
+        return null;
+    }
+    const defaultItem = collection.find((option) => !!option.defaultChecked);
+    const item = collection.find((option) => !!option.checked);
+    const valueProps = {};
+    if (defaultItem) {
+        valueProps.defaultValue = defaultItem.value;
+    }
+    else if (item) {
+        valueProps.value = item.value;
+    }
+    const { name } = collection[0];
+    return (<>
+      {includeHidden && (<input type="hidden" name={name} defaultValue={''} autoComplete="off"/>)}
+      <HeroRadioGroup name={name} {...valueProps} isInvalid={!!errorMessage}>
+        <HeroLabel>{label}</HeroLabel>
+        {collection.map((option) => (<HeroRadio key={option.value} value={option.value}>
+            <HeroRadio.Content>
+              <HeroRadio.Control>
+                <HeroRadio.Indicator />
+              </HeroRadio.Control>
+              {option.label}
+            </HeroRadio.Content>
+          </HeroRadio>))}
+        {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+      </HeroRadioGroup>
+    </>);
+};
+export const TextField = ({ label, errorKey, ...rest }) => {
+    const { fieldProps, inputProps } = textFieldToHeroProps(rest);
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroTextField {...fieldProps} isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroInput {...inputProps}/>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroTextField>);
+};
+export const EmailField = ({ label, errorKey, ...rest }) => {
+    const { fieldProps, inputProps } = textFieldToHeroProps(rest);
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroTextField {...fieldProps} type="email" isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroInput {...inputProps}/>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroTextField>);
+};
+export const ColorField = ({ type: _type, label, errorKey, ...rest }) => {
+    const errorMessage = useErrorMessage(errorKey);
+    const initialColor = rest.value || rest.defaultValue;
+    const [color, setColor] = useState(initialColor ? parseColor(initialColor) : null);
+    return (<HeroColorField name={rest.name} value={color} onChange={setColor} isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroColorField.Group>
+        <HeroColorField.Prefix>
+          <HeroColorSwatch color={color ?? undefined} size="xs"/>
+        </HeroColorField.Prefix>
+        <HeroColorField.Input />
+      </HeroColorField.Group>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroColorField>);
+};
+export const DateField = ({ label, errorKey, ...rest }) => {
+    const heroProps = dateFieldToHeroProps(rest);
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroDateField {...heroProps} isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroDateField.Group>
+        <HeroDateField.Input>
+          {(segment) => <HeroDateField.Segment segment={segment}/>}
+        </HeroDateField.Input>
+      </HeroDateField.Group>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroDateField>);
+};
+export const DateTimeLocalField = ({ label, errorKey, ...rest }) => {
+    const heroProps = dateTimeLocalFieldToHeroProps(rest);
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroDateField {...heroProps} isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroDateField.Group>
+        <HeroDateField.Input>
+          {(segment) => <HeroDateField.Segment segment={segment}/>}
+        </HeroDateField.Input>
+      </HeroDateField.Group>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroDateField>);
+};
+export const TimeField = ({ label, errorKey, ...rest }) => {
+    const heroProps = timeFieldToHeroProps(rest);
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroTimeField {...heroProps} isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroTimeField.Group>
+        <HeroTimeField.Input>
+          {(segment) => <HeroTimeField.Segment segment={segment}/>}
+        </HeroTimeField.Input>
+      </HeroTimeField.Group>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroTimeField>);
+};
+export const SearchField = ({ label, errorKey, autosave: _autosave, results: _results, onsearch: _onsearch, incremental: _incremental, ...rest }) => {
+    const { fieldProps, inputProps } = textFieldToHeroProps(rest);
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroSearchField {...fieldProps} isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroInput {...inputProps}/>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroSearchField>);
+};
+export const TelField = ({ label, errorKey, ...rest }) => {
+    const { fieldProps, inputProps } = textFieldToHeroProps(rest);
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroTextField {...fieldProps} type="tel" isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroInput {...inputProps}/>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroTextField>);
+};
+export const UrlField = ({ label, errorKey, ...rest }) => {
+    const { fieldProps, inputProps } = textFieldToHeroProps(rest);
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroTextField {...fieldProps} type="url" isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroInput {...inputProps}/>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroTextField>);
+};
+export const MonthField = ({ label, errorKey, type: _type, ...rest }) => {
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroTextField {...rest} isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroInput type="month"/>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroTextField>);
+};
+export const NumberField = ({ label, errorKey, ...rest }) => {
+    const heroProps = numberFieldToHeroProps(rest);
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroNumberField {...heroProps} isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroNumberField.Group>
+        <HeroNumberField.DecrementButton />
+        <HeroNumberField.Input />
+        <HeroNumberField.IncrementButton />
+      </HeroNumberField.Group>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroNumberField>);
+};
+export const RangeField = ({ label, errorKey, value, defaultValue, type: _type, min, max, ...rest }) => {
+    const errorMessage = useErrorMessage(errorKey);
+    const numericValue = value ? Number(value) : undefined;
+    const numericDefault = defaultValue ? Number(defaultValue) : undefined;
+    return (<HeroSlider {...rest} defaultValue={numericDefault} value={numericValue} minValue={min} maxValue={max}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroSlider.Output />
+      <HeroSlider.Track>
+        {({ state }) => (<>
+            <HeroSlider.Fill />
+            {state.values.map((_, i) => (<HeroSlider.Thumb key={i} index={i}/>))}
+          </>)}
+      </HeroSlider.Track>
+      <HeroErrorMessage>{errorMessage}</HeroErrorMessage>
+    </HeroSlider>);
+};
+export const PasswordField = ({ label, errorKey, ...rest }) => {
+    const { fieldProps, inputProps } = textFieldToHeroProps(rest);
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroTextField {...fieldProps} type="password" isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroInput {...inputProps}/>
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroTextField>);
+};
+export const Select = ({ includeHidden, label, errorKey, multiple, type: _type, options, ...rest }) => {
+    const errorMessage = useErrorMessage(errorKey);
+    const { name, id } = rest;
+    const addHidden = includeHidden && multiple;
+    const selectedValue = 'value' in rest ? rest.value : undefined;
+    const selectedDefault = 'defaultValue' in rest ? rest.defaultValue : undefined;
+    const selectionProps = {};
+    if (multiple) {
+        selectionProps.selectionMode = 'multiple';
+        if (selectedValue) {
+            selectionProps.value = Array.isArray(selectedValue)
+                ? selectedValue
+                : [selectedValue];
+        }
+        else if (selectedDefault) {
+            selectionProps.defaultValue = Array.isArray(selectedDefault)
+                ? selectedDefault
+                : [selectedDefault];
+        }
+    }
+    else {
+        if (selectedValue) {
+            selectionProps.value = Array.isArray(selectedValue)
+                ? selectedValue[0]
+                : selectedValue;
+        }
+        else if (selectedDefault) {
+            selectionProps.defaultValue = Array.isArray(selectedDefault)
+                ? selectedDefault[0]
+                : selectedDefault;
+        }
+    }
+    const hasGroups = options.some((item) => 'options' in item);
+    return (<>
+      {addHidden && (<input type="hidden" name={name} value={''} autoComplete="off"/>)}
+      <HeroSelect name={name} id={id} {...selectionProps} isInvalid={!!errorMessage}>
+        <HeroLabel>{label}</HeroLabel>
+        <HeroSelect.Trigger>
+          <HeroSelect.Value />
+          <HeroSelect.Indicator />
+        </HeroSelect.Trigger>
+        <HeroSelect.Popover>
+          <HeroListBox>
+            {hasGroups
+            ? options.map((item) => {
+                if ('options' in item) {
+                    return (<HeroListBox.Section key={item.label}>
+                        <HeroHeader>{item.label}</HeroHeader>
+                        {item.options.map((opt) => (<HeroListBox.Item key={opt.value} id={opt.value} textValue={opt.label}>
+                            {opt.label}
+                            <HeroListBox.ItemIndicator />
+                          </HeroListBox.Item>))}
+                      </HeroListBox.Section>);
+                }
+                return (<HeroListBox.Item key={item.value} id={item.value} textValue={item.label}>
+                      {item.label}
+                      <HeroListBox.ItemIndicator />
+                    </HeroListBox.Item>);
+            })
+            : options.map((item) => {
+                if ('options' in item)
+                    return null;
+                return (<HeroListBox.Item key={item.value} id={item.value} textValue={item.label}>
+                      {item.label}
+                      <HeroListBox.ItemIndicator />
+                    </HeroListBox.Item>);
+            })}
+          </HeroListBox>
+        </HeroSelect.Popover>
+        {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+      </HeroSelect>
+    </>);
+};
+export const TextArea = ({ label, errorKey, type: _type, ...rest }) => {
+    const errorMessage = useErrorMessage(errorKey);
+    return (<HeroTextField {...rest} isInvalid={!!errorMessage}>
+      <HeroLabel>{label}</HeroLabel>
+      <HeroTextArea />
+      {errorMessage && <HeroFieldError>{errorMessage}</HeroFieldError>}
+    </HeroTextField>);
+};
+export const FileField = ({ type: _type, label, errorKey, ...rest }) => {
+    const errorMessage = useErrorMessage(errorKey);
+    return (<div>
+      <HeroLabel>{label}</HeroLabel>
+      <input {...rest} type="file"/>
+      {errorMessage && <span>{errorMessage}</span>}
+    </div>);
+};
+export const SubmitButton = ({ type: _type, text, ...rest }) => {
+    return (<HeroButton {...rest} type="submit">
+      {text}
+    </HeroButton>);
+};
