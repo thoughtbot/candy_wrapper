@@ -1,99 +1,143 @@
-export type BaseInputField = {
-  size?: number
-  maxLength?: number
-  value?: string
-  defaultValue?: string
+/**
+ * Common attributes present on all input types.
+ * Maps to the HTML attributes that every <input> element accepts.
+ */
+type CommonInputAttributes = {
   name: string
   id?: string
+  value?: string
+  defaultValue?: string
 }
 
-export type TextField = BaseInputField & {
+export type TextField = CommonInputAttributes & {
   readonly type: 'text'
+  placeholder?: string
+  maxLength?: number
+  minLength?: number
+  size?: number
+  pattern?: string
 }
 
-export type EmailField = BaseInputField & {
+export type EmailField = CommonInputAttributes & {
   readonly type: 'email'
+  placeholder?: string
+  maxLength?: number
+  minLength?: number
+  size?: number
+  pattern?: string
+  multiple?: boolean
 }
 
-export type FileField = {
-  readonly type: 'file'
-}
-
-export type DateField = BaseInputField & {
-  readonly type: 'date'
-  min?: string
-  max?: string
-}
-
-export type DateTimeLocalField = BaseInputField & {
-  readonly type: 'datetime-local'
-  min?: string
-  max?: string
-}
-
-export type ColorField = BaseInputField & {
-  readonly type: 'color'
-}
-
-export type HiddenField = BaseInputField & {
-  readonly type: 'hidden'
-}
-
-export type MonthField = Omit<BaseInputField, 'size'> & {
-  readonly type: 'month'
-  min?: string
-  max?: string
-}
-
-export type NumberField = Omit<BaseInputField, 'size'> & {
-  readonly type: 'number'
-  max?: number
-  min?: number
-}
-
-export type PasswordField = BaseInputField & {
+export type PasswordField = CommonInputAttributes & {
   readonly type: 'password'
+  placeholder?: string
+  maxLength?: number
+  minLength?: number
+  size?: number
+  pattern?: string
 }
 
-export type SearchField = BaseInputField & {
+export type SearchField = CommonInputAttributes & {
   readonly type: 'search'
+  placeholder?: string
+  maxLength?: number
+  minLength?: number
+  size?: number
+  pattern?: string
 
-  // this no longer exist in the HTML standard
+  // these no longer exist in the HTML standard
   autosave?: string
   results?: number
-
-  // this no longer exist in the HTML standard
   onsearch: string
   incremental?: boolean
 }
 
-export type TelField = BaseInputField & {
+export type TelField = CommonInputAttributes & {
   readonly type: 'tel'
+  placeholder?: string
+  maxLength?: number
+  minLength?: number
+  size?: number
+  pattern?: string
 }
 
-export type UrlField = BaseInputField & {
+export type UrlField = CommonInputAttributes & {
   readonly type: 'url'
+  placeholder?: string
+  maxLength?: number
+  minLength?: number
+  size?: number
+  pattern?: string
 }
 
-export type RangeField = BaseInputField & {
+export type NumberField = CommonInputAttributes & {
+  readonly type: 'number'
+  placeholder?: string
+  min?: number
+  max?: number
+  step?: number
+}
+
+export type RangeField = CommonInputAttributes & {
   readonly type: 'range'
+  min?: number
+  max?: number
+  step?: number
 }
 
-export type TimeField = BaseInputField & {
+export type DateField = CommonInputAttributes & {
+  readonly type: 'date'
+  min?: string
+  max?: string
+  step?: number
+}
+
+export type DateTimeLocalField = CommonInputAttributes & {
+  readonly type: 'datetime-local'
+  min?: string
+  max?: string
+  step?: number
+}
+
+export type MonthField = CommonInputAttributes & {
+  readonly type: 'month'
+  min?: string
+  max?: string
+  step?: number
+}
+
+export type TimeField = CommonInputAttributes & {
   readonly type: 'time'
+  min?: string
+  max?: string
+  step?: number
+}
+
+export type ColorField = CommonInputAttributes & {
+  readonly type: 'color'
+}
+
+export type FileField = {
+  readonly type: 'file'
+  name?: string
+  id?: string
+  accept?: string
+  multiple?: boolean
+}
+
+export type HiddenField = CommonInputAttributes & {
+  readonly type: 'hidden'
 }
 
 export type CheckboxField = {
   readonly type: 'checkbox'
-  includeHidden: boolean
   name: string
   id?: string
-
-  uncheckedValue: string
-
   value: string
   checked?: boolean
   defaultChecked?: boolean
+  includeHidden: boolean
+  uncheckedValue: string
 }
 
 export type CheckboxFieldWithLabel = CheckboxField & {
@@ -109,7 +153,6 @@ export type RadioButtonField = {
   readonly type: 'radio'
   name: string
   id?: string
-
   value: string
   checked?: boolean
   defaultChecked?: boolean
@@ -125,13 +168,16 @@ export type CollectionRadioButtonsField = {
 }
 
 export type TextArea = {
-  cols?: number
-  rows?: number
   readonly type: 'textarea'
-  value?: string
-  defaultValue?: string
   name: string
   id?: string
+  value?: string
+  defaultValue?: string
+  placeholder?: string
+  cols?: number
+  rows?: number
+  maxLength?: number
+  minLength?: number
 }
 
 export type SubmitProps = {
@@ -161,13 +207,13 @@ type BaseSelect = {
 
 export type SingleSelect = BaseSelect & {
   multiple?: false
-  defaultvalue?: string
+  defaultValue?: string
   value?: string
 }
 
 export type MultiSelect = BaseSelect & {
   multiple: true
-  defaultvalue?: string[]
+  defaultValue?: string[]
   value?: string[]
 }
 

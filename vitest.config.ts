@@ -10,6 +10,15 @@ export default defineConfig({
     restoreMocks: true,
     globals: true,
     setupFiles: ['./setup.js'],
+    server: {
+      deps: {
+        inline: [
+          /@adobe\/react-spectrum/,
+          /@react-spectrum/,
+          /@spectrum-icons/,
+        ],
+      },
+    },
   },
   resolve: {
     alias: {
