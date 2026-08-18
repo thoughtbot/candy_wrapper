@@ -1,0 +1,8 @@
+{
+  "name": "@candy_wrapper/vanilla",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json && mkdir -p ../../../wrappers/js/vanilla && cp dist/wrappers/ts/vanilla/index.jsx ../../../wrappers/js/vanilla/index.jsx && rm -rf dist"
+  }
+}
