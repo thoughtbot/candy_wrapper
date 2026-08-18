@@ -1,0 +1,13 @@
+{
+  "name": "@candy_wrapper/mui-v9",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json && mkdir -p ../../../../wrappers/js/mui/v9 && cp dist/wrappers/ts/mui/v9/index.jsx ../../../../wrappers/js/mui/v9/index.jsx && rm -rf dist"
+  },
+  "devDependencies": {
+    "@mui/material": "^9.0.0",
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0"
+  }
+}
