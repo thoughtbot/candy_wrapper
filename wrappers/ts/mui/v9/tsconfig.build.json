@@ -1,0 +1,14 @@
+{
+  "extends": "../../../../tsconfig",
+  "compilerOptions": {
+    "removeComments": false,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "paths": {
+      "@thoughtbot/candy_wrapper": ["../../../../src/index"]
+    }
+  },
+  "include": ["./index.tsx"]
+}

@@ -1,0 +1,53 @@
+import './react-aria.css'
+import {
+  TextField,
+  EmailField,
+  PasswordField,
+  NumberField,
+  DateField,
+  DateTimeLocalField,
+  TimeField,
+  MonthField,
+  ColorField,
+  SearchField,
+  TelField,
+  UrlField,
+  RangeField,
+  Checkbox,
+  CollectionCheckboxes,
+  CollectionRadioButtons,
+  Select,
+  TextArea,
+  FileField,
+  SubmitButton,
+  ValidationContext,
+} from '../../wrappers/ts/react-aria/v1/index'
+import { renderFrame } from './renderFrame'
+
+renderFrame(
+  {
+    TextField,
+    EmailField,
+    PasswordField,
+    NumberField,
+    DateField,
+    DateTimeLocalField,
+    TimeField,
+    MonthField,
+    ColorField,
+    SearchField,
+    TelField,
+    UrlField,
+    RangeField,
+    Checkbox,
+    CollectionCheckboxes,
+    CollectionRadioButtons,
+    Select,
+    MultiSelect: Select,
+    TextArea,
+    FileField,
+    SubmitButton,
+  },
+  undefined,
+  ValidationContext
+)

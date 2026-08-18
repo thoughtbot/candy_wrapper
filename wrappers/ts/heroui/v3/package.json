@@ -1,0 +1,12 @@
+{
+  "name": "@candy_wrapper/heroui-v3",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json && mkdir -p ../../../../wrappers/js/heroui/v3 && cp dist/wrappers/ts/heroui/v3/index.jsx ../../../../wrappers/js/heroui/v3/index.jsx && rm -rf dist"
+  },
+  "devDependencies": {
+    "@heroui/react": "3.2.4",
+    "@internationalized/date": "^3.0.0"
+  }
+}
