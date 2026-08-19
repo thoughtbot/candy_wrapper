@@ -7,11 +7,7 @@
  */
 
 import React, { useContext, useMemo } from 'react'
-import {
-  parseDate,
-  parseDateTime,
-  parseTime,
-} from '@internationalized/date'
+import { parseDate, parseDateTime, parseTime } from '@internationalized/date'
 
 export type {
   CheckboxField as RailsCheckboxFieldProps,
@@ -198,9 +194,7 @@ type InputProps = {
 
 // -- Transform functions --
 
-export const checkboxPropsToRACProps = (
-  props: Partial<RailsCheckboxField>
-) => {
+export const checkboxPropsToRACProps = (props: Partial<RailsCheckboxField>) => {
   const { defaultChecked, checked, type: _type, ...rest } = props
   const racProps: Partial<AriaCheckboxProps> = { ...rest }
 
@@ -214,16 +208,12 @@ export const checkboxPropsToRACProps = (
   return racProps
 }
 
-export const textFieldToRACProps = (
-  props: Partial<RailsTextField>
-) => {
+export const textFieldToRACProps = (props: Partial<RailsTextField>) => {
   const { type: _type, ...rest } = props
   return rest as AriaTextFieldProps
 }
 
-export const numberFieldToRACProps = (
-  props: Partial<RailsNumberField>
-) => {
+export const numberFieldToRACProps = (props: Partial<RailsNumberField>) => {
   const { value, defaultValue, min, max, type: _type, ...rest } = props
   const racProps: Partial<AriaNumberFieldProps> = { ...rest }
 
@@ -243,9 +233,7 @@ export const numberFieldToRACProps = (
   return racProps
 }
 
-export const dateFieldToRACProps = (
-  props: Partial<RailsDateField>
-) => {
+export const dateFieldToRACProps = (props: Partial<RailsDateField>) => {
   const { max, min, value, defaultValue, type: _type, ...rest } = props
   const racProps: Partial<AriaDateFieldProps<DateValue>> = { ...rest }
 
@@ -272,9 +260,7 @@ export const dateTimeLocalFieldToRACProps = (
   return racProps
 }
 
-export const timeFieldToRACProps = (
-  props: Partial<RailsTimeField>
-) => {
+export const timeFieldToRACProps = (props: Partial<RailsTimeField>) => {
   const { min, max, value, defaultValue, type: _type, ...rest } = props
   const racProps: Partial<AriaTimeFieldProps<TimeValue>> = { ...rest }
 
@@ -356,21 +342,27 @@ export const CollectionCheckboxes = ({
       )}
       <AriaCheckboxGroup {...valueProps} isInvalid={!!errorMessage}>
         <AriaLabel>{label}</AriaLabel>
-        {collection.map(({ checked: _checked, defaultChecked: _defaultChecked, ...checkboxProps }) => (
-          <AriaCheckbox
-            key={checkboxProps.id}
-            name={name}
-            value={checkboxProps.value}
-            id={checkboxProps.id}
-          >
-            <div className="checkbox">
-              <svg viewBox="0 0 18 18" aria-hidden="true">
-                <polyline points="1 9 7 14 15 4" />
-              </svg>
-            </div>
-            {checkboxProps.label}
-          </AriaCheckbox>
-        ))}
+        {collection.map(
+          ({
+            checked: _checked,
+            defaultChecked: _defaultChecked,
+            ...checkboxProps
+          }) => (
+            <AriaCheckbox
+              key={checkboxProps.id}
+              name={name}
+              value={checkboxProps.value}
+              id={checkboxProps.id}
+            >
+              <div className="checkbox">
+                <svg viewBox="0 0 18 18" aria-hidden="true">
+                  <polyline points="1 9 7 14 15 4" />
+                </svg>
+              </div>
+              {checkboxProps.label}
+            </AriaCheckbox>
+          )
+        )}
         {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
       </AriaCheckboxGroup>
     </FormValidationContext.Provider>
@@ -410,11 +402,17 @@ export const CollectionRadioButtons = ({
       )}
       <AriaRadioGroup name={name} {...valueProps} isInvalid={!!errorMessage}>
         <AriaLabel>{label}</AriaLabel>
-        {collection.map(({ label: optionLabel, type: _type, ...radioProps }) => (
-          <AriaRadio key={radioProps.value} value={radioProps.value} id={radioProps.id}>
-            {optionLabel}
-          </AriaRadio>
-        ))}
+        {collection.map(
+          ({ label: optionLabel, type: _type, ...radioProps }) => (
+            <AriaRadio
+              key={radioProps.value}
+              value={radioProps.value}
+              id={radioProps.id}
+            >
+              {optionLabel}
+            </AriaRadio>
+          )
+        )}
         {errorMessage && <AriaFieldError>{errorMessage}</AriaFieldError>}
       </AriaRadioGroup>
     </FormValidationContext.Provider>
@@ -430,9 +428,7 @@ const TextBase = ({
 
   return (
     <FormValidationContext.Provider value={validationErrors}>
-      <AriaTextField {...props}>
-        {children}
-      </AriaTextField>
+      <AriaTextField {...props}>{children}</AriaTextField>
     </FormValidationContext.Provider>
   )
 }
@@ -467,7 +463,12 @@ export const EmailField = ({ label, errorKey, ...rest }: EmailFieldProps) => {
 
 export type ColorFieldProps = RailsColorField & InputProps
 
-export const ColorField = ({ label, errorKey, type: _type, ...rest }: ColorFieldProps) => {
+export const ColorField = ({
+  label,
+  errorKey,
+  type: _type,
+  ...rest
+}: ColorFieldProps) => {
   const validationErrors = useErrorKeyValidation({ errorKey, name: rest.name })
 
   return (
@@ -502,7 +503,11 @@ export const DateField = ({ label, errorKey, ...rest }: DateFieldProps) => {
 
 export type DateTimeLocalFieldProps = RailsDateTimeLocalField & InputProps
 
-export const DateTimeLocalField = ({ label, errorKey, ...rest }: DateTimeLocalFieldProps) => {
+export const DateTimeLocalField = ({
+  label,
+  errorKey,
+  ...rest
+}: DateTimeLocalFieldProps) => {
   const racProps = dateTimeLocalFieldToRACProps(rest)
   const validationErrors = useErrorKeyValidation({ errorKey, name: rest.name })
 
@@ -593,7 +598,12 @@ export const UrlField = ({ label, errorKey, ...rest }: UrlFieldProps) => {
 
 export type MonthFieldProps = RailsMonthField & InputProps
 
-export const MonthField = ({ label, errorKey, type: _type, ...rest }: MonthFieldProps) => {
+export const MonthField = ({
+  label,
+  errorKey,
+  type: _type,
+  ...rest
+}: MonthFieldProps) => {
   return (
     <TextBase errorKey={errorKey} {...rest}>
       <AriaLabel>{label}</AriaLabel>
@@ -642,7 +652,12 @@ export const RangeField = ({
 
   return (
     <>
-      <AriaSlider defaultValue={numericDefault} value={numericValue} minValue={min} maxValue={max}>
+      <AriaSlider
+        defaultValue={numericDefault}
+        value={numericValue}
+        minValue={min}
+        maxValue={max}
+      >
         <AriaLabel>{label}</AriaLabel>
         <AriaSliderOutput />
         <AriaSliderTrack>
@@ -661,7 +676,11 @@ export const RangeField = ({
 
 export type PasswordFieldProps = RailsPasswordField & InputProps
 
-export const PasswordField = ({ label, errorKey, ...rest }: PasswordFieldProps) => {
+export const PasswordField = ({
+  label,
+  errorKey,
+  ...rest
+}: PasswordFieldProps) => {
   const { type: _type, ...props } = rest
 
   return (
@@ -696,8 +715,7 @@ export const Select = ({
   })
 
   const selectedValue = 'value' in rest ? rest.value : undefined
-  const selectedDefault =
-    'defaultValue' in rest ? rest.defaultValue : undefined
+  const selectedDefault = 'defaultValue' in rest ? rest.defaultValue : undefined
 
   const selectionProps: Record<string, unknown> = {}
   if (multiple) {
@@ -756,7 +774,12 @@ export const Select = ({
 
 export type TextAreaProps = RailsTextArea & InputProps
 
-export const TextArea = ({ label, errorKey, type: _type, ...rest }: TextAreaProps) => {
+export const TextArea = ({
+  label,
+  errorKey,
+  type: _type,
+  ...rest
+}: TextAreaProps) => {
   return (
     <TextBase errorKey={errorKey} {...rest}>
       <AriaLabel>{label}</AriaLabel>
@@ -783,7 +806,11 @@ export const FileField = ({ type: _type, label, errorKey }: FileFieldProps) => {
 
 export type SubmitButtonProps = RailsSubmitButton
 
-export const SubmitButton = ({ type: _type, text, ...rest }: SubmitButtonProps) => {
+export const SubmitButton = ({
+  type: _type,
+  text,
+  ...rest
+}: SubmitButtonProps) => {
   return (
     <AriaButton {...rest} type="submit">
       {text}

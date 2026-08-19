@@ -672,13 +672,7 @@ export const PasswordField = ({
 }: PasswordFieldProps) => {
   const errorMessage = useErrorMessage(errorKey)
 
-  return (
-    <MantinePasswordInput
-      {...rest}
-      label={label}
-      error={errorMessage}
-    />
-  )
+  return <MantinePasswordInput {...rest} label={label} error={errorMessage} />
 }
 /**
  * A wrapper over Mantine's MultiSelect to support Rails query string. You would
