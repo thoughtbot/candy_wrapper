@@ -324,11 +324,7 @@ export const CollectionCheckboxes = ({
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
-      <HeroCheckboxGroup
-        name={name}
-        {...valueProps}
-        isInvalid={!!errorMessage}
-      >
+      <HeroCheckboxGroup name={name} {...valueProps} isInvalid={!!errorMessage}>
         <HeroLabel>{label}</HeroLabel>
         {collection.map((option) => (
           <HeroCheckbox key={option.id} value={option.value}>
@@ -377,11 +373,7 @@ export const CollectionRadioButtons = ({
       {includeHidden && (
         <input type="hidden" name={name} defaultValue={''} autoComplete="off" />
       )}
-      <HeroRadioGroup
-        name={name}
-        {...valueProps}
-        isInvalid={!!errorMessage}
-      >
+      <HeroRadioGroup name={name} {...valueProps} isInvalid={!!errorMessage}>
         <HeroLabel>{label}</HeroLabel>
         {collection.map((option) => (
           <HeroRadio key={option.value} value={option.value}>

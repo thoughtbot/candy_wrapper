@@ -203,7 +203,14 @@ export const ColorField = (props: ColorFieldProps) => {
       fullWidth
       slotProps={{
         inputLabel: { shrink: true },
-        htmlInput: { sx: { height: 56, padding: '8px', cursor: 'pointer', boxSizing: 'border-box' } },
+        htmlInput: {
+          sx: {
+            height: 56,
+            padding: '8px',
+            cursor: 'pointer',
+            boxSizing: 'border-box',
+          },
+        },
       }}
       {...rest}
     />
@@ -430,7 +437,8 @@ type CheckboxProps = ComponentProps<typeof MuiCheckbox> &
   InputProps
 export const Checkbox = (props: CheckboxProps) => {
   // Strip candy_wrapper-specific props
-  const { type, includeHidden, uncheckedValue, errorKey, label, ...rest } = props
+  const { type, includeHidden, uncheckedValue, errorKey, label, ...rest } =
+    props
 
   // Transform
   const errorMessage = useErrorMessage(errorKey)
@@ -470,7 +478,13 @@ export const CollectionCheckboxes = (props: CollectionCheckboxesFieldProps) => {
 
   const checkboxes = collection.map((item) => {
     // Strip candy_wrapper-specific props from each collection item
-    const { label: checkboxLabel, type, includeHidden: _ih, uncheckedValue: _uv, ...rest } = item
+    const {
+      label: checkboxLabel,
+      type,
+      includeHidden: _ih,
+      uncheckedValue: _uv,
+      ...rest
+    } = item
 
     return (
       <FormControlLabel
@@ -496,7 +510,9 @@ export const CollectionCheckboxes = (props: CollectionCheckboxesFieldProps) => {
 // CollectionRadioButtons — extracts value from checked/defaultChecked items for RadioGroup
 type CollectionRadioButtonsFieldProps = RailsCollectionRadioButtonsField &
   InputProps
-export const CollectionRadioButtons = (props: CollectionRadioButtonsFieldProps) => {
+export const CollectionRadioButtons = (
+  props: CollectionRadioButtonsFieldProps
+) => {
   // Strip candy_wrapper-specific props
   const { includeHidden, collection, label, errorKey } = props
 
@@ -554,7 +570,17 @@ type SelectProps = (
   InputProps
 export const Select = (props: SelectProps) => {
   // Strip candy_wrapper-specific props
-  const { type, includeHidden, options, errorKey, label, name, id, multiple, ...rest } = props
+  const {
+    type,
+    includeHidden,
+    options,
+    errorKey,
+    label,
+    name,
+    id,
+    multiple,
+    ...rest
+  } = props
 
   // Transform
   const errorMessage = useErrorMessage(errorKey)

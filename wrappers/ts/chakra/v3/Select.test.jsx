@@ -63,7 +63,9 @@ describe('Select', () => {
       const label = getByText('category')
       expect(label).not.toBeNull()
 
-      const hiddenSelect = container.querySelector('select[name="post[category]"]')
+      const hiddenSelect = container.querySelector(
+        'select[name="post[category]"]'
+      )
       expect(hiddenSelect).not.toBeNull()
       expect(hiddenSelect.value).toEqual('<mus>')
     })
@@ -97,7 +99,9 @@ describe('Select', () => {
       const label = getByText('category')
       expect(label).not.toBeNull()
 
-      const hiddenSelect = container.querySelector('select[name="post[category]"]')
+      const hiddenSelect = container.querySelector(
+        'select[name="post[category]"]'
+      )
       expect(hiddenSelect).not.toBeNull()
       expect(hiddenSelect.value).toEqual('soccer')
     })

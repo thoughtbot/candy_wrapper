@@ -31,7 +31,11 @@ export function renderFrame(
     const errorData = showErrors ? errorPayloads[field] : undefined
 
     if (!Component) {
-      return <div style={{ padding: 16, color: '#999', fontSize: 13 }}>Not supported</div>
+      return (
+        <div style={{ padding: 16, color: '#999', fontSize: 13 }}>
+          Not supported
+        </div>
+      )
     }
 
     const errorKey = errorData?.errorKey
@@ -39,7 +43,11 @@ export function renderFrame(
 
     const rendered = (
       <div style={{ padding: 16 }}>
-        <Component key={`${field}-${showErrors}`} {...props} errorKey={errorKey} />
+        <Component
+          key={`${field}-${showErrors}`}
+          {...props}
+          errorKey={errorKey}
+        />
       </div>
     )
 

@@ -77,12 +77,8 @@ import { TimeField as SpectrumTimeField } from '@react-spectrum/s2/TimeField'
 import { DatePicker as SpectrumDatePicker } from '@react-spectrum/s2/DatePicker'
 import { ColorField as SpectrumColorField } from '@react-spectrum/s2/ColorField'
 import { SearchField as SpectrumSearchField } from '@react-spectrum/s2/SearchField'
-import {
-  Checkbox as SpectrumCheckbox,
-} from '@react-spectrum/s2/Checkbox'
-import {
-  CheckboxGroup as SpectrumCheckboxGroup,
-} from '@react-spectrum/s2/CheckboxGroup'
+import { Checkbox as SpectrumCheckbox } from '@react-spectrum/s2/Checkbox'
+import { CheckboxGroup as SpectrumCheckboxGroup } from '@react-spectrum/s2/CheckboxGroup'
 import {
   RadioGroup as SpectrumRadioGroup,
   Radio as SpectrumRadio,
@@ -694,8 +690,7 @@ export const Select = ({
   const addHidden = includeHidden && multiple
 
   const selectedValue = 'value' in rest ? rest.value : undefined
-  const selectedDefault =
-    'defaultValue' in rest ? rest.defaultValue : undefined
+  const selectedDefault = 'defaultValue' in rest ? rest.defaultValue : undefined
 
   const hasGroups = options.some((item) => 'options' in item)
 
@@ -742,7 +737,11 @@ export const Select = ({
                 return (
                   <PickerSection key={item.label} id={item.label}>
                     {item.options.map((opt) => (
-                      <PickerItem key={opt.value} id={opt.value} textValue={opt.label}>
+                      <PickerItem
+                        key={opt.value}
+                        id={opt.value}
+                        textValue={opt.label}
+                      >
                         {opt.label}
                       </PickerItem>
                     ))}
@@ -750,7 +749,11 @@ export const Select = ({
                 )
               }
               return (
-                <PickerItem key={item.value} id={item.value} textValue={item.label}>
+                <PickerItem
+                  key={item.value}
+                  id={item.value}
+                  textValue={item.label}
+                >
                   {item.label}
                 </PickerItem>
               )
@@ -760,7 +763,11 @@ export const Select = ({
                 return null
               }
               return (
-                <PickerItem key={item.value} id={item.value} textValue={item.label}>
+                <PickerItem
+                  key={item.value}
+                  id={item.value}
+                  textValue={item.label}
+                >
                   {item.label}
                 </PickerItem>
               )

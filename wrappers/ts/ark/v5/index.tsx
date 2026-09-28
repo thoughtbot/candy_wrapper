@@ -184,10 +184,7 @@ export const CheckboxComponent = ({
           autoComplete="off"
         />
       )}
-      <Checkbox.Root
-        {...rest}
-        invalid={!!errorMessage}
-      >
+      <Checkbox.Root {...rest} invalid={!!errorMessage}>
         <Checkbox.Control>
           <Checkbox.Indicator>✓</Checkbox.Indicator>
         </Checkbox.Control>
@@ -392,7 +389,11 @@ export const DateTimeLocalField = ({
 }: DateTimeLocalFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input {...rest} defaultValue={value ?? defaultValue} type="datetime-local" />
+      <Field.Input
+        {...rest}
+        defaultValue={value ?? defaultValue}
+        type="datetime-local"
+      />
     </FieldWrapperWithError>
   )
 }
@@ -426,7 +427,11 @@ export const MonthField = ({
 }: MonthFieldProps) => {
   return (
     <FieldWrapperWithError label={label} id={rest.id} errorKey={errorKey}>
-      <Field.Input {...rest} defaultValue={value ?? defaultValue} type="month" />
+      <Field.Input
+        {...rest}
+        defaultValue={value ?? defaultValue}
+        type="month"
+      />
     </FieldWrapperWithError>
   )
 }
@@ -549,11 +554,7 @@ export const RangeField = ({
 
   return (
     <Field.Root invalid={!!errorMessage}>
-      <Slider.Root
-        {...rest}
-        defaultValue={numericDefault}
-        value={numericValue}
-      >
+      <Slider.Root {...rest} defaultValue={numericDefault} value={numericValue}>
         <Slider.Label>{label}</Slider.Label>
         <Slider.ValueText />
         <Slider.Control>

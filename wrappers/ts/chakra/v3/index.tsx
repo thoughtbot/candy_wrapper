@@ -310,9 +310,7 @@ export const CollectionRadioButtons = ({
         <ChakraFieldset.Legend fontSize="sm" mb="2">
           {label}
         </ChakraFieldset.Legend>
-        <ChakraFieldset.Content>
-          {radioButtons}
-        </ChakraFieldset.Content>
+        <ChakraFieldset.Content>{radioButtons}</ChakraFieldset.Content>
       </ChakraRadioGroup.Root>
       {errorMessage && (
         <ChakraFieldset.ErrorText>{errorMessage}</ChakraFieldset.ErrorText>

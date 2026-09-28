@@ -76,8 +76,8 @@
   width: 100%;
 }
 
-.react-aria-Slider [slot="label"],
-.react-aria-Slider [slot="output"] {
+.react-aria-Slider [slot='label'],
+.react-aria-Slider [slot='output'] {
   font-size: 14px;
 }
 

@@ -21,9 +21,7 @@ describe('Select', () => {
     it('renders a Picker with the correct label', () => {
       const payload = buildPayload()
 
-      const { getByRole } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { getByRole } = render(<Select {...payload} label={'category'} />)
 
       const button = getByRole('button', { name: /category/ })
       expect(button).not.toBeNull()
@@ -35,9 +33,7 @@ describe('Select', () => {
       payload.defaultValue = [payload.defaultValue]
       payload.includeHidden = true
 
-      const { container } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { container } = render(<Select {...payload} label={'category'} />)
 
       const hiddenInput = container.querySelector('input[type=hidden]')
       expect(hiddenInput).not.toBe(null)
@@ -49,9 +45,7 @@ describe('Select', () => {
       payload.multiple = false
       payload.includeHidden = false
 
-      const { container } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { container } = render(<Select {...payload} label={'category'} />)
 
       const hiddenInput = container.querySelector(
         'input[type=hidden][name="post[category]"]'
@@ -78,9 +72,7 @@ describe('Select', () => {
         ],
       }
 
-      const { getByRole } = render(
-        <Select {...payload} label={'category'} />
-      )
+      const { getByRole } = render(<Select {...payload} label={'category'} />)
 
       const button = getByRole('button', { name: /category/ })
       expect(button).not.toBeNull()
