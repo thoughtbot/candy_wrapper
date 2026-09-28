@@ -1,0 +1,12 @@
+{
+  "name": "@candy_wrapper/chakra-v3",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --project tsconfig.build.json && mkdir -p ../../../../wrappers/js/chakra/v3/components/ui && cp dist/wrappers/ts/chakra/v3/index.jsx ../../../../wrappers/js/chakra/v3/index.jsx && cp dist/wrappers/ts/chakra/v3/components/ui/password-input.jsx ../../../../wrappers/js/chakra/v3/components/ui/password-input.jsx && rm -rf dist"
+  },
+  "devDependencies": {
+    "@chakra-ui/react": "^3.0.0",
+    "react-icons": "^5.7.0"
+  }
+}
