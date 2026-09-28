@@ -60,7 +60,6 @@ typings/
 # dist
 dist/
 
-package-lock.json
 
 coverage/
 todo.txt
