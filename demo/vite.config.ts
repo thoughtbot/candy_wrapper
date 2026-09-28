@@ -31,13 +31,17 @@ export default defineConfig({
   resolve: {
     alias: {
       '@thoughtbot/candy_wrapper': path.resolve(__dirname, '../src/index'),
+      '@mantine/core': path.resolve(
+        __dirname,
+        '../wrappers/ts/mantine/v9/node_modules/@mantine/core'
+      ),
+      '@mantine/dates': path.resolve(
+        __dirname,
+        '../wrappers/ts/mantine/v9/node_modules/@mantine/dates'
+      ),
     },
   },
   optimizeDeps: {
-    include: [
-      '@adobe/react-spectrum',
-      '@react-spectrum/provider',
-      '@react-spectrum/theme-default',
-    ],
+    include: ['@adobe/react-spectrum', '@react-spectrum/provider'],
   },
 })
