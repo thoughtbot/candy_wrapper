@@ -43,13 +43,20 @@ CLI tools to help. just copy and paste from github.
 
 ## Installation
 
-There's nothing to install, but if you need types:
+There's nothing to install for the JavaScript wrappers. The TypeScript wrappers
+import their shared types from `@thoughtbot/candy_wrapper`, so add it if you use them:
 
 ```
-npm install -D candy_wrapper
+npm install -D @thoughtbot/candy_wrapper
 ```
 
-Then go to the wrapper directory in this repo and copy the wrappers for the UI library of your choice into your project.
+Then go to the [wrappers] directory in this repo and copy the wrappers for the UI library of your choice into your project.
+Each UI library has two variants with the same components:
+
+- `wrappers/ts/<library>` - TypeScript (`index.tsx`), typed with `@thoughtbot/candy_wrapper`
+- `wrappers/js/<library>` - plain JavaScript (`index.jsx`), no dependency on `@thoughtbot/candy_wrapper`
+
+The Chakra UI wrappers also include a `components/ui` directory that should be copied along with `index`.
 
 # Usage
 
@@ -57,7 +64,7 @@ Once you've copied the components to your project. Use [form_props] to build you
 
 ```ruby
 json.newPostForm do
-  form_props(@post) do |f|
+  form_props(model: @post) do |f|
     f.text_field :title
     f.submit
   end
@@ -68,9 +75,8 @@ This would create a payload that looks something this:
 
 ```js
 {
-  someForm: {
-    props: {
-      id: "create-post",
+  newPostForm: {
+    form: {
       action: "/posts/123",
       acceptCharset: "UTF-8",
       method: "post"
@@ -82,22 +88,22 @@ This would create a payload that looks something this:
         defaultValue: "patch",
         autoComplete: "off"
       },
+      csrf: {
+        name: "authenticity_token",
+        type: "hidden",
+        defaultValue: "SomeTOken!23$",
+        autoComplete: "off"
+      },
       utf8: {
         name: "utf8",
         type: "hidden",
         defaultValue: "\u0026#x2713;",
         autoComplete: "off"
       }
-      csrf: {
-        name: "utf8",
-        type: "authenticity_token",
-        defaultValue: "SomeTOken!23$",
-        autoComplete: "off"
-      }
     },
     inputs: {
       title: {name: "post[title]", id: "post_title", type: "text", defaultValue: "hello"},
-      submit: {type: "submit", value: "Update a Post"}
+      submit: {name: "commit", text: "Update Post", type: "submit"}
     }
   }
 }
@@ -121,7 +127,7 @@ const {form, extras, inputs} = newPostForm
 Each wrapper comes with inline support for server errors.
 
 ```js
-import {Form, TextField} from './copied_components'
+import {Form, TextField, SubmitButton} from './copied_components'
 
 const validationErrors = {
   full_title: "Invalid length"
@@ -134,6 +140,22 @@ const {form, extras, inputs} = newPostForm
   <SubmitButton {...inputs.submit} />
 </Form>
 ```
+
+## Helpers
+
+Besides the components in the table above, each wrapper exports the building
+blocks it uses internally, which are handy when writing your own components:
+
+- `Form` - renders the form, its `Extras`, and provides `validationErrors` via `ValidationContext`.
+- `Extras` - renders the hidden inputs from the `extras` payload (`_method`, `authenticity_token`, `utf8`).
+- `ValidationContext` - React context holding the `validationErrors` passed to `Form`. In the React Aria wrapper this is
+  `FormValidationContext` from `react-aria-components`, re-exported under the same name.
+- `useErrorMessage(errorKey)` - returns the error message for `errorKey` from `ValidationContext`, or `null`.
+
+The Vanilla wrappers also export:
+
+- `FieldError` - renders the inline error for an `errorKey`.
+- `FieldBase` - a label, input, and `FieldError` combined; the base of most Vanilla fields.
 
 ## Vanilla
 
@@ -153,8 +175,10 @@ yarn add @ark-ui/react
 To use the Chakra UI wrappers, add the following library before copying:
 
 ```
-yarn add @chakra-ui/react
+yarn add @chakra-ui/react @emotion/react react-icons
 ```
+
+`react-icons` is used by the copied `components/ui/password-input`.
 
 ## React Spectrum
 
@@ -169,7 +193,7 @@ yarn add @react-spectrum/s2 @internationalized/date
 To use the Mantine wrappers, add the following libraries before copying:
 
 ```
-yarn add @mantine/core @mantine/dates
+yarn add @mantine/core @mantine/hooks @mantine/dates dayjs
 ```
 
 ## HeroUI
@@ -202,6 +226,7 @@ yarn add react-aria-components @internationalized/date
 
 Thank you, [contributors]!
 
+[wrappers]: wrappers
 [contributors]: https://github.com/thoughtbot/candy_wrapper/graphs/contributors
 [form_props]: https://github.com/thoughtbot/form_props
 [Vanilla]: wrappers/ts/vanilla
